@@ -1,0 +1,34 @@
+# ***********
+# osx cruft
+# ***********
+.DS_Store
+
+
+# ************
+# IDE/editor configs
+# ************
+.idea
+.vscode
+.history
+
+
+# ************
+# package dependency directory for JS projects
+# ************
+node_modules
+
+# ***********
+# Secrets
+# ***********
+secrets
+
+# ***********
+# Terraform local data directory
+# ***********
+.terraform
+terraform.*
+
+# ***********
+# Client app build directory
+# ***********
+client-build
