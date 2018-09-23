@@ -5,12 +5,13 @@ const { sid, authToken } = JSON.parse(fs.readFileSync('/run/secrets/twilio-crede
 const client = new Twilio(sid, authToken);
 
 const contacts = [
-  { name: 'Brendan', number: '+18572312588' },
-  { name: 'Nick', number: '+18608087654' },
-  { name: 'Luke', number: '+13158865733' },
+  // { name: 'Brendan', number: '+18572312588' },
+  // { name: 'Nick', number: '+18608087654' },
+  // { name: 'Luke', number: '+13158865733' },
 ]
 
 const twilioEnabledNumber = '+13156276319';
+
 
 main();
 async function main() {
@@ -20,6 +21,12 @@ async function main() {
         body: `Helo ${contact.name}`,
         to: contact.number,
         from: twilioEnabledNumber
+      });
+
+      const call = await client.calls.create({
+        url: 'http://demo.twilio.com/docs/voice.xml',
+        to: `${contact.number}`,
+        from: `${twilioEnabledNumber}`
       });
     }
   } catch (error) {

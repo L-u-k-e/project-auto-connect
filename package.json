@@ -7,11 +7,12 @@
   "private": false,
   "dependencies": {
     "eslint": "^5.5.0",
+    "express": "^4.16.3",
     "fs-extra": "^7.0.0",
     "twilio": "^3.19.2"
   },
   "scripts": {
-    "start": "node bin/test.js"
+    "start": "node bin/server.js"
   },
   "devDependencies": {}
 }

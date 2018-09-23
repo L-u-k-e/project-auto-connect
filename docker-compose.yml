@@ -10,10 +10,8 @@ services:
     working_dir: /usr/src/app
     secrets:
       - twilio-credentials
-    networks:
-      - app
     volumes:
         - .:/usr/src/app
-networks:
-  app:
+    ports:
+      - "1337:1337"
 
