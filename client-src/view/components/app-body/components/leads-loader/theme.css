@@ -1,0 +1,35 @@
+.leadsLoader {
+  width: 100%;
+  max-width: 800px;
+  height: 800px;
+  margin: 24px auto;
+  position: relative;
+
+  & .dropzone {
+    border: none;
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    & .placeholderOuter {
+      width: 75%;
+      height: 75%;
+      position: relative;
+      border-radius: 50%;
+      background: var(--md-grey-200);
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      & .icon {
+
+      }
+
+    }
+  }
+}

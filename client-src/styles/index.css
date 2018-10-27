@@ -1,0 +1,18 @@
+@import 'material-colors/dist/colors.var.css';
+@import 'material-components-web/dist/material-components-web.min.css';
+@import '@rmwc/data-table/data-table.css';
+@import 'reset';
+@import 'mdc-overrides';
+
+html,
+body,
+#root {
+  height: 100%;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.material-icons {
+  user-select: none;
+}

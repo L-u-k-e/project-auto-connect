@@ -1,0 +1,7 @@
+.view {
+  position: relative;
+  background: var(--md-grey-100);
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
