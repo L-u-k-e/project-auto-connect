@@ -1,3 +1,8 @@
 .appBody {
-  margin-top: 64px; /* Header height */
+  /* Header height; the header is fixed position
+  padding-top: 64px;
+  */
+  position: relative;
+  height: 100%;
+  width: 100%;
 }

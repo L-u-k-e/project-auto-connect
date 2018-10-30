@@ -36,7 +36,6 @@ function parseLeadsFile(store, action, next) {
     if (!Ramda.isEmpty(errors)) {
       console.error(errors);
     } else {
-      console.log(data, errors, meta);
       next(leadsLoaded({ data, fieldNames: meta.fields }));
     }
   }

@@ -1,5 +1,6 @@
 import * as Ramda from 'ramda';
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { themr } from 'react-css-themr';
 import { Drawer, DrawerAppContent } from 'rmwc/Drawer';
@@ -20,10 +21,10 @@ function View(props) {
   return (
     <div className={theme.view}>
       <AppHeader />
-      <Drawer modal>
+      <Drawer modal className={theme.drawer}>
         { /* <AppSidebar /> */}
       </Drawer>
-      <DrawerAppContent>
+      <DrawerAppContent className={classNames('mdc-top-app-bar--fixed-adjust', theme.drawerAppContent)}>
         <AppBody />
       </DrawerAppContent>
     </div>

@@ -1,8 +1,6 @@
 .leadsList {
   width: 100%;
-  max-width: 1200px;
-  height: 800px;
-  margin: 24px auto;
+  height: 100%;
   position: relative;
 
   & .leadsTable {

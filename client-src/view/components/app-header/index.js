@@ -8,12 +8,14 @@ import { themr } from 'react-css-themr';
 // import {  } from 'redux/selectors';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
+import { Button } from 'rmwc/Button';
 import {
   TopAppBar,
   TopAppBarRow,
   TopAppBarSection,
   TopAppBarNavigationIcon,
-  TopAppBarTitle
+  TopAppBarTitle,
+  // TopAppBarActionItem
 } from 'rmwc/TopAppBar';
 import baseTheme from './theme.css';
 
@@ -40,7 +42,10 @@ function AppHeader(props) {
       <TopAppBarRow>
         <TopAppBarSection alignStart>
           <TopAppBarNavigationIcon icon="menu" />
-          <TopAppBarTitle>Title</TopAppBarTitle>
+          <TopAppBarTitle> Queue Status: disconnected </TopAppBarTitle>
+        </TopAppBarSection>
+        <TopAppBarSection alignEnd>
+          <Button raised theme="secondary-bg on-secondary"> Load Leads </Button>
         </TopAppBarSection>
       </TopAppBarRow>
     </TopAppBar>
