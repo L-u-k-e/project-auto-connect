@@ -8,3 +8,7 @@ export const areLeadsLoaded = (state) => !!state.leads;
 export const isLeadsLoadingInProgress = (state) => state.leadsLoadingStatus.loadingInProgress;
 export const leadsLoadingErrorMessage = (state) => state.leadsLoadingStatus.loadingError;
 export const isThereALeadsLoadingError = (state) => state.leadsLoadingStatus.uploadError !== null;
+
+
+
+export const isUserSignedIn = (state) => state.signInStatus.signedIn;

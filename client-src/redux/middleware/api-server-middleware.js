@@ -14,7 +14,7 @@ import * as actionTypes from 'redux/action-types';
 
 
 const actionHandlers = {
-  [actionTypes.SEND_API_MESSAGE]: sendAPIMessage,
+  [actionTypes.SEND_API_REQUEST]: sendAPIRequest,
 };
 
 
@@ -43,14 +43,16 @@ export default function socketMiddleware(store) {
 
 
 
-function sendAPIMessage(store, action, next) {
+function sendAPIRequest(store, action, next) {
   next(action);
-  const request = emitApiRequest({
+  const { method, params, id } = action.payload;
+  emitApiRequest({
     next,
-    method: '',
-    params: {},
+    method,
+    id,
+    params,
+    triggeringAction: action,
   });
-  next(sentAPIRequest({ request, triggeringAction: action }));
 }
 
 
@@ -58,9 +60,11 @@ function sendAPIMessage(store, action, next) {
 
 
 let globalSocket = null;
-function emitApiRequest({ next, method, params }) {
+function emitApiRequest({ next, method, params, id = uuidV4(), triggeringAction }) {
+  const request = { method, params, id, jsonrpc: '2.0' };
   if (globalSocket) {
     emit();
+    next(sentAPIRequest({ request, triggeringAction }));
   } else {
     globalSocket = io('/', { transports: ['websocket'] }); // no need for polling fallback
     globalSocket.on('connect', handleConnect);
@@ -74,12 +78,13 @@ function emitApiRequest({ next, method, params }) {
   }
 
   function emit() {
-    globalSocket.emit('request', { method, params, id: uuidV4(), jsonrpc: '2.0' });
+    globalSocket.emit('request', request);
   }
 
   function handleConnect() {
     next(socketConnected());
     emit();
+    next(sentAPIRequest({ request, triggeringAction }));
   }
 
   function handleReconnect() {

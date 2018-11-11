@@ -4,6 +4,7 @@
 
 
 const path = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -25,7 +26,7 @@ const publicPath = '/';
 const publicUrl = '';
 
 
-
+const googleSignInAppCredentails = JSON.parse(fs.readFileSync('/run/secrets/google-sign-in-app-credentials'));
 
 
 const webpackConfig = {
@@ -123,7 +124,8 @@ const webpackConfig = {
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
     new InterpolateHtmlPlugin({
-      PUBLIC_URL: publicUrl
+      PUBLIC_URL: publicUrl,
+      GOOGLE_SIGN_IN_CLIENT_ID: googleSignInAppCredentails.web.client_id
     }),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({

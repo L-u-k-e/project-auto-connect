@@ -5,6 +5,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -16,6 +17,8 @@ const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeM
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 // const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
+
+const googleSignInAppCredentails = JSON.parse(fs.readFileSync('/run/secrets/google-sign-in-app-credentials'));
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -145,7 +148,8 @@ const webpackConfig = {
   },
   plugins: [
     new InterpolateHtmlPlugin({
-      PUBLIC_URL: publicUrl
+      PUBLIC_URL: publicUrl,
+      GOOGLE_SIGN_IN_CLIENT_ID: googleSignInAppCredentails.web.client_id
     }),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({

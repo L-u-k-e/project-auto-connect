@@ -8,6 +8,8 @@ secrets:
     file: ./secrets/tls/dev/dhparam.pem
   twilio-credentials:
     file: ./secrets/twilio-credentials.json
+  google-sign-in-app-credentials:
+    file: ./secrets/google-sign-in-app-credentials.json
 services:
   app:
     image: nginx
@@ -32,6 +34,7 @@ services:
     working_dir: /usr/src/app
     secrets:
       - twilio-credentials
+      - google-sign-in-app-credentials
     networks:
       - app
     volumes:

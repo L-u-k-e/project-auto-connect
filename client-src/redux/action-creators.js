@@ -28,6 +28,27 @@ export function leadsLoaded(payload) {
 
 
 
+export function completeSignIn(googleUser) {
+  return {
+    payload: googleUser,
+    type: actionTypes.COMPLETE_SIGN_IN
+  };
+}
+
+
+
+
+
+export function signInCompletionSuccessful() {
+  return {
+    type: actionTypes.SIGN_IN_COMPLETION_SUCCESSFUL,
+    payload: null,
+  };
+}
+
+
+
+
 
 // update socket connection state on successful connect or on an error
 export function socketConnected() {
@@ -59,7 +80,7 @@ export function socketReconnected() {
 export function sentAPIRequest(payload) {
   return {
     payload,
-    type: actionTypes.SENT_API_REQUESTS,
+    type: actionTypes.SENT_API_REQUEST,
   };
 }
 
@@ -67,5 +88,13 @@ export function receivedAPIReplies(payload) {
   return {
     payload,
     type: actionTypes.RECEIVED_API_REPLIES,
+  };
+}
+
+// The API Server middleware listens for this action to send requests
+export function sendAPIRequest(payload) {
+  return {
+    payload,
+    type: actionTypes.SEND_API_REQUEST,
   };
 }

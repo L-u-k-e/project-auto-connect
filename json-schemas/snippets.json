@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "snippets",
+  "definitions": {
+    "string_cant_be_blank": {
+      "$id": "string_cant_be_blank",
+      "type": "string",
+      "pattern": "[^ ]+",
+      "_message": "This field is required"
+    }
+  }
+}
