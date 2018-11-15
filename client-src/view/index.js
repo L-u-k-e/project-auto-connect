@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { themr } from 'react-css-themr';
-import { Drawer, DrawerAppContent } from 'rmwc/Drawer';
-import { isUserSignedIn } from 'redux/selectors';
+import { Drawer, DrawerHeader, DrawerTitle, DrawerSubtitle } from 'rmwc/Drawer';
+import { isUserSignedIn, isNavDrawerModal, isNavDrawerOpen } from 'redux/selectors';
+import { toggleNavDrawer } from 'redux/action-creators';
 import wrapWithComponent from 'view/libraries/wrap-with-component';
 import AppHeader from './components/app-header';
 import AppBody from './components/app-body';
@@ -18,19 +19,45 @@ import baseTheme from './theme.css';
 
 View.propTypes = {
   // provideTheme
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+
+  // provideNavDrawerControls
+  navDrawerOpen: PropTypes.bool.isRequired,
+  navDrawerModal: PropTypes.bool.isRequired,
+  onToggleNavDrawer: PropTypes.func.isRequired,
 };
 function View(props) {
-  const { theme } = props;
+  const { theme, navDrawerModal, navDrawerOpen, onToggleNavDrawer } = props;
   return (
     <div className={theme.view}>
-      <AppHeader />
-      <Drawer modal className={theme.drawer}>
+      <AppHeader
+        className={theme.header}
+      />
+      <Drawer
+        open={navDrawerOpen}
+        modal={navDrawerModal}
+        onClose={onToggleNavDrawer}
+        className={
+          classNames(
+            {
+              'mdc-top-app-bar--fixed-adjust': !navDrawerModal,
+              [theme.modal]: navDrawerModal
+            },
+            theme.drawer
+          )
+        }
+      >
+        <DrawerHeader>
+          <DrawerTitle>DrawerHeader</DrawerTitle>
+          <DrawerSubtitle>Subtitle</DrawerSubtitle>
+        </DrawerHeader>
+        <a href="localhost"> link text </a>
         { /* <AppSidebar /> */}
       </Drawer>
-      <DrawerAppContent className={classNames('mdc-top-app-bar--fixed-adjust', theme.drawerAppContent)}>
-        <AppBody />
-      </DrawerAppContent>
+      <AppBody
+        className={classNames('mdc-top-app-bar--fixed-adjust', theme.body)}
+
+      />
     </div>
   );
 }
@@ -61,10 +88,19 @@ const renderSignInScreenIfSignedOut = wrapWithComponent(SignInScreenRenderer_Con
 
 
 
+const provideNavDrawerTogglerControls = connect(
+  state => ({ navDrawerOpen: isNavDrawerOpen(state), navDrawerModal: isNavDrawerModal(state) }),
+  { onToggleNavDrawer: toggleNavDrawer }
+);
+
+
+
+
 const ViewContainer = (
   Ramda.compose(
     provideTheme,
     renderSignInScreenIfSignedOut,
+    provideNavDrawerTogglerControls
   )(View)
 );
 ViewContainer.displayName = 'ViewContainer';

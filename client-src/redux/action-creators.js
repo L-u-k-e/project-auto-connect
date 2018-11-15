@@ -28,6 +28,18 @@ export function leadsLoaded(payload) {
 
 
 
+
+export function toggleNavDrawer() {
+  return {
+    type: actionTypes.TOGGLE_NAV_DRAWER,
+    payload: null
+  };
+}
+
+
+
+
+
 export function completeSignIn(googleUser) {
   return {
     payload: googleUser,

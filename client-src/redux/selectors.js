@@ -12,3 +12,9 @@ export const isThereALeadsLoadingError = (state) => state.leadsLoadingStatus.upl
 
 
 export const isUserSignedIn = (state) => state.signInStatus.signedIn;
+
+
+
+
+export const isNavDrawerModal = (state) => state.browser.lessThan.lgTablet;
+export const isNavDrawerOpen = (state) => !isNavDrawerModal(state) || state.navDrawer.openInModalMode;

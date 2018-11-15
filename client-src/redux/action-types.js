@@ -17,5 +17,11 @@ export const RECEIVED_API_REPLIES = 'auto-connect/RECEIVED_API_REPLIES';
 
 
 
+export const TOGGLE_NAV_DRAWER = 'auto-connect/TOGGLE_NAV_DRAWER';
+
+
+
+
+
 export const COMPLETE_SIGN_IN = 'auto-connect/COMPLETE_SIGN_IN';
 export const SIGN_IN_COMPLETION_SUCCESSFUL = 'auto-connect/SIGN_IN_COMPLETION_SUCCESSFUL';

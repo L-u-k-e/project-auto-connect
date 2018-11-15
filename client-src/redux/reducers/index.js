@@ -6,6 +6,7 @@ import signInStatusReducer from './sign-in-status';
 import leadsReducer from './leads';
 import leadsListFieldNamesReducer from './leads-list-field-names';
 import leadsLoadingStatusReducer from './leads-loading-status';
+import navDrawerReducer from './nav-drawer';
 
 
 
@@ -20,5 +21,6 @@ export default combineReducers({
   leads: leadsReducer,
   leadsListFieldNames: leadsListFieldNamesReducer,
   leadsLoadingStatus: leadsLoadingStatusReducer,
+  navDrawer: navDrawerReducer,
   signInStatus: signInStatusReducer,
 });
