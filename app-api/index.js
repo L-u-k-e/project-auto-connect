@@ -11,6 +11,7 @@ const validateIDToken = require('./validate_id_token');
 
 
 
+
 const methodImpls = {
   validate_id_token: validateIDToken
 };
@@ -23,7 +24,7 @@ module.exports = {
 
 
 // Performs initialization,
-function initialize(socketIOServer) {
+async function initialize(socketIOServer) {
   socketIOServer.on('connection', exposeMethods);
 }
 

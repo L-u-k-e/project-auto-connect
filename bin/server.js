@@ -7,10 +7,11 @@ const Webpack = require('webpack');
 const History = require('connect-history-api-fallback');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
 const WebpackHotMiddleware = require('webpack-hot-middleware');
-const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const { addSchema } = require('../libraries/json-schema-validation-utils');
 const schemaBundles = require('../libraries/schema-bundles');
+const twilioUtils = require('../libraries/twilio-utils');
 const appAPIImpl = require('../app-api');
+// const twilioAPIImpl = require('../twilio-api');
 
 
 
@@ -27,13 +28,12 @@ process.on('unhandledRejection', error => {
 
 
 
-const validTestEmailAddresses = ['hi.lucas.p@gmail.com'];
 
 main();
 async function main() {
   addSchema(schemaBundles.syncSchemas);
   const expressApp = Express();
-
+  /*
   expressApp.post('/enqueue', (req, res) => {
     console.log ('enqueue received');
     const twiml = new VoiceResponse();
@@ -49,14 +49,7 @@ async function main() {
     res.writeHead(200, { 'Content-Type': 'text/xml' });
     res.end(twiml.toString());
   });
-
-  expressApp.post('/oauth2-callback', (req, res) => {
-    console.log('callback received post');
-  });
-
-  expressApp.get('/oauth2-callback', (req, res) => {
-    console.log('callback received get');
-  });
+*/
 
   if (process.env.NODE_ENV === 'development') {
     expressApp.use(History());
@@ -84,9 +77,11 @@ async function main() {
     });
   }
 
+  await twilioUtils.initialize();
+  // expressApp.use('/twilio-webook', twilioAPIImpl);
   const httpServer = HTTP.createServer(expressApp);
   const socketIOServer = SocketIO(httpServer);
-  appAPIImpl.initialize(socketIOServer);
+  await appAPIImpl.initialize(socketIOServer);
   const port = process.env.PORT || 80;
   httpServer.listen(port, err => {
     if (err) {
