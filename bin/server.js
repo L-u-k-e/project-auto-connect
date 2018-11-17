@@ -11,7 +11,7 @@ const { addSchema } = require('../libraries/json-schema-validation-utils');
 const schemaBundles = require('../libraries/schema-bundles');
 const twilioUtils = require('../libraries/twilio-utils');
 const appAPIImpl = require('../app-api');
-// const twilioAPIImpl = require('../twilio-api');
+const twilioAPIImpl = require('../twilio-api');
 
 
 
@@ -33,23 +33,6 @@ main();
 async function main() {
   addSchema(schemaBundles.syncSchemas);
   const expressApp = Express();
-  /*
-  expressApp.post('/enqueue', (req, res) => {
-    console.log ('enqueue received');
-    const twiml = new VoiceResponse();
-    twiml.enqueue({}, 'sales');
-    res.writeHead(200, { 'Content-Type': 'text/xml' });
-    res.end(twiml.toString());
-  });
-
-  expressApp.post('/consume', (req, res) => {
-    console.log('connect received');
-    const twiml = new VoiceResponse();
-    twiml.dial({ timeout: 300 }).queue({}, 'sales');
-    res.writeHead(200, { 'Content-Type': 'text/xml' });
-    res.end(twiml.toString());
-  });
-*/
 
   if (process.env.NODE_ENV === 'development') {
     expressApp.use(History());
@@ -78,7 +61,7 @@ async function main() {
   }
 
   await twilioUtils.initialize();
-  // expressApp.use('/twilio-webook', twilioAPIImpl);
+  expressApp.use('/twilio-webhook', twilioAPIImpl.expressRouter);
   const httpServer = HTTP.createServer(expressApp);
   const socketIOServer = SocketIO(httpServer);
   await appAPIImpl.initialize(socketIOServer);

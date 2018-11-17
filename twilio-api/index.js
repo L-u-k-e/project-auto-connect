@@ -1,12 +1,14 @@
 const Express = require('express');
-const twilioUtils = require('../libraries/twilio-utils');
-
+// const callStatusEventHandler = require('./call-status-event');
+const consumeHandler = require('./consume');
+const enqueueHandler = require('./enqueue');
 
 
 
 const expressRouter = Express.Router();
 module.exports = {
-  initialize
+  initialize,
+  expressRouter
 };
 
 
@@ -21,6 +23,6 @@ function initialize() {
 
 
 
-expressRouter.post('call-status-event', twilioUtils.handleCallStatusEvent);
-expressRouter.post('enqueue', null);
-expressRouter.post('consume', null);
+// expressRouter.post('call-status-event', callStatusEventHandler);
+expressRouter.post('/enqueue', enqueueHandler);
+expressRouter.post('/consume', consumeHandler);

@@ -1,4 +1,4 @@
-// const { call } = require('../../libraries/twilio-utils');
+const { call } = require('../../libraries/twilio-utils');
 const { reply } = require('../../libraries/socket-emitters');
 
 
@@ -27,11 +27,10 @@ async function onSocketDisconnect() {} // eslint-disable-line
 
 async function fulfillRequest({ socket, request }) {
   const { params: { id_token: idToken, phone_number: phoneNumber } } = request;
-  console.log(idToken);
   reply({ socket, request, body: { status: 'calling' }, complete: false });
+  console.log(idToken);
   const formattedPhoneNumber = formatPhoneNumber({ phoneNumber });
   console.log(formattedPhoneNumber);
-  /*
   await call({
     phoneNumber: formattedPhoneNumber,
     statusCallbacks: {
@@ -42,12 +41,13 @@ async function fulfillRequest({ socket, request }) {
       completed: onCompleted,
     }
   });
-  */
 
+  /*
   const onAnsweredTimeout = getRandomInt(1000, 7000);
   const onCompletedTimeout = onAnsweredTimeout + 300;
   setTimeout(onAnswered, onAnsweredTimeout);
   setTimeout(onCompleted, onCompletedTimeout);
+  */
 
   function onAnswered() {
     reply({ socket, request, body: { status: 'answered' }, complete: false });
@@ -59,7 +59,7 @@ async function fulfillRequest({ socket, request }) {
 }
 
 
-async function formatPhoneNumber({ phoneNumber }) {
+function formatPhoneNumber({ phoneNumber }) {
   let result = phoneNumber.replace(/[^\d]/g, '');
   if (result.slice(0, 2) !== '+1') {
     result = `+1${result}`;

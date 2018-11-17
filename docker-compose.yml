@@ -42,5 +42,7 @@ services:
     environment:
       PORT: 80
       NODE_ENV: "development"
+      TWILIO_ENABLED_NUMBER: '+13156276319'
+      TWILIO_WEBHOOK_API_URL_BASE: 'https://auto-connect.ngrok.io/'
 networks:
   app:

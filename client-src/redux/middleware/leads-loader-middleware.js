@@ -30,7 +30,7 @@ export default function leadsUploaderMiddleware(store) {
 function parseLeadsFile(store, action, next) {
   next(action);
   const file = action.payload;
-  PapaCSVParser.parse(file, { complete: handleParseCompleted, header: true });
+  PapaCSVParser.parse(file, { complete: handleParseCompleted, header: true, skipEmptyLines: true, });
 
   function handleParseCompleted({ data, errors, meta }) {
     if (!Ramda.isEmpty(errors)) {

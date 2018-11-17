@@ -5,7 +5,8 @@ const fs = require('fs');
 
 
 let twilioClient = null;
-const twilioEnabledNumber = process.env.TWILIO_ENABLED_NUMBER || '+13156276319';
+const twilioEnabledNumber = process.env.TWILIO_ENABLED_NUMBER;
+const twilioWebhookAPIURLBase = process.env.TWILIO_WEBHOOK_API_URL_BASE;
 module.exports = {
   initialize,
   call
@@ -26,14 +27,15 @@ async function initialize() {
 
 
 
-async function call({ phoneNumber, statusCallbacks = {} }) {
+async function call({ phoneNumber, statusCallbacks = {} }) { // eslint-disable-line
+  console.log(twilioWebhookRoutes.enqueue, phoneNumber, twilioEnabledNumber);
   await twilioClient.calls.create({
-    url: twilioWebhookRoutes.enqueue,
+    url: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.enqueue}`,
     to: phoneNumber,
     from: twilioEnabledNumber,
-    statusCallback: 'https://www.myapp.com/events',
-    statusEvents: Object.keys(statusCallbacks),
-    statusCallbackMethod: 'POST',
+    // statusCallback: 'https://www.myapp.com/events',
+    // statusEvents: Object.keys(statusCallbacks),
+    // statusCallbackMethod: 'POST',
   });
 }
 
