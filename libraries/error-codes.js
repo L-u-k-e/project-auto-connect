@@ -5,4 +5,6 @@ module.exports = {
   requestParamsError: -32602,
   invalidMethodError: -32601,
   invalidRequestError: -32600,
+  tokenValidationError: -32000,
+  invalidTokenEmailError: -32001
 };

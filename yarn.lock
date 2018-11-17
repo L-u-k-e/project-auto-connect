@@ -881,6 +881,12 @@ after@0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
 
+agent-base@^4.1.0:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.2.1.tgz#d89e5999f797875674c07d87f260fc41e83e8ca9"
+  dependencies:
+    es6-promisify "^5.0.0"
+
 ajv-errors@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-1.0.0.tgz#ecf021fa108fd17dfb5e6b383f2dd233e31ffc59"
@@ -1166,6 +1172,13 @@ aws-sign2@~0.7.0:
 aws4@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
+
+axios@^0.18.0:
+  version "0.18.0"
+  resolved "http://registry.npmjs.org/axios/-/axios-0.18.0.tgz#32d53e4851efdc0a11993b6cd000789d70c05102"
+  dependencies:
+    follow-redirects "^1.3.0"
+    is-buffer "^1.1.5"
 
 axobject-query@^0.1.0:
   version "0.1.0"
@@ -2764,17 +2777,17 @@ debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.
   dependencies:
     ms "2.0.0"
 
+debug@=3.1.0, debug@~3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
+  dependencies:
+    ms "2.0.0"
+
 debug@^3.0.1, debug@^3.1.0:
   version "3.2.5"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.5.tgz#c2418fbfd7a29f4d4f70ff4cea604d4b64c46407"
   dependencies:
     ms "^2.1.1"
-
-debug@~3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
-  dependencies:
-    ms "2.0.0"
 
 decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
@@ -3520,7 +3533,7 @@ extend-shallow@^3.0.0, extend-shallow@^3.0.2:
     assign-symbols "^1.0.0"
     is-extendable "^1.0.1"
 
-extend@~3.0.2:
+extend@^3.0.1, extend@~3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
 
@@ -3737,6 +3750,12 @@ focus-trap@^3.0.0:
     tabbable "^3.1.0"
     xtend "^4.0.1"
 
+follow-redirects@^1.3.0:
+  version "1.5.9"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.9.tgz#c9ed9d748b814a39535716e531b9196a845d89c6"
+  dependencies:
+    debug "=3.1.0"
+
 for-in@^1.0.1, for-in@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
@@ -3844,6 +3863,14 @@ gauge@~2.7.3:
     string-width "^1.0.1"
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
+
+gcp-metadata@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/gcp-metadata/-/gcp-metadata-0.7.0.tgz#6c35dbb52bda32a427bb9c98f54237ddd1b5406f"
+  dependencies:
+    axios "^0.18.0"
+    extend "^3.0.1"
+    retry-axios "0.3.2"
 
 get-caller-file@^1.0.1:
   version "1.0.3"
@@ -3963,6 +3990,26 @@ globby@^7.1.1:
     pify "^3.0.0"
     slash "^1.0.0"
 
+google-auth-library@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/google-auth-library/-/google-auth-library-2.0.1.tgz#32c6215e771538ef826cb65391a984a2c62ba57c"
+  dependencies:
+    axios "^0.18.0"
+    gcp-metadata "^0.7.0"
+    gtoken "^2.3.0"
+    https-proxy-agent "^2.2.1"
+    jws "^3.1.5"
+    lodash.isstring "^4.0.1"
+    lru-cache "^4.1.3"
+    semver "^5.5.0"
+
+google-p12-pem@^1.0.0:
+  version "1.0.2"
+  resolved "http://registry.npmjs.org/google-p12-pem/-/google-p12-pem-1.0.2.tgz#c8a3843504012283a0dbffc7430b7c753ecd4b07"
+  dependencies:
+    node-forge "^0.7.4"
+    pify "^3.0.0"
+
 got@^6.7.1:
   version "6.7.1"
   resolved "http://registry.npmjs.org/got/-/got-6.7.1.tgz#240cd05785a9a18e561dc1b44b41c763ef1e8db0"
@@ -3982,6 +4029,16 @@ got@^6.7.1:
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
+
+gtoken@^2.3.0:
+  version "2.3.0"
+  resolved "http://registry.npmjs.org/gtoken/-/gtoken-2.3.0.tgz#4e0ffc16432d7041a1b3dbc1d97aac17a5dc964a"
+  dependencies:
+    axios "^0.18.0"
+    google-p12-pem "^1.0.0"
+    jws "^3.1.4"
+    mime "^2.2.0"
+    pify "^3.0.0"
 
 gzip-size@3.0.0:
   version "3.0.0"
@@ -4210,6 +4267,13 @@ http-signature@~1.2.0:
 https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
+
+https-proxy-agent@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.1.tgz#51552970fa04d723e04c56d04178c3f92592bbc0"
+  dependencies:
+    agent-base "^4.1.0"
+    debug "^3.1.0"
 
 hyperform@^0.9.9:
   version "0.9.21"
@@ -4805,7 +4869,7 @@ jwa@^1.1.5:
     ecdsa-sig-formatter "1.0.10"
     safe-buffer "^5.0.1"
 
-jws@^3.1.5:
+jws@^3.1.4, jws@^3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/jws/-/jws-3.1.5.tgz#80d12d05b293d1e841e7cb8b4e69e561adcf834f"
   dependencies:
@@ -5021,7 +5085,7 @@ lowercase-keys@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-1.0.1.tgz#6f9e30b47084d971a7c820ff15a6c5167b74c26f"
 
-lru-cache@^4.0.1, lru-cache@^4.1.1:
+lru-cache@^4.0.1, lru-cache@^4.1.1, lru-cache@^4.1.3:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.1.3.tgz#a1175cf3496dfc8436c156c334b4955992bce69c"
   dependencies:
@@ -5231,6 +5295,10 @@ mime@^1.4.1, mime@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
 
+mime@^2.2.0:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/mime/-/mime-2.3.1.tgz#b1621c54d63b97c47d3cfe7f7215f7d64517c369"
+
 mimic-fn@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-1.2.0.tgz#820c86a39334640e99516928bd03fca88057d022"
@@ -5400,6 +5468,10 @@ no-case@^2.2.0:
   resolved "https://registry.yarnpkg.com/no-case/-/no-case-2.3.2.tgz#60b813396be39b3f1288a4c1ed5d1e7d28b464ac"
   dependencies:
     lower-case "^1.1.1"
+
+node-forge@^0.7.4:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.7.6.tgz#fdf3b418aee1f94f0ef642cd63486c77ca9724ac"
 
 node-libs-browser@^2.0.0:
   version "2.1.0"
@@ -7152,6 +7224,10 @@ ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
 
+retry-axios@0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/retry-axios/-/retry-axios-0.3.2.tgz#5757c80f585b4cc4c4986aa2ffd47a60c6d35e13"
+
 rgb-hex@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/rgb-hex/-/rgb-hex-2.1.0.tgz#c773c5fe2268a25578d92539a82a7a5ce53beda6"
@@ -7315,6 +7391,10 @@ semver-diff@^2.0.0:
 "semver@2 || 3 || 4 || 5", semver@^5.0.3, semver@^5.1.0, semver@^5.3.0:
   version "5.5.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.1.tgz#7dfdd8814bdb7cabc7be0fb1d734cfb66c940477"
+
+semver@^5.5.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"
 
 send@0.16.2:
   version "0.16.2"

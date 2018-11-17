@@ -8,6 +8,8 @@ module.exports = {
   generateRequestParamsError,
   generateInvalidMethodError,
   generateInvalidRequestError,
+  generateTokenValidationError,
+  generateInvalidTokenEmailError,
 };
 
 
@@ -59,5 +61,31 @@ function generateInvalidRequestError(data) {
     data,
     code: ErrorCodes.invalidRequestError,
     message: 'Invalid request object',
+  };
+}
+
+
+
+
+
+// The google auth API threw an error during token validation
+function generateTokenValidationError(data) {
+  return {
+    data,
+    code: ErrorCodes.tokenValidationError,
+    message: 'Token validation error',
+  };
+}
+
+
+
+
+
+// The ID token is valid but the email isnt whitelisted
+function generateInvalidTokenEmailError(email) {
+  return {
+    data: { providedEmail: email },
+    code: ErrorCodes.invalidTokenEmailError,
+    message: 'Invalid token email address',
   };
 }
