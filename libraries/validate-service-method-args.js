@@ -13,12 +13,12 @@ module.exports = validateServiceMethodArgs;
 
 
 
-async function validateServiceMethodArgs(method, args) {
+function validateServiceMethodArgs(method, args) {
   if (!method.parameterSchema) return;
   const schema = Object.assign({ type: 'object', additionalProperties: false }, method.parameterSchema);
   const validationResult = validateAgainstSchema({ schema, data: args });
   if (!validationResult.valid) {
-    throw ErrorGens.generateMessageContentError(validationResult.errors);
+    throw ErrorGens.generateRequestParamsError(validationResult.errors);
   }
 }
 

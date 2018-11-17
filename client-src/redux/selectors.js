@@ -11,8 +11,19 @@ export const isThereALeadsLoadingError = (state) => state.leadsLoadingStatus.upl
 
 
 
-export const isUserSignedIn = (state) => state.signInStatus.signedIn;
 
+
+export const isACallInProgress = (state) => state.callParameters.callingLeads;
+export const getMaxConcurrentCalls = (state) => state.callParameters.maxConcurrentCalls;
+export const getLeadsIndexCursor = (state) => state.callParameters.leadsIndexCursor;
+export const getLeadCallsInProgressInfo = (state) => state.callParameters.leadCallsInProgressInfo;
+
+
+
+
+
+export const isUserSignedIn = (state) => state.signInStatus.signedIn;
+export const getUserIDToken = (state) => state.signInStatus.idToken;
 
 
 

@@ -62,6 +62,60 @@ export function signInCompletionSuccessful() {
 
 
 
+export function callLeads() {
+  return {
+    type: actionTypes.CALL_LEADS,
+    payload: null,
+  };
+}
+
+
+
+
+
+export function updateMaxConcurrentCalls(value) {
+  return {
+    type: actionTypes.UPDATE_MAX_CONCURRENT_CALLS,
+    payload: { value },
+  };
+}
+
+
+
+
+
+export function updateLeadsIndexCursor(value) {
+  return {
+    type: actionTypes.UPDATE_LEADS_INDEX_CURSOR,
+    payload: { value },
+  };
+}
+
+
+
+
+
+export function addLeadCallInProgressInfo({ cursor, correlationID }) {
+  return {
+    type: actionTypes.ADD_LEAD_CALL_IN_PROGRESS_INFO,
+    payload: { cursor, correlationID },
+  };
+}
+
+
+
+
+export function removeLeadCallInProgressInfo({ cursor, correlationID }) {
+  return {
+    type: actionTypes.REMOVE_LEAD_CALL_IN_PROGRESS_INFO,
+    payload: { cursor, correlationID },
+  };
+}
+
+
+
+
+
 // update socket connection state on successful connect or on an error
 export function socketConnected() {
   return {

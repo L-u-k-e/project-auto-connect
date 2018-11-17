@@ -10,8 +10,9 @@ module.exports = {
   parameterSchema: {
     properties: {
       id_token: { type: 'string' },
+      phone_number: { type: 'string' },
     },
-    required: ['id_token']
+    required: ['id_token', 'phone_number']
   }
 };
 
@@ -43,8 +44,10 @@ async function fulfillRequest({ socket, request }) {
   });
   */
 
-  setTimeout(onAnswered, 5000);
-  setTimeout(onCompleted, 15000);
+  const onAnsweredTimeout = getRandomInt(1000, 7000);
+  const onCompletedTimeout = onAnsweredTimeout + 300;
+  setTimeout(onAnswered, onAnsweredTimeout);
+  setTimeout(onCompleted, onCompletedTimeout);
 
   function onAnswered() {
     reply({ socket, request, body: { status: 'answered' }, complete: false });
@@ -62,4 +65,9 @@ async function formatPhoneNumber({ phoneNumber }) {
     result = `+1${result}`;
   }
   return result;
+}
+
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * ((max - min) + 1)) + min;
 }

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
-import { toggleNavDrawer } from 'redux/action-creators';
-import { isNavDrawerModal, areLeadsLoaded } from 'redux/selectors';
+import { toggleNavDrawer, callLeads } from 'redux/action-creators';
+import { isNavDrawerModal, areLeadsLoaded, isACallInProgress } from 'redux/selectors';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import { Button } from 'rmwc/Button';
@@ -34,6 +34,12 @@ AppHeader.propTypes = {
   // provideLeadsLoaded
   leadsLoaded: PropTypes.bool.isRequired,
 
+  // provideCallingLeads
+  callingLeads: PropTypes.bool.isRequired,
+
+  // provideOnCallLeads
+  onCallLeads: PropTypes.func.isRequired,
+
   // provideTheme
   theme: PropTypes.object.isRequired
 };
@@ -43,7 +49,10 @@ function AppHeader(props) {
     theme,
     className,
     displayNavDrawerToggler,
-    onNavDrawerToggle
+    onNavDrawerToggle,
+    leadsLoaded,
+    callingLeads,
+    onCallLeads
   } = props;
 
   return (
@@ -55,7 +64,14 @@ function AppHeader(props) {
         </TopAppBarSection>
         <TopAppBarSection alignEnd>
           { leadsLoaded && (
-            <Button raised theme="secondary-bg on-secondary"> Call </Button>
+            <Button
+              raised
+              disabled={callingLeads}
+              theme="secondary-bg on-secondary"
+              onClick={onCallLeads}
+            >
+              Call
+            </Button>
           )}
         </TopAppBarSection>
       </TopAppBarRow>
@@ -82,8 +98,19 @@ const provideNavDrawerTogglerControls = connect(
 
 
 
-const provideLeadsLoaded = connect(state => ({ areLeadsLoaded(state) }));
+const provideLeadsLoaded = connect(state => ({ leadsLoaded: areLeadsLoaded(state) }));
 
+
+
+
+
+const provideCallingLeads = connect(state => ({ callingLeads: isACallInProgress(state) }));
+
+
+
+
+
+const provideOnCallLeads = connect(null, { onCallLeads: callLeads });
 
 
 
@@ -93,7 +120,9 @@ const AppHeaderContainer = (
   Ramda.compose(
     provideTheme,
     provideNavDrawerTogglerControls,
-    provideLeadsLoaded
+    provideLeadsLoaded,
+    provideCallingLeads,
+    provideOnCallLeads,
   )(AppHeader)
 );
 AppHeaderContainer.displayName = 'AppHeaderContainer';

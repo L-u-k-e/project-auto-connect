@@ -7,13 +7,15 @@ const { validate: validateAgainstSchema } = require('../libraries/json-schema-va
 const validateServiceMethodArgs = require('../libraries/validate-service-method-args');
 const { reply } = require('../libraries/socket-emitters');
 const validateIDToken = require('./validate_id_token');
+const call = require('./call');
 
 
 
 
 
 const methodImpls = {
-  validate_id_token: validateIDToken
+  call,
+  validate_id_token: validateIDToken,
 };
 module.exports = {
   initialize

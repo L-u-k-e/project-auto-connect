@@ -5,6 +5,7 @@ import persistState from 'redux-localstorage';
 import resizeListenterMiddleware from 'redux/middleware/resize-listener-middleware';
 import rootReducer from 'redux/reducers';
 import apiServerMiddleware from '../middleware/api-server-middleware';
+import callLeadsMiddleware from '../middleware/call-leads-middleware';
 import leadsLoaderMiddleware from '../middleware/leads-loader-middleware';
 import signInMiddleware from '../middleware/sign-in-middleware';
 
@@ -26,6 +27,7 @@ const enhancer = composeEnhancers(
   persistState('signInStatus', { key: 'sign-in-status' }),
   applyMiddleware(
     signInMiddleware,
+    callLeadsMiddleware,
     leadsLoaderMiddleware,
     apiServerMiddleware,
     resizeListenterMiddleware,

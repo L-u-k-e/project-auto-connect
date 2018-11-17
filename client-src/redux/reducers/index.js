@@ -3,6 +3,7 @@ import { reducer as formReducer } from 'redux-form';
 import { createResponsiveStateReducer } from 'redux-responsive';
 import breakpoints from 'libraries/breakpoints';
 import signInStatusReducer from './sign-in-status';
+import callParametersReducer from './call-parameters';
 import leadsReducer from './leads';
 import leadsListFieldNamesReducer from './leads-list-field-names';
 import leadsLoadingStatusReducer from './leads-loading-status';
@@ -18,6 +19,7 @@ export default combineReducers({
     })
   }),
   form: formReducer,
+  callParameters: callParametersReducer,
   leads: leadsReducer,
   leadsListFieldNames: leadsListFieldNamesReducer,
   leadsLoadingStatus: leadsLoadingStatusReducer,

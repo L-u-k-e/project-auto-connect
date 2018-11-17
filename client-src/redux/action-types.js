@@ -25,3 +25,13 @@ export const TOGGLE_NAV_DRAWER = 'auto-connect/TOGGLE_NAV_DRAWER';
 
 export const COMPLETE_SIGN_IN = 'auto-connect/COMPLETE_SIGN_IN';
 export const SIGN_IN_COMPLETION_SUCCESSFUL = 'auto-connect/SIGN_IN_COMPLETION_SUCCESSFUL';
+
+
+
+
+
+export const CALL_LEADS = 'auto-connect/CALL_LEADS';
+export const UPDATE_MAX_CONCURRENT_CALLS = 'auto-connect/UPDATE_MAX_CONCURRENT_CALLS';
+export const UPDATE_LEADS_INDEX_CURSOR = 'auto-connect/UPDATE_LEADS_INDEX_CURSOR';
+export const ADD_LEAD_CALL_IN_PROGRESS_INFO = 'auto-connect/ADD_LEAD_CALL_IN_PROGRESS_INFO';
+export const REMOVE_LEAD_CALL_IN_PROGRESS_INFO = 'auto-connect/REMOVE_LEAD_CALL_IN_PROGRESS_INFO';

@@ -15,7 +15,7 @@ import {
   DataTableCell
 } from 'rmwc/DataTable';
 // import {  } from 'redux/action-creators';
-import { getLeads, getLeadsListFieldNames } from 'redux/selectors';
+import { getLeads, getLeadsListFieldNames, getLeadCallsInProgressInfo } from 'redux/selectors';
 import { Card, } from 'rmwc/Card';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
@@ -35,10 +35,12 @@ LeadsList.propTypes = {
   // provideLeadsInfo
   leads: PropTypes.array,
   leadsListFieldNames: PropTypes.array,
+  leadCallsInProgressInfo: PropTypes.array,
 };
 LeadsList.defaultProps = {
   leads: [],
   leadsListFieldNames: [],
+  leadCallsInProgressInfo: [],
 };
 function LeadsList(props) {
   const {
@@ -46,8 +48,9 @@ function LeadsList(props) {
     className,
     leads,
     leadsListFieldNames,
+    leadCallsInProgressInfo,
   } = props;
-  console.log(leads, leadsListFieldNames);
+  const indicesBeingCalled = Ramda.map(Ramda.prop('cursor'), leadCallsInProgressInfo);
   return (
     <Card className={classNames(className, theme.leadsList)}>
       <DataTable stickyRows={1} className={theme.leadsTable}>
@@ -63,7 +66,7 @@ function LeadsList(props) {
           </DataTableHead>
           <DataTableBody>
             {leads.map((lead, i) => (
-              <DataTableRow key={i}>
+              <DataTableRow key={i} activated={indicesBeingCalled.includes(i)}>
                 {leadsListFieldNames.map(fieldName => (
                   <DataTableCell key={fieldName} alignStart>
                     {lead[fieldName]}
@@ -91,7 +94,8 @@ const provideTheme = themr('LeadsList', baseTheme);
 const provideLeadsInfo = connect(
   state => ({
     leads: getLeads(state),
-    leadsListFieldNames: getLeadsListFieldNames(state)
+    leadsListFieldNames: getLeadsListFieldNames(state),
+    leadCallsInProgressInfo: getLeadCallsInProgressInfo(state),
   })
 );
 
