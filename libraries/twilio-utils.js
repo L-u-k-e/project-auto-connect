@@ -9,7 +9,8 @@ const twilioEnabledNumber = process.env.TWILIO_ENABLED_NUMBER;
 const twilioWebhookAPIURLBase = process.env.TWILIO_WEBHOOK_API_URL_BASE;
 module.exports = {
   initialize,
-  call
+  call,
+  assertCallQueue,
 };
 
 
@@ -41,6 +42,14 @@ async function call({ phoneNumber, statusCallbacks = {} }) { // eslint-disable-l
 
 
 
+
+async function assertCallQueue({ queueName }) {
+  try {
+    await twilioClient.queues.create({ friendlyName: queueName });
+  } catch (error) {
+    console.log(error);
+  }
+}
 /*
 function handleStatusEvent(statusEvent) {
   const {

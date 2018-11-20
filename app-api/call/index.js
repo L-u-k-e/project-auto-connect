@@ -42,6 +42,7 @@ async function fulfillRequest({ socket, request }) {
     }
   });
 
+
   /*
   const onAnsweredTimeout = getRandomInt(1000, 7000);
   const onCompletedTimeout = onAnsweredTimeout + 300;
@@ -49,11 +50,11 @@ async function fulfillRequest({ socket, request }) {
   setTimeout(onCompleted, onCompletedTimeout);
   */
 
-  function onAnswered() {
+  function onAnswered() { // eslint-disable-line
     reply({ socket, request, body: { status: 'answered' }, complete: false });
   }
 
-  function onCompleted() {
+  function onCompleted() { // eslint-disable-line
     reply({ socket, request, body: { status: 'completed' }, complete: true });
   }
 }
@@ -68,6 +69,6 @@ function formatPhoneNumber({ phoneNumber }) {
 }
 
 
-function getRandomInt(min, max) {
+function getRandomInt(min, max) { // eslint-disable-line
   return Math.floor(Math.random() * ((max - min) + 1)) + min;
 }

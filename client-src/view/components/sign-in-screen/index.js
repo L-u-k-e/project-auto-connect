@@ -5,11 +5,13 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
 import GoogleButton from 'react-google-button';
+import { Typography } from 'rmwc/Typography';
 import { completeSignIn } from 'redux/action-creators';
 // import {  } from 'redux/selectors';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 // import { Button } from 'rmwc/Button';
+import AppNotification from '../app-notification';
 import baseTheme from './theme.css';
 
 
@@ -35,11 +37,14 @@ function SignInScreen(props) {
   } = props;
   return (
     <div className={classNames(className, theme.signInScreen)}>
-      Welcome To Auto Connect. Sign in with Google to get started.
+      <Typography use="headline4" className={theme.text}>
+        Welcome To Auto Connect
+      </Typography>
       <GoogleButton
         type="light"
         onClick={onStartSigningIn}
       />
+      <AppNotification />
     </div>
   );
 }

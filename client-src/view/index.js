@@ -10,6 +10,7 @@ import { toggleNavDrawer } from 'redux/action-creators';
 import wrapWithComponent from 'view/libraries/wrap-with-component';
 import AppHeader from './components/app-header';
 import AppBody from './components/app-body';
+import AppNotification from './components/app-notification';
 import SignInScreen from './components/sign-in-screen';
 import baseTheme from './theme.css';
 
@@ -56,8 +57,8 @@ function View(props) {
       </Drawer>
       <AppBody
         className={classNames('mdc-top-app-bar--fixed-adjust', theme.body)}
-
       />
+      <AppNotification />
     </div>
   );
 }

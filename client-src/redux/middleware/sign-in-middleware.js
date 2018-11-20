@@ -1,6 +1,6 @@
 import * as actionTypes from 'redux/action-types';
 import * as Ramda from 'ramda';
-import { sendAPIRequest, signInCompletionSuccessful } from 'redux/action-creators';
+import { sendAPIRequest, signInCompletionSuccessful, showAppNotification } from 'redux/action-creators';
 import uuidV4 from 'uuid/v4';
 
 
@@ -51,12 +51,16 @@ function signIn(store, action, next) {
 function handleReceivedAPIReplies(store, action, next) {
   next(action);
   const replies = action.payload;
-  const successfulSignInCompletionReply = Ramda.find(
+  const signInCompletionReply = Ramda.find(
     reply => signInCompletionRequestInProgressID && reply.id === signInCompletionRequestInProgressID,
     replies,
   );
-  if (successfulSignInCompletionReply) {
-    next(signInCompletionSuccessful());
+  if (signInCompletionReply) {
     signInCompletionRequestInProgressID = null;
+    if (signInCompletionReply.error) {
+      next(showAppNotification({ text: 'Please try again' }));
+    } else {
+      next(signInCompletionSuccessful());
+    }
   }
 }

@@ -164,3 +164,22 @@ export function sendAPIRequest(payload) {
     type: actionTypes.SEND_API_REQUEST,
   };
 }
+
+
+
+
+
+// Show/ hide the global app snackbar
+export function showAppNotification(payload) {
+  return {
+    type: actionTypes.SHOW_APP_NOTIFICATION,
+    payload
+  };
+}
+
+export function resetAppNotificationState() {
+  return {
+    type: actionTypes.RESET_APP_NOTIFICATION_STATE,
+    payload: null
+  };
+}

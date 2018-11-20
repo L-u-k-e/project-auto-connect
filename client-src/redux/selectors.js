@@ -29,3 +29,9 @@ export const getUserIDToken = (state) => state.signInStatus.idToken;
 
 export const isNavDrawerModal = (state) => state.browser.lessThan.lgTablet;
 export const isNavDrawerOpen = (state) => !isNavDrawerModal(state) || state.navDrawer.openInModalMode;
+
+
+
+
+
+export const getAppNotificationState = state => state.appNotification;

@@ -7,6 +7,7 @@ const Webpack = require('webpack');
 const History = require('connect-history-api-fallback');
 const WebpackDevMiddleware = require('webpack-dev-middleware');
 const WebpackHotMiddleware = require('webpack-hot-middleware');
+const bodyParser = require('body-parser');
 const { addSchema } = require('../libraries/json-schema-validation-utils');
 const schemaBundles = require('../libraries/schema-bundles');
 const twilioUtils = require('../libraries/twilio-utils');
@@ -59,6 +60,8 @@ async function main() {
       res.sendFile('index.html', { root: Path.join(__dirname, '..', 'client-build') });
     });
   }
+
+  expressApp.use(bodyParser.urlencoded({ extended: false }));
 
   await twilioUtils.initialize();
   expressApp.use('/twilio-webhook', twilioAPIImpl.expressRouter);
