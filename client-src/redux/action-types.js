@@ -23,6 +23,8 @@ export const TOGGLE_NAV_DRAWER = 'auto-connect/TOGGLE_NAV_DRAWER';
 
 
 
+export const START_SIGN_IN = 'auto-connect/START_SIGN_IN';
+export const STOP_SIGN_IN = 'auto-connect/STOP_SIGN_IN';
 export const COMPLETE_SIGN_IN = 'auto-connect/COMPLETE_SIGN_IN';
 export const SIGN_IN_COMPLETION_SUCCESSFUL = 'auto-connect/SIGN_IN_COMPLETION_SUCCESSFUL';
 

@@ -7,12 +7,15 @@ import * as actionTypes from 'redux/action-types';
 
 const initialState = {
   signedIn: false,
+  signInInProgress: false,
   idToken: null,
   basicProfile: null
 };
 
 const subReducers = {
+  [actionTypes.START_SIGN_IN]: startSignIn,
   [actionTypes.COMPLETE_SIGN_IN]: handleCompleteSignIn,
+  [actionTypes.STOP_SIGN_IN]: stopSignIn,
   [actionTypes.SIGN_IN_COMPLETION_SUCCESSFUL]: handleSignInCompletionSuccessful
 };
 
@@ -26,6 +29,8 @@ function handleCompleteSignIn(state, action) {
   const googleUser = action.payload;
   return {
     ...state,
+    signedIn: false,
+    signInInProgress: true,
     idToken: googleUser.getAuthResponse().id_token,
     basicProfile: googleUser.getBasicProfile()
   };
@@ -38,6 +43,29 @@ function handleCompleteSignIn(state, action) {
 function handleSignInCompletionSuccessful(state) {
   return {
     ...state,
+    signInInProgress: false,
     signedIn: true,
+  };
+}
+
+
+
+
+
+function startSignIn(state) {
+  return {
+    ...state,
+    signedIn: false,
+    signInInProgress: true
+  };
+}
+
+
+
+
+function stopSignIn(state) {
+  return {
+    ...state,
+    signInInProgress: false
   };
 }

@@ -1,6 +1,7 @@
 const Twilio = require('twilio');
-const twilioWebhookRoutes = require('./twilio-webhook-routes');
 const fs = require('fs');
+const twilioWebhookRoutes = require('./twilio-webhook-routes');
+const { registerActiveTwilioCall } = require('./app-client-registry-utils');
 
 
 
@@ -28,16 +29,16 @@ async function initialize() {
 
 
 
-async function call({ phoneNumber, statusCallbacks = {} }) { // eslint-disable-line
-  console.log(twilioWebhookRoutes.enqueue, phoneNumber, twilioEnabledNumber);
-  await twilioClient.calls.create({
+async function call({ clientID, phoneNumber, statusCallbacks = {} }) { // eslint-disable-line
+  const { sid } = await twilioClient.calls.create({
     url: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.enqueue}`,
     to: phoneNumber,
     from: twilioEnabledNumber,
-    // statusCallback: 'https://www.myapp.com/events',
-    // statusEvents: Object.keys(statusCallbacks),
-    // statusCallbackMethod: 'POST',
+    statusCallback: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.callStatusEvent}`,
+    statusEvents: Object.keys(statusCallbacks),
+    statusCallbackMethod: 'POST',
   });
+  registerActiveTwilioCall({ twilioSid: sid, clientID, statusCallbacks });
 }
 
 

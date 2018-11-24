@@ -7,6 +7,7 @@ import * as actionTypes from 'redux/action-types';
 
 const initialState = {
   active: false,
+  multiline: false,
   text: '',
   timeout: 3000
 };

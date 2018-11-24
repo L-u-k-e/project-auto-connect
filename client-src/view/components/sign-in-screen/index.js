@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
 import GoogleButton from 'react-google-button';
 import { Typography } from 'rmwc/Typography';
-import { completeSignIn } from 'redux/action-creators';
-// import {  } from 'redux/selectors';
+import { completeSignIn, startSignIn, stopSignIn } from 'redux/action-creators';
+import { isSignInInProgress } from 'redux/selectors';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 // import { Button } from 'rmwc/Button';
@@ -25,6 +25,9 @@ SignInScreen.propTypes = {
   // provideOnStartSigningIn
   onStartSigningIn: PropTypes.func.isRequired,
 
+  // provideSignInInProgress
+  signInInProgress: PropTypes.bool.isRequired,
+
   // provideTheme
   theme: PropTypes.object.isRequired
 };
@@ -33,7 +36,8 @@ function SignInScreen(props) {
   const {
     theme,
     className,
-    onStartSigningIn
+    onStartSigningIn,
+    signInInProgress,
   } = props;
   return (
     <div className={classNames(className, theme.signInScreen)}>
@@ -43,6 +47,7 @@ function SignInScreen(props) {
       <GoogleButton
         type="light"
         onClick={onStartSigningIn}
+        disabled={signInInProgress}
       />
       <AppNotification />
     </div>
@@ -69,6 +74,7 @@ function OnStartSigningInProvider(props) {
   return children({ onStartSigningIn });
 
   async function onStartSigningIn() {
+    props.startSignIn();
     window.gapi.load('auth2', () => {
       window.gapi.auth2.init({
         client_id: '163932332389-4l61sekhdns727oks3fsr9q91ru4qp9v',
@@ -81,12 +87,22 @@ function OnStartSigningInProvider(props) {
         // after we have the ID token, we need to verify with the app server that the user (encoded in the token)
         // is one of our allowed users
         props.completeSignIn(googleUser);
-      });
+      })
+      .catch(props.stopSignIn);
     });
   }
 }
-const OnStartSigningInProvider_Connected = connect(null, { completeSignIn })(OnStartSigningInProvider);
+const OnStartSigningInProvider_Connected = connect(
+  null,
+  { completeSignIn, startSignIn, stopSignIn }
+)(OnStartSigningInProvider);
 const provideOnStartSigningIn = wrapWithFunctionChildComponent(OnStartSigningInProvider_Connected);
+
+
+
+
+const provideSignInInProgress = connect(state => ({ signInInProgress: isSignInInProgress(state) }));
+
 
 
 
@@ -94,7 +110,8 @@ const provideOnStartSigningIn = wrapWithFunctionChildComponent(OnStartSigningInP
 const SignInScreenContainer = (
   Ramda.compose(
     provideTheme,
-    provideOnStartSigningIn
+    provideOnStartSigningIn,
+    provideSignInInProgress,
   )(SignInScreen)
 );
 SignInScreenContainer.displayName = 'SignInScreenContainer';

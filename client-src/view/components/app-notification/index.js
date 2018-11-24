@@ -15,17 +15,19 @@ AppNotification.propTypes = {
   active: PropTypes.bool.isRequired,
   timeout: PropTypes.number.isRequired,
   text: PropTypes.string.isRequired,
+  multiline: PropTypes.bool.isRequired,
   onReset: PropTypes.func.isRequired,
 };
 AppNotification.defaultProps = {};
 function AppNotification(props) {
-  const { text, active, timeout, onReset } = props;
+  const { text, active, timeout, multiline, onReset } = props;
   return (
     <Snackbar
       show={active}
       onHide={onReset}
       message={text}
       timeout={timeout}
+      multiline={multiline}
       actionText="Dismiss"
       actionHandler={onReset}
       alignStart

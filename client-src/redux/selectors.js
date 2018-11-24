@@ -23,6 +23,7 @@ export const getLeadCallsInProgressInfo = (state) => state.callParameters.leadCa
 
 
 export const isUserSignedIn = (state) => state.signInStatus.signedIn;
+export const isSignInInProgress = (state) => state.signInStatus.signInInProgress;
 export const getUserIDToken = (state) => state.signInStatus.idToken;
 
 

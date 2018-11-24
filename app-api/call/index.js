@@ -1,6 +1,6 @@
 const { call } = require('../../libraries/twilio-utils');
 const { reply } = require('../../libraries/socket-emitters');
-
+const validateIDToken = require('../../libraries/validate-google-sign-in-id-token');
 
 
 module.exports = {
@@ -26,12 +26,12 @@ async function onSocketDisconnect() {} // eslint-disable-line
 
 
 async function fulfillRequest({ socket, request }) {
-  const { params: { id_token: idToken, phone_number: phoneNumber } } = request;
+  const { params: { id_token: idToken, client_id: clientID, phone_number: phoneNumber } } = request;
+  await validateIDToken(idToken);
   reply({ socket, request, body: { status: 'calling' }, complete: false });
-  console.log(idToken);
   const formattedPhoneNumber = formatPhoneNumber({ phoneNumber });
-  console.log(formattedPhoneNumber);
   await call({
+    clientID,
     phoneNumber: formattedPhoneNumber,
     statusCallbacks: {
       queued: null,
@@ -66,9 +66,4 @@ function formatPhoneNumber({ phoneNumber }) {
     result = `+1${result}`;
   }
   return result;
-}
-
-
-function getRandomInt(min, max) { // eslint-disable-line
-  return Math.floor(Math.random() * ((max - min) + 1)) + min;
 }

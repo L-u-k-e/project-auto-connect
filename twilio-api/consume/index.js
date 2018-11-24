@@ -1,5 +1,7 @@
 const { twiml: { VoiceResponse } } = require('twilio');
 const twilioUtils = require('../../libraries/twilio-utils');
+const { isAccessCodeInUse } = require('../../libraries/app-client-registry-utils');
+
 
 
 
@@ -40,10 +42,14 @@ async function promptAgentForAccessCode(req, res) {
 
 async function forwardAgentToQueue(req, res) {
   const queueAccessCode = req.body.Digits;
-  const queueName = `queue-${queueAccessCode}`;
   const voiceResponse = new VoiceResponse();
-  await twilioUtils.assertCallQueue({ queueName });
-  voiceResponse.dial({ timeout: 300 }).queue({}, queueName);
+  if (isAccessCodeInUse(queueAccessCode)) {
+    const queueName = `queue-${queueAccessCode}`;
+    await twilioUtils.assertCallQueue({ queueName });
+    voiceResponse.dial({ timeout: 300 }).queue({}, queueName);
+  } else {
+    voiceResponse.say('The provided access code is not valid. Goodbye!');
+  }
   res.writeHead(200, { 'Content-Type': 'text/xml' });
   res.end(voiceResponse.toString());
 }

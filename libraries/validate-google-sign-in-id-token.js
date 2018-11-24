@@ -1,38 +1,22 @@
 const Ramda = require('ramda');
 const { OAuth2Client } = require('google-auth-library');
 const fs = require('fs');
-const ErrorGens = require('../../libraries/error-generators');
-const whitelistedEmailAddresses = require('../../libraries/email-whitelist');
-const { reply } = require('../../libraries/socket-emitters');
+const ErrorGens = require('./error-generators');
+const whitelistedEmailAddresses = require('./email-whitelist');
+
 
 
 
 const googleSignInAppCredentials = JSON.parse(fs.readFileSync('/run/secrets/google-sign-in-app-credentials'));
 const clientID = `${googleSignInAppCredentials.web.client_id}.apps.googleusercontent.com`;
 const googleOAuth2Client = new OAuth2Client(clientID);
-module.exports = {
-  onSocketConnect,
-  onSocketDisconnect,
-  fulfillRequest: validateIDToken,
-  parameterSchema: {
-    properties: {
-      id_token: { type: 'string' },
-    },
-    required: ['id_token']
-  }
-};
-
-
-
-async function onSocketConnect() {} // eslint-disable-line
-async function onSocketDisconnect() {} // eslint-disable-line
+module.exports = validateGoogleSignInIDToken;
 
 
 
 
 
-async function validateIDToken({ socket, request }) {
-  const { params: { id_token: idToken } } = request;
+async function validateGoogleSignInIDToken(idToken) {
   let loginTicket;
   try {
     loginTicket = await googleOAuth2Client.verifyIdToken({
@@ -47,7 +31,4 @@ async function validateIDToken({ socket, request }) {
   if (!Ramda.contains(email, whitelistedEmailAddresses)) {
     throw ErrorGens.generateInvalidTokenEmailError(email);
   }
-
-  reply({ socket, request, body: { valid: true }, complete: true });
 }
-

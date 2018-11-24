@@ -40,6 +40,20 @@ export function toggleNavDrawer() {
 
 
 
+export function startSignIn() {
+  return {
+    payload: null,
+    type: actionTypes.START_SIGN_IN
+  };
+}
+
+export function stopSignIn() {
+  return {
+    payload: null,
+    type: actionTypes.STOP_SIGN_IN
+  };
+}
+
 export function completeSignIn(googleUser) {
   return {
     payload: googleUser,

@@ -1,7 +1,13 @@
 import * as actionTypes from 'redux/action-types';
 import * as Ramda from 'ramda';
-import { sendAPIRequest, signInCompletionSuccessful, showAppNotification } from 'redux/action-creators';
 import uuidV4 from 'uuid/v4';
+import {
+  sendAPIRequest,
+  signInCompletionSuccessful,
+  showAppNotification,
+  stopSignIn
+} from 'redux/action-creators';
+import appServerErrorCodes from '../../../libraries/error-codes';
 
 
 
@@ -35,7 +41,7 @@ function signIn(store, action, next) {
   signInCompletionRequestInProgressID = uuidV4();
   const googleUser = action.payload;
   const requestDefinition = {
-    method: 'validate_id_token',
+    method: 'sign_in',
     id: signInCompletionRequestInProgressID,
     params: {
       id_token: googleUser.getAuthResponse().id_token
@@ -58,7 +64,16 @@ function handleReceivedAPIReplies(store, action, next) {
   if (signInCompletionReply) {
     signInCompletionRequestInProgressID = null;
     if (signInCompletionReply.error) {
-      next(showAppNotification({ text: 'Please try again' }));
+      next(stopSignIn());
+      const { code: errorCode } = signInCompletionReply.error;
+      if (errorCode === appServerErrorCodes.invalidTokenEmailError) {
+        next(
+          showAppNotification({
+            text: 'The provided email address has not been registered. Contact Nick or Luke.',
+            multiline: true,
+          })
+        );
+      }
     } else {
       next(signInCompletionSuccessful());
     }
