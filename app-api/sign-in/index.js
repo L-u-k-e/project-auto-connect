@@ -38,8 +38,8 @@ async function signIn({ socket, request }) {
     request,
     body: {
       valid: true,
-      accessCode,
-      clientID,
+      access_code: accessCode,
+      client_id: clientID,
     },
     complete: true
   });

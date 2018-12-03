@@ -39,13 +39,11 @@ export default function signInMiddleware(store) {
 function signIn(store, action, next) {
   next(action);
   signInCompletionRequestInProgressID = uuidV4();
-  const googleUser = action.payload;
+  const { idToken } = action.payload;
   const requestDefinition = {
     method: 'sign_in',
     id: signInCompletionRequestInProgressID,
-    params: {
-      id_token: googleUser.getAuthResponse().id_token
-    }
+    params: { id_token: idToken }
   };
   next(sendAPIRequest(requestDefinition));
 }
@@ -75,7 +73,8 @@ function handleReceivedAPIReplies(store, action, next) {
         );
       }
     } else {
-      next(signInCompletionSuccessful());
+      const { client_id: clientID, access_code: accessCode } = signInCompletionReply.result.body;
+      next(signInCompletionSuccessful({ clientID, accessCode }));
     }
   }
 }

@@ -11,8 +11,9 @@ module.exports = {
     properties: {
       id_token: { type: 'string' },
       phone_number: { type: 'string' },
+      client_id: { type: 'string' }
     },
-    required: ['id_token', 'phone_number']
+    required: ['id_token', 'phone_number', 'client_id']
   }
 };
 

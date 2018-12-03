@@ -60,7 +60,7 @@ function AppHeader(props) {
       <TopAppBarRow>
         <TopAppBarSection alignStart>
           { displayNavDrawerToggler && <TopAppBarNavigationIcon icon="menu" onClick={onNavDrawerToggle} /> }
-          <TopAppBarTitle> Queue Status: disconnected </TopAppBarTitle>
+          <TopAppBarTitle> AutoConnect </TopAppBarTitle>
         </TopAppBarSection>
         <TopAppBarSection alignEnd>
           { leadsLoaded && (

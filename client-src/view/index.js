@@ -5,8 +5,15 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { themr } from 'react-css-themr';
 import { Drawer, DrawerHeader, DrawerTitle, DrawerSubtitle } from 'rmwc/Drawer';
-import { isUserSignedIn, isNavDrawerModal, isNavDrawerOpen } from 'redux/selectors';
-import { toggleNavDrawer } from 'redux/action-creators';
+import {
+  isUserSignedIn,
+  isNavDrawerModal,
+  isNavDrawerOpen,
+  getUserIDToken,
+  getUserBasicProfile,
+  getAccessCode,
+} from 'redux/selectors';
+import { toggleNavDrawer, completeSignIn } from 'redux/action-creators';
 import wrapWithComponent from 'view/libraries/wrap-with-component';
 import AppHeader from './components/app-header';
 import AppBody from './components/app-body';
@@ -74,7 +81,7 @@ const provideTheme = themr('View', baseTheme);
 
 SignInScreenRenderer.propTypes = {
   children: PropTypes.any.isRequired,
-  signedIn: PropTypes.func.isRequired,
+  signedIn: PropTypes.bool.isRequired,
 };
 SignInScreenRenderer.defaultProps = {
 };
@@ -97,11 +104,56 @@ const provideNavDrawerTogglerControls = connect(
 
 
 
+
+// If the app loads and an ID token is found in local storage, then the login screen wont render, but we still
+// need to validate the ID token with the app server so we can get an access code and a client ID
+class ConditionalSignInCompleter extends React.Component {
+  static propTypes = {
+    // connect (local wrapper)
+    accessCode: PropTypes.number,
+    idToken: PropTypes.string.isRequired,
+    basicProfile: PropTypes.object.isRequired,
+    completeSignIn: PropTypes.func.isRequired,
+
+    children: PropTypes.any.isRequired,
+  };
+
+  static defaultProps = {
+    accessCode: null,
+  };
+
+  componentWillMount = () => {
+    const { accessCode, idToken, basicProfile } = this.props;
+    if (accessCode === null) {
+      this.props.completeSignIn({ idToken, basicProfile });
+    }
+  }
+
+  render() {
+    const { children } = this.props;
+    return children;
+  }
+}
+const ConditionalSignInCompleter_Connected = connect(
+  state => ({
+    accessCode: getAccessCode(state),
+    idToken: getUserIDToken(state),
+    basicProfile: getUserBasicProfile(state)
+  }),
+  { completeSignIn }
+)(ConditionalSignInCompleter);
+const completeSignInIfNecessary = wrapWithComponent(ConditionalSignInCompleter_Connected);
+
+
+
+
+
 const ViewContainer = (
   Ramda.compose(
     provideTheme,
     renderSignInScreenIfSignedOut,
-    provideNavDrawerTogglerControls
+    provideNavDrawerTogglerControls,
+    completeSignInIfNecessary,
   )(View)
 );
 ViewContainer.displayName = 'ViewContainer';

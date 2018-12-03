@@ -12,6 +12,7 @@ import {
   getLeadsIndexCursor,
   getLeads,
   getUserIDToken,
+  getClientID,
   getLeadCallsInProgressInfo,
 } from '../selectors';
 
@@ -65,6 +66,7 @@ function callNextLead({ store, next }) {
     params: {
       id_token: getUserIDToken(state),
       phone_number: getLeadPhoneNumber(lead),
+      client_id: getClientID(state),
     }
   };
   next(sendAPIRequest(requestDefinition));

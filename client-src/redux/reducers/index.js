@@ -5,6 +5,7 @@ import breakpoints from 'libraries/breakpoints';
 import appNotificationReducer from './app-notification';
 import signInStatusReducer from './sign-in-status';
 import callParametersReducer from './call-parameters';
+import clientInfoReducer from './client-info';
 import leadsReducer from './leads';
 import leadsListFieldNamesReducer from './leads-list-field-names';
 import leadsLoadingStatusReducer from './leads-loading-status';
@@ -22,6 +23,7 @@ export default combineReducers({
   form: formReducer,
   appNotification: appNotificationReducer,
   callParameters: callParametersReducer,
+  clientInfo: clientInfoReducer,
   leads: leadsReducer,
   leadsListFieldNames: leadsListFieldNamesReducer,
   leadsLoadingStatus: leadsLoadingStatusReducer,

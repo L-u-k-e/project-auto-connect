@@ -54,9 +54,9 @@ export function stopSignIn() {
   };
 }
 
-export function completeSignIn(googleUser) {
+export function completeSignIn(payload) {
   return {
-    payload: googleUser,
+    payload,
     type: actionTypes.COMPLETE_SIGN_IN
   };
 }
@@ -65,10 +65,10 @@ export function completeSignIn(googleUser) {
 
 
 
-export function signInCompletionSuccessful() {
+export function signInCompletionSuccessful(payload) {
   return {
+    payload,
     type: actionTypes.SIGN_IN_COMPLETION_SUCCESSFUL,
-    payload: null,
   };
 }
 

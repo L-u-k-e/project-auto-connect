@@ -25,6 +25,14 @@ export const getLeadCallsInProgressInfo = (state) => state.callParameters.leadCa
 export const isUserSignedIn = (state) => state.signInStatus.signedIn;
 export const isSignInInProgress = (state) => state.signInStatus.signInInProgress;
 export const getUserIDToken = (state) => state.signInStatus.idToken;
+export const getUserBasicProfile = (state) => state.signInStatus.basicProfile;
+
+
+
+
+
+export const getAccessCode = (state) => state.clientInfo.accessCode;
+export const getClientID = (state) => state.clientInfo.clientID;
 
 
 

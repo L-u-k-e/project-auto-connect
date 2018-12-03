@@ -9,7 +9,7 @@ const initialState = {
   signedIn: false,
   signInInProgress: false,
   idToken: null,
-  basicProfile: null
+  basicProfile: null,
 };
 
 const subReducers = {
@@ -26,13 +26,13 @@ export default createReducer(initialState, subReducers);
 
 
 function handleCompleteSignIn(state, action) {
-  const googleUser = action.payload;
+  const { idToken, basicProfile } = action.payload;
   return {
     ...state,
+    idToken,
+    basicProfile,
     signedIn: false,
     signInInProgress: true,
-    idToken: googleUser.getAuthResponse().id_token,
-    basicProfile: googleUser.getBasicProfile()
   };
 }
 

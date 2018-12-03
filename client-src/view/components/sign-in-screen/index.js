@@ -86,7 +86,10 @@ function OnStartSigningInProvider(props) {
         // once we have the google user we can get the ID token
         // after we have the ID token, we need to verify with the app server that the user (encoded in the token)
         // is one of our allowed users
-        props.completeSignIn(googleUser);
+        props.completeSignIn({
+          idToken: googleUser.getAuthResponse().id_token,
+          basicProfile: googleUser.getBasicProfile()
+        });
       })
       .catch(props.stopSignIn);
     });
