@@ -5,7 +5,24 @@
 
 module.exports = {
   reply,
+  notifyClient
 };
+
+
+
+
+
+function notifyClient({ socket, id, body, throwIfDisconnected = false }) {
+  if (!socket.connected && throwIfDisconnected) throw { disconnectedSocket: true };
+  socket.emit('notification', {
+    id,
+    jsonrpc: '2.0',
+    result: {
+      body,
+      complete: true,
+    }
+  });
+}
 
 
 

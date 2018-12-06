@@ -36,6 +36,14 @@ export const getClientID = (state) => state.clientInfo.clientID;
 
 
 
+
+
+export const getQueueStatus = (state) => state.queueState.status;
+
+
+
+
+
 export const isNavDrawerModal = (state) => state.browser.lessThan.lgTablet;
 export const isNavDrawerOpen = (state) => !isNavDrawerModal(state) || state.navDrawer.openInModalMode;
 

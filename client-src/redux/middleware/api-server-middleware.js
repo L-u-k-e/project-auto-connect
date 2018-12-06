@@ -68,6 +68,7 @@ function emitApiRequest({ next, method, params, id = uuidV4(), triggeringAction 
   } else {
     globalSocket = io('/', { transports: ['websocket'] }); // no need for polling fallback
     globalSocket.on('connect', handleConnect);
+    globalSocket.on('notification', handleReply);
     globalSocket.on('reply', handleReply);
     globalSocket.on('disconnect', handleDisconnect);
     globalSocket.on('reconnect', handleReconnect);

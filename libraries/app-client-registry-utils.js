@@ -1,6 +1,8 @@
 const Ramda = require('ramda');
 const uuidV4 = require('uuid/v4');
+const queueStates = require('./queue-states');
 const { generateRandomInt } = require('./misc-utils');
+const socketEmitters = require('./socket-emitters');
 
 
 
@@ -27,16 +29,20 @@ module.exports = {
   isAccessCodeInUse,
   registerActiveTwilioCall,
   deregisterActiveTwilioCall,
+  setQueueStatus,
+  findClientByAccessCode,
 };
 
 
 
 
 
-function registerNewAppClient() {
+function registerNewAppClient({ socket }) {
   const client = {
+    socket,
     clientID: uuidV4(),
     accessCode: generateNewAccessCode(),
+    queueStatus: queueStates.DISCONNECTED,
     activeCallStatusEvents: {}
   };
   registry[client.id] = client;
@@ -55,7 +61,7 @@ function generateNewAccessCode() {
       accessCode = randomInt;
     }
   }
-  return accessCode;
+  return accessCode.toString();
 }
 
 
@@ -67,7 +73,6 @@ function isAccessCodeInUse(accessCode) {
     Ramda.values,
     Ramda.map(Ramda.prop('accessCode'))
   )(registry);
-
   return Ramda.contains(accessCode, takenAccessCodes);
 }
 
@@ -91,6 +96,17 @@ function deregisterActiveTwilioCall({ twilioSid }) {
 
 
 
+function setQueueStatus({ accessCode, queueStatus }) {
+  const client = findClientByAccessCode(accessCode);
+  client.queueStatus = queueStatus;
+  const { socket } = client;
+  socketEmitters.notifyClient({ socket, id: 'QUEUE-STATUS', body: queueStatus });
+}
+
+
+
+
+
 function findClientByActiveTwilioCallSid(twilioSid) {
   return Ramda.pipe(
     Ramda.values,
@@ -104,3 +120,13 @@ function findClientByActiveTwilioCallSid(twilioSid) {
   )(registry);
 }
 
+
+
+
+
+function findClientByAccessCode(accessCode) {
+  return Ramda.pipe(
+    Ramda.values,
+    Ramda.find(Ramda.propEq('accessCode', accessCode))
+  )(registry);
+}

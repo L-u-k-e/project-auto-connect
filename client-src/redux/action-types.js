@@ -42,5 +42,11 @@ export const REMOVE_LEAD_CALL_IN_PROGRESS_INFO = 'auto-connect/REMOVE_LEAD_CALL_
 
 
 
+export const UPDATE_QUEUE_STATUS = 'auto-connect/UPDATE_QUEUE_STATUS';
+
+
+
+
+
 export const SHOW_APP_NOTIFICATION = 'auto-connect/SHOW_APP_NOTIFICATION';
 export const RESET_APP_NOTIFICATION_STATE = 'auto-connect/RESET_APP_NOTIFICATION_STATE';

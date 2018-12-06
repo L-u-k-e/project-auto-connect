@@ -7,6 +7,7 @@ import apiServerMiddleware from '../middleware/api-server-middleware';
 import callLeadsMiddleware from '../middleware/call-leads-middleware';
 import leadsLoaderMiddleware from '../middleware/leads-loader-middleware';
 import signInMiddleware from '../middleware/sign-in-middleware';
+import queueStatusMiddleware from '../middleware/queue-status-middleware';
 import persistSignInStateToLocalStorage from '../enhancers/persist-sign-in-state-to-local-storage';
 
 
@@ -31,6 +32,7 @@ const enhancer = composeEnhancers(
     leadsLoaderMiddleware,
     apiServerMiddleware,
     resizeListenterMiddleware,
+    queueStatusMiddleware,
     logger
   )
 );

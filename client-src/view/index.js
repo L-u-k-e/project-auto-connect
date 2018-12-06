@@ -19,6 +19,7 @@ import AppHeader from './components/app-header';
 import AppBody from './components/app-body';
 import AppNotification from './components/app-notification';
 import SignInScreen from './components/sign-in-screen';
+// import CallInitiationDialog from './components/call-initiation-dialog';
 import baseTheme from './theme.css';
 
 
@@ -60,11 +61,12 @@ function View(props) {
           <DrawerSubtitle>Subtitle</DrawerSubtitle>
         </DrawerHeader>
         <a href="localhost"> link text </a>
-        { /* <AppSidebar /> */}
+        { /* <AppSid//ebar /> */}
       </Drawer>
       <AppBody
         className={classNames('mdc-top-app-bar--fixed-adjust', theme.body)}
       />
+      {/* <CallInitiationDialog /> */}
       <AppNotification />
     </div>
   );

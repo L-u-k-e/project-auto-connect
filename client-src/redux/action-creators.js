@@ -130,6 +130,17 @@ export function removeLeadCallInProgressInfo({ cursor, correlationID }) {
 
 
 
+export function updateQueueStatus(queueStatus) {
+  return {
+    type: actionTypes.UPDATE_QUEUE_STATUS,
+    payload: queueStatus,
+  };
+}
+
+
+
+
+
 // update socket connection state on successful connect or on an error
 export function socketConnected() {
   return {

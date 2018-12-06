@@ -10,6 +10,7 @@ import leadsReducer from './leads';
 import leadsListFieldNamesReducer from './leads-list-field-names';
 import leadsLoadingStatusReducer from './leads-loading-status';
 import navDrawerReducer from './nav-drawer';
+import queueStatesReducer from './queue-status';
 
 
 
@@ -29,4 +30,5 @@ export default combineReducers({
   leadsLoadingStatus: leadsLoadingStatusReducer,
   navDrawer: navDrawerReducer,
   signInStatus: signInStatusReducer,
+  queueStates: queueStatesReducer
 });
