@@ -1,11 +1,12 @@
 const { twiml: { VoiceResponse } } = require('twilio');
 const twilioUtils = require('../../libraries/twilio-utils');
-const queueStates = require('../../libraries/queue-states');
-const { isAccessCodeInUse, setQueueStatus } = require('../../libraries/app-client-registry-utils');
+const twilioWebhookRoutes = require('../../libraries/twilio-webhook-routes');
+const { isAccessCodeInUse, onQueueConsumerConnect } = require('../../libraries/app-client-registry-utils');
 
 
 
 
+const twilioWebhookAPIURLBase = process.env.TWILIO_WEBHOOK_API_URL_BASE;
 module.exports = consume;
 
 
@@ -13,12 +14,12 @@ module.exports = consume;
 
 
 async function consume(req, res) {
-  const accessCode = req.body.Digits;
+  const { Digits: accessCode, CallSid: consumerCallSid } = req.body;
+  console.log(req.body);
   if (accessCode) {
     if (isAccessCodeInUse(accessCode)) {
       await forwardAgentToQueue(req, res);
-      console.log('setting queue status');
-      setQueueStatus({ accessCode, queueStatus: queueStates.CONNECTED });
+      onQueueConsumerConnect({ accessCode, consumerCallSid });
     } else {
       relayInvalidAccessCode(req, res);
     }
@@ -53,7 +54,10 @@ async function forwardAgentToQueue(req, res) {
   const queueAccessCode = req.body.Digits;
   const queueName = `queue-${queueAccessCode}`;
   await twilioUtils.assertCallQueue({ queueName });
-  voiceResponse.dial({ timeout: 300 }).queue({}, queueName);
+  voiceResponse.dial({
+    timeout: 300,
+    action: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.stopConsuming}`
+  }).queue({}, queueName);
   res.writeHead(200, { 'Content-Type': 'text/xml' });
   res.end(voiceResponse.toString());
 }

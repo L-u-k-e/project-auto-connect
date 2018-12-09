@@ -19,7 +19,7 @@ import AppHeader from './components/app-header';
 import AppBody from './components/app-body';
 import AppNotification from './components/app-notification';
 import SignInScreen from './components/sign-in-screen';
-// import CallInitiationDialog from './components/call-initiation-dialog';
+import CallInitiationDialog from './components/call-initiation-dialog';
 import baseTheme from './theme.css';
 
 
@@ -66,7 +66,7 @@ function View(props) {
       <AppBody
         className={classNames('mdc-top-app-bar--fixed-adjust', theme.body)}
       />
-      {/* <CallInitiationDialog /> */}
+      <CallInitiationDialog />
       <AppNotification />
     </div>
   );

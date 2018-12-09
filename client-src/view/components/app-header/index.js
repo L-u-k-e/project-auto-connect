@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
-import { toggleNavDrawer, callLeads } from 'redux/action-creators';
+import { toggleNavDrawer, activateCallInitiationDialog } from 'redux/action-creators';
 import { isNavDrawerModal, areLeadsLoaded, isACallInProgress } from 'redux/selectors';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
@@ -110,7 +110,7 @@ const provideCallingLeads = connect(state => ({ callingLeads: isACallInProgress(
 
 
 
-const provideOnCallLeads = connect(null, { onCallLeads: callLeads });
+const provideOnCallLeads = connect(null, { onCallLeads: activateCallInitiationDialog });
 
 
 

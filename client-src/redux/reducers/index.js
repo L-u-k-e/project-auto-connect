@@ -5,12 +5,13 @@ import breakpoints from 'libraries/breakpoints';
 import appNotificationReducer from './app-notification';
 import signInStatusReducer from './sign-in-status';
 import callParametersReducer from './call-parameters';
+import callInitiationDialogReducer from './call-initiation-dialog';
 import clientInfoReducer from './client-info';
 import leadsReducer from './leads';
 import leadsListFieldNamesReducer from './leads-list-field-names';
 import leadsLoadingStatusReducer from './leads-loading-status';
 import navDrawerReducer from './nav-drawer';
-import queueStatesReducer from './queue-status';
+import queueStatus from './queue-status';
 
 
 
@@ -24,11 +25,12 @@ export default combineReducers({
   form: formReducer,
   appNotification: appNotificationReducer,
   callParameters: callParametersReducer,
+  callInitiationDialog: callInitiationDialogReducer,
   clientInfo: clientInfoReducer,
   leads: leadsReducer,
   leadsListFieldNames: leadsListFieldNamesReducer,
   leadsLoadingStatus: leadsLoadingStatusReducer,
   navDrawer: navDrawerReducer,
   signInStatus: signInStatusReducer,
-  queueStates: queueStatesReducer
+  queueStatus: queueStatus
 });

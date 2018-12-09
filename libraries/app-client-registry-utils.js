@@ -29,8 +29,9 @@ module.exports = {
   isAccessCodeInUse,
   registerActiveTwilioCall,
   deregisterActiveTwilioCall,
-  setQueueStatus,
-  findClientByAccessCode,
+  onQueueConsumerConnect,
+  onQueueConsumerDisconnect,
+  getClientAccessCodeByActiveTwilioCallSid,
 };
 
 
@@ -40,9 +41,10 @@ module.exports = {
 function registerNewAppClient({ socket }) {
   const client = {
     socket,
-    clientID: uuidV4(),
+    id: uuidV4(),
     accessCode: generateNewAccessCode(),
     queueStatus: queueStates.DISCONNECTED,
+    consumerCallSid: null,
     activeCallStatusEvents: {}
   };
   registry[client.id] = client;
@@ -80,8 +82,9 @@ function isAccessCodeInUse(accessCode) {
 
 
 
-function registerActiveTwilioCall({ twilioSid, clientID, statusCallbacks }) {
-  registry[clientID].activeCallStatusEvents[twilioSid] = statusCallbacks;
+function registerActiveTwilioCall({ callSid, clientID, statusCallbacks }) {
+  // console.log(JSON.stringify(registry, null, 2));
+  registry[clientID].activeCallStatusEvents[callSid] = statusCallbacks;
 }
 
 
@@ -96,11 +99,24 @@ function deregisterActiveTwilioCall({ twilioSid }) {
 
 
 
-function setQueueStatus({ accessCode, queueStatus }) {
+function onQueueConsumerConnect({ accessCode, consumerCallSid }) {
   const client = findClientByAccessCode(accessCode);
-  client.queueStatus = queueStatus;
+  client.queueStatus = queueStates.CONNECTED;
+  client.consumerCallSid = consumerCallSid;
   const { socket } = client;
-  socketEmitters.notifyClient({ socket, id: 'QUEUE-STATUS', body: queueStatus });
+  socketEmitters.notifyClient({ socket, id: 'QUEUE-STATUS', body: client.queueStatus });
+}
+
+
+
+
+
+function onQueueConsumerDisconnect({ consumerCallSid }) {
+  const client = findClientByConsumerCallSid(consumerCallSid);
+  client.queueStatus = queueStates.DISCONNECTED;
+  client.consumerCallSid = null;
+  const { socket } = client;
+  socketEmitters.notifyClient({ socket, id: 'QUEUE-STATUS', body: client.queueStatus });
 }
 
 
@@ -129,4 +145,24 @@ function findClientByAccessCode(accessCode) {
     Ramda.values,
     Ramda.find(Ramda.propEq('accessCode', accessCode))
   )(registry);
+}
+
+
+
+
+
+function findClientByConsumerCallSid(consumerCallSid) {
+  return Ramda.pipe(
+    Ramda.values,
+    Ramda.find(Ramda.propEq('consumerCallSid', consumerCallSid))
+  )(registry);
+}
+
+
+
+
+
+function getClientAccessCodeByActiveTwilioCallSid(callSid) {
+  const client = findClientByActiveTwilioCallSid(callSid);
+  return client && client.accessCode;
 }

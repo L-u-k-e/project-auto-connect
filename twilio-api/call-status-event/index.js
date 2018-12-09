@@ -14,6 +14,6 @@ module.exports = callStatusEvent;
 
 async function callStatusEvent(req, res) { // eslint-disable-line
   // const { sid } = req.body;
-  console.log(req.body);
+  console.log(JSON.stringify(req.body, null, 2));
   // const client = findClientByActiveTwilioCallSid(sid)
 }

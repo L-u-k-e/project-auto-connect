@@ -15,6 +15,7 @@ import {
   getClientID,
   getLeadCallsInProgressInfo,
 } from '../selectors';
+import queueStates from '../../../libraries/queue-states';
 
 
 
@@ -23,6 +24,7 @@ import {
 const actionHandlers = {
   [actionTypes.CALL_LEADS]: callLeads,
   [actionTypes.RECEIVED_API_REPLIES]: handleReceivedAPIReplies,
+  [actionTypes.UPDATE_QUEUE_STATUS]: handleQueueStatusUpdate,
 };
 
 
@@ -94,6 +96,24 @@ function handleReceivedAPIReplies(store, action, next) {
     }
   }
 }
+
+
+
+
+
+function handleQueueStatusUpdate(store, action, next) {
+  next(action);
+  const queueStatus = action.payload;
+  if (queueStatus !== queueStates.DISCONNECTED) return;
+  const state = store.getState();
+  const leadCallsInProgressInfo = getLeadCallsInProgressInfo(state);
+  leadCallsInProgressInfo.forEach(({ correlationID }) => {
+    next(removeLeadCallInProgressInfo({ correlationID }));
+  });
+}
+
+
+
 
 
 function getLeadPhoneNumber(lead) {

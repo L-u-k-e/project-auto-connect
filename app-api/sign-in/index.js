@@ -32,7 +32,7 @@ async function onSocketDisconnect() {} // eslint-disable-line
 async function signIn({ socket, request }) {
   const { params: { id_token: idToken } } = request;
   await validateGoogleSignInIDToken(idToken);
-  const { accessCode, clientID } = registerNewAppClient({ socket });
+  const { accessCode, id: clientID } = registerNewAppClient({ socket });
   reply({
     socket,
     request,

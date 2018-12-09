@@ -2,6 +2,8 @@ export const getBrowser = (state) => state.browser;
 
 
 
+
+
 export const getLeads = (state) => state.leads;
 export const getLeadsListFieldNames = (state) => state.leadsListFieldNames;
 export const areLeadsLoaded = (state) => !!state.leads;
@@ -38,7 +40,13 @@ export const getClientID = (state) => state.clientInfo.clientID;
 
 
 
-export const getQueueStatus = (state) => state.queueState.status;
+export const getQueueStatus = (state) => state.queueStatus.status;
+
+
+
+
+
+export const isCallInitiationDialogActive = (state) => state.callInitiationDialog.active;
 
 
 

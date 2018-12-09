@@ -33,6 +33,6 @@ function handleReceivedAPIReplies(store, action, next) {
   const replies = action.payload;
   const queueStatusUpdate = Ramda.find(Ramda.propEq('id', 'QUEUE-STATUS'), replies);
   if (queueStatusUpdate) {
-    next(updateQueueStatus(queueStatusUpdate.result.body));
+    store.dispatch(updateQueueStatus(queueStatusUpdate.result.body));
   }
 }

@@ -1,5 +1,6 @@
 {
   "enqueue": "twilio-webhook/enqueue",
   "consume": "twilio-webhook/consume",
-  "callStatusEvent": "twilio-webhook/call-status-event"
+  "callStatusEvent": "twilio-webhook/call-status-event",
+  "stopConsuming": "twilio-webhook/stop-consuming"
 }

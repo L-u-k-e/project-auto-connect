@@ -208,3 +208,22 @@ export function resetAppNotificationState() {
     payload: null
   };
 }
+
+
+
+
+
+// activate/ deactivate call initiation dialog
+export function activateCallInitiationDialog() {
+  return {
+    type: actionTypes.ACTIVATE_CALL_INITIATION_DIALOG,
+    payload: null,
+  };
+}
+
+export function deactivateCallInitiationDialog() {
+  return {
+    type: actionTypes.DEACTIVATE_CALL_INITIATION_DIALOG,
+    payload: null,
+  };
+}

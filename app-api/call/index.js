@@ -31,6 +31,7 @@ async function fulfillRequest({ socket, request }) {
   await validateIDToken(idToken);
   reply({ socket, request, body: { status: 'calling' }, complete: false });
   const formattedPhoneNumber = formatPhoneNumber({ phoneNumber });
+  console.log('initiating twilio call');
   await call({
     clientID,
     phoneNumber: formattedPhoneNumber,
@@ -56,6 +57,10 @@ async function fulfillRequest({ socket, request }) {
   }
 
   function onCompleted() { // eslint-disable-line
+    reply({ socket, request, body: { status: 'completed' }, complete: true });
+  }
+
+  function onConsumerDisconnected() { // eslint-disable-line
     reply({ socket, request, body: { status: 'completed' }, complete: true });
   }
 }

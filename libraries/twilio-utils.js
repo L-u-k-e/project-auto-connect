@@ -30,6 +30,7 @@ async function initialize() {
 
 
 async function call({ clientID, phoneNumber, statusCallbacks = {} }) { // eslint-disable-line
+  console.log('creating twilio call');
   const { sid } = await twilioClient.calls.create({
     url: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.enqueue}`,
     to: phoneNumber,
@@ -38,7 +39,8 @@ async function call({ clientID, phoneNumber, statusCallbacks = {} }) { // eslint
     statusEvents: Object.keys(statusCallbacks),
     statusCallbackMethod: 'POST',
   });
-  registerActiveTwilioCall({ twilioSid: sid, clientID, statusCallbacks });
+  console.log(clientID, sid);
+  registerActiveTwilioCall({ callSid: sid, clientID, statusCallbacks });
 }
 
 
