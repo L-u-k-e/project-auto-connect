@@ -87,6 +87,50 @@ export function callLeads() {
 
 
 
+export function callAnswered(correlationID) {
+  return {
+    type: actionTypes.CALL_ANSWERED,
+    payload: { correlationID },
+  };
+}
+
+
+
+
+
+export function answeredCallCompleted() {
+  return {
+    type: actionTypes.ANSWERED_CALL_COMPLETED,
+    payload: null,
+  };
+}
+
+
+
+
+
+export function stopCallingLeads() {
+  return {
+    type: actionTypes.STOP_CALLING_LEADS,
+    payload: null,
+  };
+}
+
+
+
+
+
+export function resetLeadCallingProgressInfo() {
+  return {
+    type: actionTypes.RESET_LEAD_CALLING_PROGRESS_INFO,
+    payload: null,
+  };
+}
+
+
+
+
+
 export function updateMaxConcurrentCalls(value) {
   return {
     type: actionTypes.UPDATE_MAX_CONCURRENT_CALLS,

@@ -1,9 +1,11 @@
 const { twiml: { VoiceResponse } } = require('twilio');
+const twilioWebhookRoutes = require('../../libraries/twilio-webhook-routes');
 const { getClientAccessCodeByActiveTwilioCallSid } = require('../../libraries/app-client-registry-utils');
 
 
 
 
+const twilioWebhookAPIURLBase = process.env.TWILIO_WEBHOOK_API_URL_BASE;
 module.exports = enqueue;
 
 
@@ -15,7 +17,9 @@ function enqueue(req, res) {
   const voiceResponse = new VoiceResponse();
   const clientAccessCode = getClientAccessCodeByActiveTwilioCallSid(callSid);
   const queueName = `queue-${clientAccessCode}`;
-  voiceResponse.enqueue({}, queueName);
+  voiceResponse.enqueue({
+    action: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.callStatusEvent}`
+  }, queueName);
   res.writeHead(200, { 'Content-Type': 'text/xml' });
   res.end(voiceResponse.toString());
 }

@@ -13,8 +13,11 @@ const socketEmitters = require('./socket-emitters');
     [clientID]: {
       clientID,
       accessCode,
-      activeCallStatusEvents: {
-        [sid]: {
+      queueStatus,
+      answeredCallSid,
+      consumerCallSid,
+      statusCallbacks: {
+        [callSid]: {
           onAnswered: func,
           ...
           ...
@@ -29,6 +32,7 @@ module.exports = {
   isAccessCodeInUse,
   registerActiveTwilioCall,
   deregisterActiveTwilioCall,
+  onCallStatusEvent,
   onQueueConsumerConnect,
   onQueueConsumerDisconnect,
   getClientAccessCodeByActiveTwilioCallSid,
@@ -44,8 +48,9 @@ function registerNewAppClient({ socket }) {
     id: uuidV4(),
     accessCode: generateNewAccessCode(),
     queueStatus: queueStates.DISCONNECTED,
+    answeredCallSid: null,
     consumerCallSid: null,
-    activeCallStatusEvents: {}
+    statusCallbacks: {}
   };
   registry[client.id] = client;
   return client;
@@ -84,7 +89,7 @@ function isAccessCodeInUse(accessCode) {
 
 function registerActiveTwilioCall({ callSid, clientID, statusCallbacks }) {
   // console.log(JSON.stringify(registry, null, 2));
-  registry[clientID].activeCallStatusEvents[callSid] = statusCallbacks;
+  registry[clientID].statusCallbacks[callSid] = statusCallbacks;
 }
 
 
@@ -92,7 +97,7 @@ function registerActiveTwilioCall({ callSid, clientID, statusCallbacks }) {
 
 function deregisterActiveTwilioCall({ twilioSid }) {
   const client = findClientByActiveTwilioCallSid(twilioSid);
-  delete client.activeCallStatusEvents[twilioSid];
+  delete client.statusCallbacks[twilioSid];
 }
 
 
@@ -123,14 +128,29 @@ function onQueueConsumerDisconnect({ consumerCallSid }) {
 
 
 
-function findClientByActiveTwilioCallSid(twilioSid) {
+function onCallStatusEvent({ callSid, callStatus, req, res }) {
+  const client = findClientByActiveTwilioCallSid(callSid);
+  const callback = client.statusCallbacks[callSid][callStatus];
+  callback({ req, res, callSid, callStatus, clientIsBusy: !!client.activeCallSid });
+  if (callStatus === 'answered') {
+    client.activeCallSid = callSid;
+  } else if (callStatus === 'completed') {
+    client.activeCallSid = null;
+  }
+}
+
+
+
+
+
+function findClientByActiveTwilioCallSid(callSid) {
   return Ramda.pipe(
     Ramda.values,
     Ramda.find(
       Ramda.pipe(
-        Ramda.prop('activeCallStatusEvents'),
+        Ramda.prop('statusCallbacks'),
         Ramda.keys,
-        Ramda.contains(twilioSid)
+        Ramda.contains(callSid)
       )
     )
   )(registry);

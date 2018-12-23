@@ -13,7 +13,7 @@ import {
 } from 'rmwc/Dialog';
 import { deactivateCallInitiationDialog, callLeads } from 'redux/action-creators';
 import { getQueueStatus, isCallInitiationDialogActive, getAccessCode } from 'redux/selectors';
-// import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
+import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import queueStates from '../../../../libraries/queue-states';
 import baseTheme from './theme.css';
@@ -40,6 +40,9 @@ CallInitiationDialog.propTypes = {
 
   // provideOnCall
   onCall: PropTypes.func.isRequired,
+
+  // provideOnCancel
+  onCancel: PropTypes.func.isRequired,
 };
 CallInitiationDialog.defaultProps = {};
 function CallInitiationDialog(props) {
@@ -49,7 +52,8 @@ function CallInitiationDialog(props) {
     queueStatus,
     active,
     accessCode,
-    onCall
+    onCall,
+    onCancel,
   } = props;
 
   return (
@@ -67,7 +71,9 @@ function CallInitiationDialog(props) {
         </div>
       </DialogContent>
       <DialogActions>
-        <DialogButton>
+        <DialogButton
+          onClick={onCancel}
+        >
           cancel
         </DialogButton>
         <DialogButton
@@ -113,7 +119,50 @@ const provideAccessCode = connect(state => ({ accessCode: getAccessCode(state) }
 
 
 
-const provideOnCall = connect(null, { onCall: callLeads });
+OnCallProvider.propTypes = {
+  // connect (local wrapper)
+  callLeads: PropTypes.func.isRequired,
+
+  // controlDialogState
+  onDeactivate: PropTypes.func.isRequired,
+
+  children: PropTypes.any.isRequired,
+};
+OnCallProvider.defaultProps = {
+};
+function OnCallProvider(props) {
+  const { children } = props;
+  return children({ onCall });
+
+  function onCall() {
+    props.callLeads();
+    props.onDeactivate();
+  }
+}
+const OnCallProvider_Connected = connect(null, { callLeads })(OnCallProvider);
+const provideOnCall = wrapWithFunctionChildComponent(OnCallProvider_Connected);
+
+
+
+
+
+OnCancelProvider.propTypes = {
+  // controlDialogState
+  onDeactivate: PropTypes.func.isRequired,
+
+  children: PropTypes.any.isRequired,
+};
+OnCancelProvider.defaultProps = {
+};
+function OnCancelProvider(props) {
+  const { children } = props;
+  return children({ onCancel });
+
+  function onCancel() {
+    props.onDeactivate();
+  }
+}
+const provideOnCancel = wrapWithFunctionChildComponent(OnCancelProvider);
 
 
 
@@ -125,7 +174,8 @@ const CallInitiationDialogContainer = (
     provideQueueStatus,
     controlDialogState,
     provideAccessCode,
-    provideOnCall
+    provideOnCall,
+    provideOnCancel,
   )(CallInitiationDialog)
 );
 CallInitiationDialogContainer.displayName = 'CallInitiationDialogContainer';

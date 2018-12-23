@@ -5,7 +5,9 @@ import {
   sendAPIRequest,
   updateLeadsIndexCursor,
   addLeadCallInProgressInfo,
-  removeLeadCallInProgressInfo
+  removeLeadCallInProgressInfo,
+  callAnswered,
+  answeredCallCompleted,
 } from 'redux/action-creators';
 import {
   getMaxConcurrentCalls,
@@ -14,6 +16,8 @@ import {
   getUserIDToken,
   getClientID,
   getLeadCallsInProgressInfo,
+  getAnsweredCallInProgressCorrelatinID,
+  isAnAnsweredCallInProgress,
 } from '../selectors';
 import queueStates from '../../../libraries/queue-states';
 
@@ -57,21 +61,24 @@ function callNextLead({ store, next }) {
   const state = store.getState();
   const cursor = getLeadsIndexCursor(state);
   const leads = getLeads(state);
-  if (cursor >= leads.length) return;
-  const lead = leads[cursor];
-  const correlationID = uuidV4();
-  next(addLeadCallInProgressInfo({ cursor, correlationID }));
-  next(updateLeadsIndexCursor(cursor + 1));
-  const requestDefinition = {
-    method: 'call',
-    id: correlationID,
-    params: {
-      id_token: getUserIDToken(state),
-      phone_number: getLeadPhoneNumber(lead),
-      client_id: getClientID(state),
-    }
-  };
-  next(sendAPIRequest(requestDefinition));
+  if (cursor >= leads.length) {
+    // check if this was the last lead being called nothing else is in progress then reset all info
+  } else {
+    const lead = leads[cursor];
+    const correlationID = uuidV4();
+    next(addLeadCallInProgressInfo({ cursor, correlationID }));
+    next(updateLeadsIndexCursor(cursor + 1));
+    const requestDefinition = {
+      method: 'call',
+      id: correlationID,
+      params: {
+        id_token: getUserIDToken(state),
+        phone_number: getLeadPhoneNumber(lead),
+        client_id: getClientID(state),
+      }
+    };
+    next(sendAPIRequest(requestDefinition));
+  }
 }
 
 
@@ -80,6 +87,8 @@ function handleReceivedAPIReplies(store, action, next) {
   next(action);
   const state = store.getState();
   const leadCallsInProgressInfo = getLeadCallsInProgressInfo(state);
+  const answeredCallInProgess = isAnAnsweredCallInProgress(state);
+  const answeredCallInProgessCorrelationID = getAnsweredCallInProgressCorrelatinID(state);
   const callInProgressCorrelationIDs = Ramda.map(Ramda.prop('correlationID'), leadCallsInProgressInfo);
   const replies = action.payload;
   replies.forEach(processReply);
@@ -90,7 +99,18 @@ function handleReceivedAPIReplies(store, action, next) {
       if (error || result.complete) {
         next(removeLeadCallInProgressInfo({ correlationID: reply.id }));
         if (!error) {
-          callNextLead({ store, next });
+          if (answeredCallInProgess) {
+            if (answeredCallInProgessCorrelationID === reply.id) {
+              next(answeredCallCompleted());
+            }
+          } else {
+            callNextLead({ store, next });
+          }
+        }
+      } else {
+        const { body: { status: callStatus } } = result;
+        if (callStatus === 'answered') {
+          next(callAnswered(reply.id));
         }
       }
     }

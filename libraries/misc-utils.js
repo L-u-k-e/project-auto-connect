@@ -7,5 +7,5 @@ module.exports = {
 
 
 function generateRandomInt(minimum, maximum) {
-  return Math.round(Math.random() * (maximum - minimum) + minimum); //e slint-disable-line
+  return Math.round(Math.random() * (maximum - minimum) + minimum); // eslint-disable-line
 }

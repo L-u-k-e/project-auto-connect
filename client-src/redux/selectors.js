@@ -1,3 +1,9 @@
+import * as Ramda from 'ramda';
+
+
+
+
+
 export const getBrowser = (state) => state.browser;
 
 
@@ -19,6 +25,31 @@ export const isACallInProgress = (state) => state.callParameters.callingLeads;
 export const getMaxConcurrentCalls = (state) => state.callParameters.maxConcurrentCalls;
 export const getLeadsIndexCursor = (state) => state.callParameters.leadsIndexCursor;
 export const getLeadCallsInProgressInfo = (state) => state.callParameters.leadCallsInProgressInfo;
+export const isAnAnsweredCallInProgress = (state) => !!state.callParameters.answeredCallInProgressCorrelationID;
+export const getAnsweredCallInProgressCorrelatinID = (state) => (
+  state.callParameters.answeredCallInProgressCorrelationID
+);
+
+
+
+
+
+export const isAnsweredCallDialogActive = isAnAnsweredCallInProgress;
+
+
+
+
+export const getAnsweredCallInProgressLead = (state) => {
+  if (!isAnAnsweredCallInProgress(state)) return undefined;
+  const answeredCallInProgressCorrelationID = getAnsweredCallInProgressCorrelatinID(state);
+  const leads = getLeads(state);
+  const leadCallsInProgressInfo = getLeadCallsInProgressInfo(state);
+  return Ramda.pipe(
+    Ramda.find(Ramda.propEq('correlationID', answeredCallInProgressCorrelationID)),
+    Ramda.prop('cursor'),
+    Ramda.nth(Ramda.__, leads)
+  )(leadCallsInProgressInfo);
+};
 
 
 

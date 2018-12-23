@@ -39,7 +39,7 @@ async function fulfillRequest({ socket, request }) {
       queued: null,
       initiated: null,
       ringing: null,
-      answered: onAnswered,
+      'in-progress': onDequeue,
       completed: onCompleted,
     }
   });
@@ -52,15 +52,17 @@ async function fulfillRequest({ socket, request }) {
   setTimeout(onCompleted, onCompletedTimeout);
   */
 
-  function onAnswered() { // eslint-disable-line
-    reply({ socket, request, body: { status: 'answered' }, complete: false });
+  function onDequeue({ clientIsBusy }) {
+    console.log('on dequeue', clientIsBusy);
+    if (clientIsBusy) {
+      // TODO hang up on caller
+      reply({ socket, request, body: { status: 'completed' }, complete: false });
+    } else {
+      reply({ socket, request, body: { status: 'answered' }, complete: false });
+    }
   }
 
-  function onCompleted() { // eslint-disable-line
-    reply({ socket, request, body: { status: 'completed' }, complete: true });
-  }
-
-  function onConsumerDisconnected() { // eslint-disable-line
+  function onCompleted() {
     reply({ socket, request, body: { status: 'completed' }, complete: true });
   }
 }
