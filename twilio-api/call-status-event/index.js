@@ -13,7 +13,6 @@ module.exports = callStatusEvent;
 
 
 async function callStatusEvent(req, res) { // eslint-disable-line
-  console.log('received call status event');
   const { CallSid: callSid, CallStatus: callStatus } = req.body;
   console.log('call status event', JSON.stringify(req.body, null, 2));
   res.end();

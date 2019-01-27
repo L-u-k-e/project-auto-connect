@@ -1,6 +1,11 @@
 const { call } = require('../../libraries/twilio-utils');
 const { reply } = require('../../libraries/socket-emitters');
+const { generateClientIsBusyError } = require('../../libraries/error-generators');
 const validateIDToken = require('../../libraries/validate-google-sign-in-id-token');
+const { onBridgedCallDisconnect, isClientOnACall } = require('../../libraries/app-client-registry-utils');
+
+
+
 
 
 module.exports = {
@@ -19,6 +24,8 @@ module.exports = {
 
 
 
+
+
 async function onSocketConnect() {} // eslint-disable-line
 async function onSocketDisconnect() {} // eslint-disable-line
 
@@ -29,20 +36,25 @@ async function onSocketDisconnect() {} // eslint-disable-line
 async function fulfillRequest({ socket, request }) {
   const { params: { id_token: idToken, client_id: clientID, phone_number: phoneNumber } } = request;
   await validateIDToken(idToken);
-  reply({ socket, request, body: { status: 'calling' }, complete: false });
-  const formattedPhoneNumber = formatPhoneNumber({ phoneNumber });
-  console.log('initiating twilio call');
-  await call({
-    clientID,
-    phoneNumber: formattedPhoneNumber,
-    statusCallbacks: {
-      queued: null,
-      initiated: null,
-      ringing: null,
-      'in-progress': onDequeue,
-      completed: onCompleted,
-    }
-  });
+
+  if (isClientOnACall(clientID)) {
+    throw generateClientIsBusyError(clientID);
+  } else {
+    reply({ socket, request, body: { status: 'calling' }, complete: false });
+    const formattedPhoneNumber = formatPhoneNumber({ phoneNumber });
+    console.log('initiating twilio call');
+    await call({
+      clientID,
+      phoneNumber: formattedPhoneNumber,
+      statusCallbacks: {
+        queued: null,
+        initiated: null,
+        ringing: null,
+        'in-progress': onPartyConnection,
+        completed: onCompleted,
+      }
+    });
+  }
 
 
   /*
@@ -52,17 +64,13 @@ async function fulfillRequest({ socket, request }) {
   setTimeout(onCompleted, onCompletedTimeout);
   */
 
-  function onDequeue({ clientIsBusy }) {
-    console.log('on dequeue', clientIsBusy);
-    if (clientIsBusy) {
-      // TODO hang up on caller
-      reply({ socket, request, body: { status: 'completed' }, complete: false });
-    } else {
-      reply({ socket, request, body: { status: 'answered' }, complete: false });
-    }
+  function onPartyConnection() {
+    console.log('on party connection');
+    reply({ socket, request, body: { status: 'answered' }, complete: false });
   }
 
-  function onCompleted() {
+  function onCompleted({ callSid }) {
+    onBridgedCallDisconnect(callSid);
     reply({ socket, request, body: { status: 'completed' }, complete: true });
   }
 }

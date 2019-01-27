@@ -56,9 +56,10 @@ async function forwardAgentToQueue(req, res) {
   await twilioUtils.assertCallQueue({ queueName });
   voiceResponse.dial({
     timeout: 300,
+    // POST'ed to when the queue consumer hangs up
     action: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.stopConsuming}`
   }).queue({
-    // this url is POST'd to when a call is about to leave the queue (be answered)
+    // POST'ed to when a call is about to be bridged
     url: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.callStatusEvent}`
   }, queueName);
   res.writeHead(200, { 'Content-Type': 'text/xml' });

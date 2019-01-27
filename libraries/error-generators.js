@@ -10,6 +10,7 @@ module.exports = {
   generateInvalidRequestError,
   generateTokenValidationError,
   generateInvalidTokenEmailError,
+  generateClientIsBusyError
 };
 
 
@@ -87,5 +88,17 @@ function generateInvalidTokenEmailError(email) {
     data: { providedEmail: email },
     code: ErrorCodes.invalidTokenEmailError,
     message: 'Invalid token email address',
+  };
+}
+
+
+
+
+// The client registry indicates that the client is on an active call and so can't be serviced for another call.
+function generateClientIsBusyError(clientID) {
+  return {
+    data: { clientID },
+    code: ErrorCodes.clientIsBusyError,
+    message: 'Can not initiate new call for client. The client is currently on an answered call.',
   };
 }

@@ -10,7 +10,8 @@ module.exports = stopConsuming;
 
 
 
-async function stopConsuming(req) {
+async function stopConsuming(req, res) {
   const { CallSid: consumerCallSid } = req.body;
+  res.end();
   onQueueConsumerDisconnect({ consumerCallSid });
 }

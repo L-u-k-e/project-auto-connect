@@ -48,7 +48,9 @@ async function call({ clientID, phoneNumber, statusCallbacks = {} }) { // eslint
 
 async function assertCallQueue({ queueName }) {
   try {
-    await twilioClient.queues.create({ friendlyName: queueName });
+    await twilioClient.queues.create({
+      friendlyName: queueName,
+    });
   } catch (error) {
     console.log(error);
   }

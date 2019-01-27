@@ -6,5 +6,6 @@ module.exports = {
   invalidMethodError: -32601,
   invalidRequestError: -32600,
   tokenValidationError: -32000,
-  invalidTokenEmailError: -32001
+  invalidTokenEmailError: -32001,
+  clientIsBusyError: -32002,
 };

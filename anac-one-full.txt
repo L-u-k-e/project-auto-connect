@@ -1,0 +1,308 @@
+Active questions:
+
+  why does registerActiveTwilioCall not set active
+
+
+
+
+
+
+
+Call comes in to /consume
+
+app-core    | { Called: '+13156276319',
+app-core    |   ToState: 'NY',
+app-core    |   CallerCountry: 'US',
+app-core    |   Direction: 'inbound',
+app-core    |   CallerState: 'NY',
+app-core    |   ToZip: '13332',
+app-core    |   CallSid: 'CA0951bc92d147d01230c44be7e83609fd',
+app-core    |   To: '+13156276319',
+app-core    |   CallerZip: '13421',
+app-core    |   ToCountry: 'US',
+app-core    |   ApiVersion: '2010-04-01',
+app-core    |   CalledZip: '13332',
+app-core    |   CalledCity: 'MINOA',
+app-core    |   CallStatus: 'ringing',
+app-core    |   From: '+13158865733',
+app-core    |   AccountSid: 'AC838021b4b4e3568ca59381bf46575671',
+app-core    |   CalledCountry: 'US',
+app-core    |   CallerCity: 'ONEIDA',
+app-core    |   Caller: '+13158865733',
+app-core    |   FromCountry: 'US',
+app-core    |   ToCity: 'MINOA',
+app-core    |   FromCity: 'ONEIDA',
+app-core    |   CalledState: 'NY',
+app-core    |   FromZip: '13421',
+app-core    |   FromState: 'NY' }
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:16:47:56 +0000] "POST /twilio-webhook/consume HTTP/1.1" 200 224 "-" "TwilioProxy/1.1"
+
+
+
+
+
+
+
+User's code entry is posted to /consume
+app-core    | { msg: 'Gather End',
+app-core    |   Called: '+13156276319',
+app-core    |   Digits: '958673',
+app-core    |   ToState: 'NY',
+app-core    |   CallerCountry: 'US',
+app-core    |   Direction: 'inbound',
+app-core    |   CallerState: 'NY',
+app-core    |   ToZip: '13332',
+app-core    |   CallSid: 'CA0951bc92d147d01230c44be7e83609fd',
+app-core    |   To: '+13156276319',
+app-core    |   CallerZip: '13421',
+app-core    |   ToCountry: 'US',
+app-core    |   FinishedOnKey: '',
+app-core    |   ApiVersion: '2010-04-01',
+app-core    |   CalledZip: '13332',
+app-core    |   CalledCity: 'MINOA',
+app-core    |   CallStatus: 'in-progress',
+app-core    |   From: '+13158865733',
+app-core    |   AccountSid: 'AC838021b4b4e3568ca59381bf46575671',
+app-core    |   CalledCountry: 'US',
+app-core    |   CallerCity: 'ONEIDA',
+app-core    |   Caller: '+13158865733',
+app-core    |   FromCountry: 'US',
+app-core    |   ToCity: 'MINOA',
+app-core    |   FromCity: 'ONEIDA',
+app-core    |   CalledState: 'NY',
+app-core    |   FromZip: '13421',
+app-core    |   FromState: 'NY' }
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:16:48:06 +0000] "POST /twilio-webhook/consume HTTP/1.1" 200 262 "https://auto-connect.ngrok.io/twilio-webhook/consume" "TwilioProxy/1.1"
+
+The code entry above was correct, so the /consume handler
+
+checks to make sure the access code is un use by a web app client (when web app clients sign in they are assigned an
+access code and this is tracked in the client registry)\
+
+Since the access code is indeed still in use, the handler does:
+
+  const queueName = `queue-${queueAccessCode}`;
+  await twilioUtils.assertCallQueue({ queueName });
+  voiceResponse.dial({
+    timeout: 300,
+    // POST'ed to when the queue consumer hangs up
+    action: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.stopConsuming}`
+  }).queue({
+    // POST'ed to when a call is about to be bridged
+    url: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.callStatusEvent}`
+  }, queueName);
+
+Then the handler calls: `clientRegistry.onQueueConsumerConnect({ accessCode, consumerCallSid });`. That method does:
+  This method looks up the client by the access code and registers the consumerCallSid, then notifies the client of the newly connected queue-status.
+
+
+Now, the web app will enable the call leads button.
+
+When that button is clicked, a web socket event is pushed to the "call" method.
+See output below
+
+
+
+
+
+
+
+
+
+
+
+
+
+app-core    | initiating twilio call
+logged by app-api.call (about to call twilio-utils.call)
+
+
+twilio-utils.call:
+  async function call({ clientID, phoneNumber, statusCallbacks = {} }) { // eslint-disable-line
+    console.log('creating twilio call');
+    const { sid } = await twilioClient.calls.create({
+      url: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.enqueue}`,
+      to: phoneNumber,
+      from: twilioEnabledNumber,
+      statusCallback: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.callStatusEvent}`,
+      statusEvents: Object.keys(statusCallbacks),
+      statusCallbackMethod: 'POST',
+    });
+    console.log(clientID, sid);
+    registerActiveTwilioCall({ callSid: sid, clientID, statusCallbacks });
+  }
+  app-core    | creating twilio call
+  app-core    | 6b25615f-7056-419b-ae70-77d5b6bdc330 CAdcc0de9d9c0bd0c9779d1d7aae4fd2b2
+
+so the next thing we see IF THE CALL CONNECTS (and there's no other api-calls handled in the interim) should be a POST to /enqueue
+
+
+
+
+
+Call comes in to /enqueue
+
+first, the handler checks to see if the web app client client is on another call and hangs up if so.
+It does this by using the call call-sid. The  /call handler above registered the call-sid with the client using the
+method:  registerActiveTwilioCall({ callSid: sid, clientID, statusCallbacks });
+
+The client isn't on another call so it does:
+
+    onCallBridge(callSid);
+    const clientAccessCode = getClientAccessCodeByActiveTwilioCallSid(callSid);
+    const queueName = `queue-${clientAccessCode}`;
+    voiceResponse.enqueue({}, queueName);
+
+onCallBridge marks the call as answered with the web app client
+
+app-core    | null
+When the client checks to see if the call is active, the isClientOnAnotherCall method logs client.answeredCallID
+seeing null here means that the client isn't on another call.
+
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:16:48:20 +0000] "POST /twilio-webhook/enqueue HTTP/1.1" 200 173 "-" "TwilioProxy/1.1"
+
+
+The enqueue call above instructs twilio to place the call in the call queue. The call will immediately connect to the
+consumer since no other calls will be in the queue.
+
+
+
+
+
+
+
+
+
+
+
+Once the call leaves the queue and is bridged with the consumer twilio posts a status event as follows:
+
+app-core    | call status event {
+app-core    |   "Called": "+18004444444",
+app-core    |   "ToState": "",
+app-core    |   "CallerCountry": "US",
+app-core    |   "Direction": "outbound-api",
+app-core    |   "CallerState": "NY",
+app-core    |   "ToZip": "",
+app-core    |   "QueueTime": "0",
+app-core    |   "CallSid": "CAdcc0de9d9c0bd0c9779d1d7aae4fd2b2",
+app-core    |   "To": "+18004444444",
+app-core    |   "DequeingCallSid": "CA0951bc92d147d01230c44be7e83609fd",
+app-core    |   "CallerZip": "13332",
+app-core    |   "ToCountry": "US",
+app-core    |   "ApiVersion": "2010-04-01",
+app-core    |   "CalledZip": "",
+app-core    |   "CalledCity": "",
+app-core    |   "CallStatus": "in-progress",
+app-core    |   "From": "+13156276319",
+app-core    |   "QueueSid": "QU700772b1ab5243eeb64a47dbd7e19d19",
+app-core    |   "AccountSid": "AC838021b4b4e3568ca59381bf46575671",
+app-core    |   "CalledCountry": "US",
+app-core    |   "CallerCity": "MINOA",
+app-core    |   "Caller": "+13156276319",
+app-core    |   "FromCountry": "US",
+app-core    |   "ToCity": "",
+app-core    |   "FromCity": "MINOA",
+app-core    |   "CalledState": "",
+app-core    |   "FromZip": "13332",
+app-core    |   "FromState": "NY"
+app-core    | }
+
+The initial 'call' method above set up a status call back for 'in-progress' statuses:
+
+  function onPartyConnection() {
+    console.log('on party connection');
+    reply({ socket, request, body: { status: 'answered' }, complete: false });
+  }
+
+app-core    | on party connection
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:16:48:21 +0000] "POST /twilio-webhook/call-status-event HTTP/1.1" 200 0 "https://auto-connect.ngrok.io/twilio-webhook/enqueue" "TwilioProxy/1.1"
+
+
+
+
+
+
+app-core    | call status event {
+app-core    |   "Called": "+18004444444",
+app-core    |   "ToState": "",
+app-core    |   "CallerCountry": "US",
+app-core    |   "Direction": "outbound-api",
+app-core    |   "CallerState": "NY",
+app-core    |   "ToZip": "",
+app-core    |   "QueueTime": "33",
+app-core    |   "CallSid": "CAdcc0de9d9c0bd0c9779d1d7aae4fd2b2",
+app-core    |   "To": "+18004444444",
+app-core    |   "CallerZip": "13332",
+app-core    |   "ToCountry": "US",
+app-core    |   "ApiVersion": "2010-04-01",
+app-core    |   "CalledZip": "",
+app-core    |   "CalledCity": "",
+app-core    |   "CallStatus": "in-progress",
+app-core    |   "From": "+13156276319",
+app-core    |   "QueueSid": "QU700772b1ab5243eeb64a47dbd7e19d19",
+app-core    |   "AccountSid": "AC838021b4b4e3568ca59381bf46575671",
+app-core    |   "CalledCountry": "US",
+app-core    |   "CallerCity": "MINOA",
+app-core    |   "QueueResult": "bridged",
+app-core    |   "Caller": "+13156276319",
+app-core    |   "FromCountry": "US",
+app-core    |   "ToCity": "",
+app-core    |   "FromCity": "MINOA",
+app-core    |   "CalledState": "",
+app-core    |   "FromZip": "13332",
+app-core    |   "FromState": "NY"
+app-core    | }
+app-core    | on party connection undefined
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:16:48:54 +0000] "POST /twilio-webhook/call-status-event HTTP/1.1" 200 0 "-" "TwilioProxy/1.1"
+
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:16:48:54 +0000] "POST /twilio-webhook/stop-consuming HTTP/1.1" 200 0 "https://auto-connect.ngrok.io/twilio-webhook/consume" "TwilioProxy/1.1"
+
+
+
+
+app-core    | call status event {
+app-core    |   "Called": "+18004444444",
+app-core    |   "ToState": "",
+app-core    |   "CallerCountry": "US",
+app-core    |   "Direction": "outbound-api",
+app-core    |   "Timestamp": "Sun, 27 Jan 2019 16:48:58 +0000",
+app-core    |   "CallbackSource": "call-progress-events",
+app-core    |   "SipResponseCode": "200",
+app-core    |   "CallerState": "NY",
+app-core    |   "ToZip": "",
+app-core    |   "SequenceNumber": "0",
+app-core    |   "CallSid": "CAdcc0de9d9c0bd0c9779d1d7aae4fd2b2",
+app-core    |   "To": "+18004444444",
+app-core    |   "CallerZip": "13332",
+app-core    |   "ToCountry": "US",
+app-core    |   "ApiVersion": "2010-04-01",
+app-core    |   "CalledZip": "",
+app-core    |   "CalledCity": "",
+app-core    |   "CallStatus": "completed",
+app-core    |   "Duration": "1",
+app-core    |   "From": "+13156276319",
+app-core    |   "CallDuration": "39",
+app-core    |   "AccountSid": "AC838021b4b4e3568ca59381bf46575671",
+app-core    |   "CalledCountry": "US",
+app-core    |   "CallerCity": "MINOA",
+app-core    |   "Caller": "+13156276319",
+app-core    |   "ToCity": "",
+app-core    |   "FromCountry": "US",
+app-core    |   "FromCity": "MINOA",
+app-core    |   "CalledState": "",
+app-core    |   "FromZip": "13332",
+app-core    |   "FromState": "NY"
+app-core    | }
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:16:48:58 +0000] "POST /twilio-webhook/call-status-event HTTP/1.1" 200 0 "-" "TwilioProxy/1.1"
+
+
+
+
+
+
+
+
+
+
+

@@ -32,6 +32,10 @@ module.exports = {
   isAccessCodeInUse,
   registerActiveTwilioCall,
   deregisterActiveTwilioCall,
+  isClientOnAnotherCall,
+  isClientOnACall,
+  onCallBridge,
+  onBridgedCallDisconnect,
   onCallStatusEvent,
   onQueueConsumerConnect,
   onQueueConsumerDisconnect,
@@ -128,15 +132,46 @@ function onQueueConsumerDisconnect({ consumerCallSid }) {
 
 
 
+function isClientOnAnotherCall(callSid) {
+  const client = findClientByActiveTwilioCallSid(callSid);
+  console.log(client.answeredCallSid);
+  return (!!client.answeredCallSid && client.answeredCallSid !== callSid);
+}
+
+
+
+
+
+function isClientOnACall(clientID) {
+  return !!registry[clientID].answeredCallSid;
+}
+
+
+
+
+
 function onCallStatusEvent({ callSid, callStatus, req, res }) {
   const client = findClientByActiveTwilioCallSid(callSid);
   const callback = client.statusCallbacks[callSid][callStatus];
-  callback({ req, res, callSid, callStatus, clientIsBusy: !!client.activeCallSid });
-  if (callStatus === 'answered') {
-    client.activeCallSid = callSid;
-  } else if (callStatus === 'completed') {
-    client.activeCallSid = null;
-  }
+  callback({ req, res, callSid, callStatus });
+}
+
+
+
+
+
+function onCallBridge(callSid) {
+  const client = findClientByActiveTwilioCallSid(callSid);
+  client.answeredCallSid = callSid;
+}
+
+
+
+
+
+function onBridgedCallDisconnect(callSid) {
+  const client = findClientByActiveTwilioCallSid(callSid);
+  client.answeredCallSid = null;
 }
 
 

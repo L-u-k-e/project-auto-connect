@@ -1,0 +1,333 @@
+1-5 were called and then 3,4,5 (or maybe just 4/5) completed and then 6 started and then 1 picked up
+
+
+
+
+
+
+
+
+
+app-core    | { Called: '+13156276319',
+app-core    |   ToState: 'NY',
+app-core    |   CallerCountry: 'US',
+app-core    |   Direction: 'inbound',
+app-core    |   CallerState: 'NY',
+app-core    |   ToZip: '13332',
+app-core    |   CallSid: 'CA5706764a2111b0761378fe3eacccf6ab',
+app-core    |   To: '+13156276319',
+app-core    |   CallerZip: '13421',
+app-core    |   ToCountry: 'US',
+app-core    |   ApiVersion: '2010-04-01',
+app-core    |   CalledZip: '13332',
+app-core    |   CalledCity: 'MINOA',
+app-core    |   CallStatus: 'ringing',
+app-core    |   From: '+13158865733',
+app-core    |   AccountSid: 'AC838021b4b4e3568ca59381bf46575671',
+app-core    |   CalledCountry: 'US',
+app-core    |   CallerCity: 'ONEIDA',
+app-core    |   Caller: '+13158865733',
+app-core    |   FromCountry: 'US',
+app-core    |   ToCity: 'MINOA',
+app-core    |   FromCity: 'ONEIDA',
+app-core    |   CalledState: 'NY',
+app-core    |   FromZip: '13421',
+app-core    |   FromState: 'NY' }
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:07:27 +0000] "POST /twilio-webhook/consume HTTP/1.1" 200 224 "-" "TwilioProxy/1.1"
+app-core    | { msg: 'Gather End',
+app-core    |   Called: '+13156276319',
+app-core    |   Digits: '322228',
+app-core    |   ToState: 'NY',
+app-core    |   CallerCountry: 'US',
+app-core    |   Direction: 'inbound',
+app-core    |   CallerState: 'NY',
+app-core    |   ToZip: '13332',
+app-core    |   CallSid: 'CA5706764a2111b0761378fe3eacccf6ab',
+app-core    |   To: '+13156276319',
+app-core    |   CallerZip: '13421',
+app-core    |   ToCountry: 'US',
+app-core    |   FinishedOnKey: '',
+app-core    |   ApiVersion: '2010-04-01',
+app-core    |   CalledZip: '13332',
+app-core    |   CalledCity: 'MINOA',
+app-core    |   CallStatus: 'in-progress',
+app-core    |   From: '+13158865733',
+app-core    |   AccountSid: 'AC838021b4b4e3568ca59381bf46575671',
+app-core    |   CalledCountry: 'US',
+app-core    |   CallerCity: 'ONEIDA',
+app-core    |   Caller: '+13158865733',
+app-core    |   FromCountry: 'US',
+app-core    |   ToCity: 'MINOA',
+app-core    |   FromCity: 'ONEIDA',
+app-core    |   CalledState: 'NY',
+app-core    |   FromZip: '13421',
+app-core    |   FromState: 'NY' }
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:07:38 +0000] "POST /twilio-webhook/consume HTTP/1.1" 200 262 "https://auto-connect.ngrok.io/twilio-webhook/consume" "TwilioProxy/1.1"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app-core    | initiating twilio call
+app-core    | creating twilio call
+app-core    | initiating twilio call
+app-core    | creating twilio call
+app-core    | initiating twilio call
+app-core    | creating twilio call
+app-core    | initiating twilio call
+app-core    | creating twilio call
+app-core    | initiating twilio call
+app-core    | creating twilio call
+app-core    | 7af5b1c1-d39b-413a-af85-a8c157e8ca97 CAeade1595689a67eaa0bcb53839e0a719
+app-core    | 7af5b1c1-d39b-413a-af85-a8c157e8ca97 CA1eb7c30ed92855861f32f955aa4ab017
+app-core    | 7af5b1c1-d39b-413a-af85-a8c157e8ca97 CAbfb20e07fc83c229373b292362d453a9
+app-core    | 7af5b1c1-d39b-413a-af85-a8c157e8ca97 CAac75c23361ea3b55cf557140215ed88e
+app-core    | 7af5b1c1-d39b-413a-af85-a8c157e8ca97 CA5e665c6e97ef53e0c4b7706f6dec18ad
+
+
+
+
+
+
+
+
+
+
+
+first /enqueue POST comes in, client isn't on an active call, so the call is enqueued
+app-core    | null
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:07:59 +0000] "POST /twilio-webhook/enqueue HTTP/1.1" 200 101 "-" "TwilioProxy/1.1"
+
+
+
+
+2nd /enqueue POST. Client is on an active call so a hangup ocurrs.
+app-core    | CAeade1595689a67eaa0bcb53839e0a719
+app-core    | hanging up CA5e665c6e97ef53e0c4b7706f6dec18ad
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:08:00 +0000] "POST /twilio-webhook/enqueue HTTP/1.1" 200 79 "-" "TwilioProxy/1.1"
+
+
+
+3rd enqueue. Client is on an active call so a hangup ocurrs.
+app-core    | CAeade1595689a67eaa0bcb53839e0a719
+app-core    | hanging up CAbfb20e07fc83c229373b292362d453a9
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:08:00 +0000] "POST /twilio-webhook/enqueue HTTP/1.1" 200 79 "-" "TwilioProxy/1.1"
+
+
+
+
+
+"completed" status event for 2nd /enqueue POST, which resulted in a hangup.
+app-core    | call status event {
+app-core    |   "Called": "+18004444444",
+app-core    |   "ToState": "",
+app-core    |   "CallerCountry": "US",
+app-core    |   "Direction": "outbound-api",
+app-core    |   "Timestamp": "Sun, 27 Jan 2019 21:08:00 +0000",
+app-core    |   "CallbackSource": "call-progress-events",
+app-core    |   "SipResponseCode": "200",
+app-core    |   "CallerState": "NY",
+app-core    |   "ToZip": "",
+app-core    |   "SequenceNumber": "0",
+app-core    |   "CallSid": "CA5e665c6e97ef53e0c4b7706f6dec18ad",
+app-core    |   "To": "+18004444444",
+app-core    |   "CallerZip": "13332",
+app-core    |   "ToCountry": "US",
+app-core    |   "ApiVersion": "2010-04-01",
+app-core    |   "CalledZip": "",
+app-core    |   "CalledCity": "",
+app-core    |   "CallStatus": "completed",
+app-core    |   "Duration": "0",
+app-core    |   "From": "+13156276319",
+app-core    |   "CallDuration": "0",
+app-core    |   "AccountSid": "AC838021b4b4e3568ca59381bf46575671",
+app-core    |   "CalledCountry": "US",
+app-core    |   "CallerCity": "MINOA",
+app-core    |   "Caller": "+13156276319",
+app-core    |   "ToCity": "",
+app-core    |   "FromCountry": "US",
+app-core    |   "FromCity": "MINOA",
+app-core    |   "CalledState": "",
+app-core    |   "FromZip": "13332",
+app-core    |   "FromState": "NY"
+app-core    | }
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:08:00 +0000] "POST /twilio-webhook/call-status-event HTTP/1.1" 200 0 "-" "TwilioProxy/1.1"
+
+
+
+
+
+app-core    | initiating twilio call
+app-core    | creating twilio call
+app-core    | 7af5b1c1-d39b-413a-af85-a8c157e8ca97 CAbda84944812c5ebc35d6d9a3846271ab
+app-core    | null
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:08:02 +0000] "POST /twilio-webhook/enqueue HTTP/1.1" 200 101 "-" "TwilioProxy/1.1"
+app-core    | CA1eb7c30ed92855861f32f955aa4ab017
+app-core    | hanging up CAac75c23361ea3b55cf557140215ed88e
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:08:03 +0000] "POST /twilio-webhook/enqueue HTTP/1.1" 200 79 "-" "TwilioProxy/1.1"
+app-core    | call status event {
+app-core    |   "Called": "+18004444444",
+app-core    |   "ToState": "",
+app-core    |   "CallerCountry": "US",
+app-core    |   "Direction": "outbound-api",
+app-core    |   "Timestamp": "Sun, 27 Jan 2019 21:08:03 +0000",
+app-core    |   "CallbackSource": "call-progress-events",
+app-core    |   "SipResponseCode": "200",
+app-core    |   "CallerState": "NY",
+app-core    |   "ToZip": "",
+app-core    |   "SequenceNumber": "0",
+app-core    |   "CallSid": "CAac75c23361ea3b55cf557140215ed88e",
+app-core    |   "To": "+18004444444",
+app-core    |   "CallerZip": "13332",
+app-core    |   "ToCountry": "US",
+app-core    |   "ApiVersion": "2010-04-01",
+app-core    |   "CalledZip": "",
+app-core    |   "CalledCity": "",
+app-core    |   "CallStatus": "completed",
+app-core    |   "Duration": "1",
+app-core    |   "From": "+13156276319",
+app-core    |   "CallDuration": "1",
+app-core    |   "AccountSid": "AC838021b4b4e3568ca59381bf46575671",
+app-core    |   "CalledCountry": "US",
+app-core    |   "CallerCity": "MINOA",
+app-core    |   "Caller": "+13156276319",
+app-core    |   "ToCity": "",
+app-core    |   "FromCountry": "US",
+app-core    |   "FromCity": "MINOA",
+app-core    |   "CalledState": "",
+app-core    |   "FromZip": "13332",
+app-core    |   "FromState": "NY"
+app-core    | }
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:08:03 +0000] "POST /twilio-webhook/call-status-event HTTP/1.1" 200 0 "-" "TwilioProxy/1.1"
+app-core    | initiating twilio call
+app-core    | creating twilio call
+app-core    | call status event {
+app-core    |   "Called": "+18004444444",
+app-core    |   "ToState": "",
+app-core    |   "CallerCountry": "US",
+app-core    |   "Direction": "outbound-api",
+app-core    |   "CallerState": "NY",
+app-core    |   "ToZip": "",
+app-core    |   "QueueTime": "4",
+app-core    |   "CallSid": "CAeade1595689a67eaa0bcb53839e0a719",
+app-core    |   "To": "+18004444444",
+app-core    |   "DequeingCallSid": "CA5706764a2111b0761378fe3eacccf6ab",
+app-core    |   "CallerZip": "13332",
+app-core    |   "ToCountry": "US",
+app-core    |   "ApiVersion": "2010-04-01",
+app-core    |   "CalledZip": "",
+app-core    |   "CalledCity": "",
+app-core    |   "CallStatus": "in-progress",
+app-core    |   "From": "+13156276319",
+app-core    |   "QueueSid": "QU6103d09dae9045e98b86d4a64d3b5d57",
+app-core    |   "AccountSid": "AC838021b4b4e3568ca59381bf46575671",
+app-core    |   "CalledCountry": "US",
+app-core    |   "CallerCity": "MINOA",
+app-core    |   "Caller": "+13156276319",
+app-core    |   "FromCountry": "US",
+app-core    |   "ToCity": "",
+app-core    |   "FromCity": "MINOA",
+app-core    |   "CalledState": "",
+app-core    |   "FromZip": "13332",
+app-core    |   "FromState": "NY"
+app-core    | }
+app-core    | on party connection
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:08:03 +0000] "POST /twilio-webhook/call-status-event HTTP/1.1" 200 0 "https://auto-connect.ngrok.io/twilio-webhook/enqueue" "TwilioProxy/1.1"
+app-core    | 7af5b1c1-d39b-413a-af85-a8c157e8ca97 CA54c171899adc2019381080800ad41cb9
+app-core    | call status event {
+app-core    |   "Called": "+18004444444",
+app-core    |   "ToState": "",
+app-core    |   "CallerCountry": "US",
+app-core    |   "Direction": "outbound-api",
+app-core    |   "Timestamp": "Sun, 27 Jan 2019 21:08:05 +0000",
+app-core    |   "CallbackSource": "call-progress-events",
+app-core    |   "SipResponseCode": "200",
+app-core    |   "CallerState": "NY",
+app-core    |   "ToZip": "",
+app-core    |   "SequenceNumber": "0",
+app-core    |   "CallSid": "CAbfb20e07fc83c229373b292362d453a9",
+app-core    |   "To": "+18004444444",
+app-core    |   "CallerZip": "13332",
+app-core    |   "ToCountry": "US",
+app-core    |   "ApiVersion": "2010-04-01",
+app-core    |   "CalledZip": "",
+app-core    |   "CalledCity": "",
+app-core    |   "CallStatus": "completed",
+app-core    |   "Duration": "1",
+app-core    |   "From": "+13156276319",
+app-core    |   "CallDuration": "5",
+app-core    |   "AccountSid": "AC838021b4b4e3568ca59381bf46575671",
+app-core    |   "CalledCountry": "US",
+app-core    |   "CallerCity": "MINOA",
+app-core    |   "Caller": "+13156276319",
+app-core    |   "ToCity": "",
+app-core    |   "FromCountry": "US",
+app-core    |   "FromCity": "MINOA",
+app-core    |   "CalledState": "",
+app-core    |   "FromZip": "13332",
+app-core    |   "FromState": "NY"
+app-core    | }
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:08:05 +0000] "POST /twilio-webhook/call-status-event HTTP/1.1" 200 0 "-" "TwilioProxy/1.1"
+app-core    | null
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:08:06 +0000] "POST /twilio-webhook/enqueue HTTP/1.1" 200 101 "-" "TwilioProxy/1.1"
+app-core    | CAbda84944812c5ebc35d6d9a3846271ab
+app-core    | hanging up CA54c171899adc2019381080800ad41cb9
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:08:08 +0000] "POST /twilio-webhook/enqueue HTTP/1.1" 200 79 "-" "TwilioProxy/1.1"
+app-core    | call status event {
+app-core    |   "Called": "+18004444444",
+app-core    |   "ToState": "",
+app-core    |   "CallerCountry": "US",
+app-core    |   "Direction": "outbound-api",
+app-core    |   "Timestamp": "Sun, 27 Jan 2019 21:08:08 +0000",
+app-core    |   "CallbackSource": "call-progress-events",
+app-core    |   "SipResponseCode": "200",
+app-core    |   "CallerState": "NY",
+app-core    |   "ToZip": "",
+app-core    |   "SequenceNumber": "0",
+app-core    |   "CallSid": "CA54c171899adc2019381080800ad41cb9",
+app-core    |   "To": "+18004444444",
+app-core    |   "CallerZip": "13332",
+app-core    |   "ToCountry": "US",
+app-core    |   "ApiVersion": "2010-04-01",
+app-core    |   "CalledZip": "",
+app-core    |   "CalledCity": "",
+app-core    |   "CallStatus": "completed",
+app-core    |   "Duration": "0",
+app-core    |   "From": "+13156276319",
+app-core    |   "CallDuration": "0",
+app-core    |   "AccountSid": "AC838021b4b4e3568ca59381bf46575671",
+app-core    |   "CalledCountry": "US",
+app-core    |   "CallerCity": "MINOA",
+app-core    |   "Caller": "+13156276319",
+app-core    |   "ToCity": "",
+app-core    |   "FromCountry": "US",
+app-core    |   "FromCity": "MINOA",
+app-core    |   "CalledState": "",
+app-core    |   "FromZip": "13332",
+app-core    |   "FromState": "NY"
+app-core    | }
+app-proxy   | 192.168.32.1 - - [27/Jan/2019:21:08:08 +0000] "POST /twilio-webhook/call-status-event HTTP/1.1" 200 0 "-" "TwilioProxy/1.1"
+
