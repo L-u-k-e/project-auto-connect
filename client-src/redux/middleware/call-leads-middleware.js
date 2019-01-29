@@ -8,6 +8,7 @@ import {
   removeLeadCallInProgressInfo,
   callAnswered,
   answeredCallCompleted,
+  stopCallingLeads
 } from 'redux/action-creators';
 import {
   getMaxConcurrentCalls,
@@ -103,6 +104,8 @@ function handleReceivedAPIReplies(store, action, next) {
             if (answeredCallInProgessCorrelationID === reply.id) {
               next(answeredCallCompleted());
             }
+          } else if (result.body.clientIsOnAnAnsweredCall) {
+            next(stopCallingLeads());
           } else {
             callNextLead({ store, next });
           }

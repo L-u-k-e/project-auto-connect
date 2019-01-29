@@ -2,7 +2,11 @@ const { call } = require('../../libraries/twilio-utils');
 const { reply } = require('../../libraries/socket-emitters');
 const { generateClientIsBusyError } = require('../../libraries/error-generators');
 const validateIDToken = require('../../libraries/validate-google-sign-in-id-token');
-const { onBridgedCallDisconnect, isClientOnACall } = require('../../libraries/app-client-registry-utils');
+const {
+  onBridgedCallDisconnect,
+  isClientOnACall,
+  isClientOnAnotherCall,
+} = require('../../libraries/app-client-registry-utils');
 
 
 
@@ -66,12 +70,26 @@ async function fulfillRequest({ socket, request }) {
 
   function onPartyConnection() {
     console.log('on party connection');
-    reply({ socket, request, body: { status: 'answered' }, complete: false });
+    reply({
+      socket,
+      request,
+      complete: false,
+      body: { status: 'answered' },
+    });
   }
 
   function onCompleted({ callSid }) {
+    const clientIsOnAnAnsweredCall = isClientOnAnotherCall(callSid);
     onBridgedCallDisconnect(callSid);
-    reply({ socket, request, body: { status: 'completed' }, complete: true });
+    reply({
+      socket,
+      request,
+      complete: true,
+      body: {
+        clientIsOnAnAnsweredCall,
+        status: 'completed',
+      },
+    });
   }
 }
 

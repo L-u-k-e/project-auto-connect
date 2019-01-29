@@ -14,6 +14,7 @@ import {
 // import {  } from 'redux/action-creators';
 import { getQueueStatus, isAnsweredCallDialogActive, getAnsweredCallInProgressLead } from 'redux/selectors';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
+import PropertyDisplay from 'view/components/property-display';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import baseTheme from './theme.css';
 
@@ -36,7 +37,7 @@ AnsweredCallDialog.propTypes = {
 
 };
 AnsweredCallDialog.defaultProps = {
-  lead: null
+  lead: {}
 };
 function AnsweredCallDialog(props) {
   const {
@@ -53,7 +54,9 @@ function AnsweredCallDialog(props) {
     >
       <DialogTitle> Call In Progress </DialogTitle>
       <DialogContent>
-        {lead && JSON.stringify(lead, null, 2)}
+        {Ramda.toPairs(lead).map(([attrName, attrValue]) =>
+          <PropertyDisplay key={attrName} label={attrName} value={attrValue} />
+        )}
       </DialogContent>
       <DialogActions>
         <DialogButton>

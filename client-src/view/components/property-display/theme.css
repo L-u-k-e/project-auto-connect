@@ -1,0 +1,38 @@
+.propertyDisplay {
+  display: flex;
+  padding: 8px 0;
+  width: 100%;
+
+  & .label {
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &.multiline {
+    flex-direction: column;
+    & .label {
+
+    }
+    & .value {
+      white-space: pre-wrap;
+      padding: 8px;
+    }
+  }
+
+  &:not(.multiline) {
+    flex-direction: row;
+    align-items: flex-start;
+    & .label {
+      flex-shrink: 0;
+      min-width: 100px;
+      padding-right: 24px;
+    }
+    & .value {
+      flex: 1;
+      min-width: 100px;
+    }
+  }
+
+}
