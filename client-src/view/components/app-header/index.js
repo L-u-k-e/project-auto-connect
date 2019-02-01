@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
 import { toggleNavDrawer, activateCallInitiationDialog } from 'redux/action-creators';
-import { isNavDrawerModal, areLeadsLoaded, isACallInProgress } from 'redux/selectors';
+import { isNavDrawerModal, areLeadsLoaded, isACallInProgress, isLeadCallingPaused } from 'redux/selectors';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import { Button } from 'rmwc/Button';
@@ -37,6 +37,9 @@ AppHeader.propTypes = {
   // provideCallingLeads
   callingLeads: PropTypes.bool.isRequired,
 
+  // provideLeadCallingPaused
+  leadCallingPaused: PropTypes.bool.isRequired,
+
   // provideOnCallLeads
   onCallLeads: PropTypes.func.isRequired,
 
@@ -52,6 +55,7 @@ function AppHeader(props) {
     onNavDrawerToggle,
     leadsLoaded,
     callingLeads,
+    leadCallingPaused,
     onCallLeads
   } = props;
 
@@ -63,15 +67,40 @@ function AppHeader(props) {
           <TopAppBarTitle> AutoConnect </TopAppBarTitle>
         </TopAppBarSection>
         <TopAppBarSection alignEnd>
-          { leadsLoaded && (
+          {leadsLoaded && !callingLeads && !leadCallingPaused && (
             <Button
               raised
-              disabled={callingLeads}
               theme="secondary-bg on-secondary"
               onClick={onCallLeads}
             >
               Call
             </Button>
+          )}
+          {callingLeads && (
+            <React.Fragment>
+              <Button
+                raised
+                theme="secondary-bg on-secondary"
+              >
+                Pause Calling
+              </Button>
+            </React.Fragment>
+          )}
+          {!callingLeads && leadCallingPaused && (
+            <React.Fragment>
+              <Button
+                raised
+                theme="secondary-bg on-secondary"
+              >
+                Clear Leads List
+              </Button>
+              <Button
+                raised
+                theme="secondary-bg on-secondary"
+              >
+                Resume Calling Leads
+              </Button>
+            </React.Fragment>
           )}
         </TopAppBarSection>
       </TopAppBarRow>
@@ -110,6 +139,12 @@ const provideCallingLeads = connect(state => ({ callingLeads: isACallInProgress(
 
 
 
+const provideLeadCallingPaused = connect(state => ({ leadCallingPaused: isLeadCallingPaused(state) }));
+
+
+
+
+
 const provideOnCallLeads = connect(null, { onCallLeads: activateCallInitiationDialog });
 
 
@@ -122,6 +157,7 @@ const AppHeaderContainer = (
     provideNavDrawerTogglerControls,
     provideLeadsLoaded,
     provideCallingLeads,
+    provideLeadCallingPaused,
     provideOnCallLeads,
   )(AppHeader)
 );

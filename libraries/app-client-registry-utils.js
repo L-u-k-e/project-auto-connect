@@ -171,7 +171,9 @@ function onCallBridge(callSid) {
 
 function onBridgedCallDisconnect(callSid) {
   const client = findClientByActiveTwilioCallSid(callSid);
-  client.answeredCallSid = null;
+  if (callSid === client.answeredCallSid) {
+    client.answeredCallSid = null;
+  }
 }
 
 

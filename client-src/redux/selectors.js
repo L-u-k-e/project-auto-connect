@@ -20,7 +20,6 @@ export const isThereALeadsLoadingError = (state) => state.leadsLoadingStatus.upl
 
 
 
-
 export const isACallInProgress = (state) => state.callParameters.callingLeads;
 export const getMaxConcurrentCalls = (state) => state.callParameters.maxConcurrentCalls;
 export const getLeadsIndexCursor = (state) => state.callParameters.leadsIndexCursor;
@@ -29,7 +28,7 @@ export const isAnAnsweredCallInProgress = (state) => !!state.callParameters.answ
 export const getAnsweredCallInProgressCorrelatinID = (state) => (
   state.callParameters.answeredCallInProgressCorrelationID
 );
-
+export const isLeadCallingPaused = (state) => getLeadsIndexCursor(state) > 0 && !isACallInProgress(state);
 
 
 
