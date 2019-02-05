@@ -7,7 +7,6 @@ import {
   addLeadCallInProgressInfo,
   removeLeadCallInProgressInfo,
   callAnswered,
-  answeredCallCompleted,
   stopCallingLeads
 } from 'redux/action-creators';
 import {
@@ -17,8 +16,6 @@ import {
   getUserIDToken,
   getClientID,
   getLeadCallsInProgressInfo,
-  getAnsweredCallInProgressCorrelatinID,
-  isAnAnsweredCallInProgress,
 } from '../selectors';
 import queueStates from '../../../libraries/queue-states';
 
@@ -88,8 +85,6 @@ function handleReceivedAPIReplies(store, action, next) {
   next(action);
   const state = store.getState();
   const leadCallsInProgressInfo = getLeadCallsInProgressInfo(state);
-  const answeredCallInProgess = isAnAnsweredCallInProgress(state);
-  const answeredCallInProgessCorrelationID = getAnsweredCallInProgressCorrelatinID(state);
   const callInProgressCorrelationIDs = Ramda.map(Ramda.prop('correlationID'), leadCallsInProgressInfo);
   const replies = action.payload;
   replies.forEach(processReply);
@@ -98,18 +93,14 @@ function handleReceivedAPIReplies(store, action, next) {
     if (Ramda.contains(reply.id, callInProgressCorrelationIDs)) {
       const { error, result } = reply;
       if (error || result.complete) {
-        next(removeLeadCallInProgressInfo({ correlationID: reply.id }));
         if (!error) {
-          if (answeredCallInProgess) {
-            if (answeredCallInProgessCorrelationID === reply.id) {
-              next(answeredCallCompleted());
-            }
-          } else if (result.body.clientIsOnAnAnsweredCall) {
+          if (result.body.clientIsOnAnAnsweredCall) {
             next(stopCallingLeads());
           } else {
             callNextLead({ store, next });
           }
         }
+        next(removeLeadCallInProgressInfo({ correlationID: reply.id }));
       } else {
         const { body: { status: callStatus } } = result;
         if (callStatus === 'answered') {

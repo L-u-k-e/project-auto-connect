@@ -98,17 +98,6 @@ export function callAnswered(correlationID) {
 
 
 
-export function answeredCallCompleted() {
-  return {
-    type: actionTypes.ANSWERED_CALL_COMPLETED,
-    payload: null,
-  };
-}
-
-
-
-
-
 export function stopCallingLeads() {
   return {
     type: actionTypes.STOP_CALLING_LEADS,
@@ -163,10 +152,10 @@ export function addLeadCallInProgressInfo({ cursor, correlationID }) {
 
 
 
-export function removeLeadCallInProgressInfo({ cursor, correlationID }) {
+export function removeLeadCallInProgressInfo({ correlationID }) {
   return {
     type: actionTypes.REMOVE_LEAD_CALL_IN_PROGRESS_INFO,
-    payload: { cursor, correlationID },
+    payload: { correlationID },
   };
 }
 

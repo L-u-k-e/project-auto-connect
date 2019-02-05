@@ -18,7 +18,6 @@ const subReducers = {
   [actionTypes.CALL_LEADS]: handleCallLeads,
   [actionTypes.STOP_CALLING_LEADS]: handleStopCallingLeads,
   [actionTypes.CALL_ANSWERED]: handleCallAnswered,
-  [actionTypes.ANSWERED_CALL_COMPLETED]: handleAnsweredCallCompleted,
   [actionTypes.RESET_LEAD_CALLING_PROGRESS_INFO]: resetCursors,
   [actionTypes.ADD_LEAD_CALL_IN_PROGRESS_INFO]: addLeadCallInProgressInfo,
   [actionTypes.REMOVE_LEAD_CALL_IN_PROGRESS_INFO]: removeLeadCallInProgressInfo,
@@ -63,13 +62,18 @@ function addLeadCallInProgressInfo(state, action) {
 
 
 function removeLeadCallInProgressInfo(state, action) {
-  const { correlationID = null, cursor = null } = action.payload;
+  const { correlationID } = action.payload;
   const nextState = { ...state };
   const indexToRemove = Ramda.findIndex(
-    callInfo => callInfo.correlationID === correlationID || callInfo.cursor === cursor,
+    callInfo => callInfo.correlationID === correlationID,
     nextState.leadCallsInProgressInfo
   );
   nextState.leadCallsInProgressInfo = Ramda.remove(indexToRemove, 1, nextState.leadCallsInProgressInfo);
+
+  if (nextState.answeredCallInProgressCorrelationID === correlationID) {
+    nextState.answeredCallInProgressCorrelationID = null;
+  }
+
   return nextState;
 }
 
@@ -104,17 +108,6 @@ function handleCallAnswered(state, action) {
   const nextState = { ...state };
   nextState.answeredCallInProgressCorrelationID = correlationID;
   nextState.callingLeads = false;
-  return nextState;
-}
-
-
-
-
-
-function handleAnsweredCallCompleted(state) {
-  const nextState = { ...state };
-  nextState.callingLeads = true;
-  nextState.answeredCallInProgressCorrelationID = null;
   return nextState;
 }
 
