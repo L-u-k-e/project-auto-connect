@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { themr } from 'react-css-themr';
-import { Drawer, DrawerHeader, DrawerTitle, DrawerSubtitle } from 'rmwc/Drawer';
+import { Drawer } from 'rmwc/Drawer';
 import {
   isUserSignedIn,
   isNavDrawerModal,
@@ -18,6 +18,7 @@ import wrapWithComponent from 'view/libraries/wrap-with-component';
 import AppHeader from './components/app-header';
 import AppBody from './components/app-body';
 import AppNotification from './components/app-notification';
+import AppSidebar from './components/app-sidebar';
 import SignInScreen from './components/sign-in-screen';
 import CallInitiationDialog from './components/call-initiation-dialog';
 import AnsweredCallDialog from './components/answered-call-dialog';
@@ -57,12 +58,8 @@ function View(props) {
           )
         }
       >
-        <DrawerHeader>
-          <DrawerTitle>DrawerHeader</DrawerTitle>
-          <DrawerSubtitle>Subtitle</DrawerSubtitle>
-        </DrawerHeader>
+        <AppSidebar />
         <a href="localhost"> link text </a>
-        { /* <AppSid//ebar /> */}
       </Drawer>
       <AppBody
         className={classNames('mdc-top-app-bar--fixed-adjust', theme.body)}

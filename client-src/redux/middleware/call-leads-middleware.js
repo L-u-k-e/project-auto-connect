@@ -7,7 +7,7 @@ import {
   addLeadCallInProgressInfo,
   removeLeadCallInProgressInfo,
   callAnswered,
-  stopCallingLeads
+  stopCallingLeads,
 } from 'redux/action-creators';
 import {
   getMaxConcurrentCalls,
@@ -59,24 +59,27 @@ function callNextLead({ store, next }) {
   const state = store.getState();
   const cursor = getLeadsIndexCursor(state);
   const leads = getLeads(state);
-  if (cursor >= leads.length) {
-    // check if this was the last lead being called nothing else is in progress then reset all info
-  } else {
-    const lead = leads[cursor];
-    const correlationID = uuidV4();
-    next(addLeadCallInProgressInfo({ cursor, correlationID }));
-    next(updateLeadsIndexCursor(cursor + 1));
-    const requestDefinition = {
-      method: 'call',
-      id: correlationID,
-      params: {
-        id_token: getUserIDToken(state),
-        phone_number: getLeadPhoneNumber(lead),
-        client_id: getClientID(state),
-      }
-    };
-    next(sendAPIRequest(requestDefinition));
+  if (cursor === leads.length) {
+    const leadCallsInProgressInfo = getLeadCallsInProgressInfo(state);
+    if (Ramda.isEmpty(leadCallsInProgressInfo)) {
+      next((stopCallingLeads()));
+    }
+    return;
   }
+  const lead = leads[cursor];
+  const correlationID = uuidV4();
+  next(addLeadCallInProgressInfo({ cursor, correlationID }));
+  next(updateLeadsIndexCursor(cursor + 1));
+  const requestDefinition = {
+    method: 'call',
+    id: correlationID,
+    params: {
+      id_token: getUserIDToken(state),
+      phone_number: getLeadPhoneNumber(lead),
+      client_id: getClientID(state),
+    }
+  };
+  next(sendAPIRequest(requestDefinition));
 }
 
 
@@ -92,13 +95,13 @@ function handleReceivedAPIReplies(store, action, next) {
   function processReply(reply) {
     if (Ramda.contains(reply.id, callInProgressCorrelationIDs)) {
       const { error, result } = reply;
-      if (error || result.complete) {
-        if (!error) {
-          if (result.body.clientIsOnAnAnsweredCall) {
-            next(stopCallingLeads());
-          } else {
-            callNextLead({ store, next });
-          }
+      if (error) {
+        next(removeLeadCallInProgressInfo({ correlationID: reply.id }));
+      } else if (result.complete) {
+        if (result.body.clientIsOnAnAnsweredCall) {
+          next(stopCallingLeads());
+        } else {
+          callNextLead({ store, next });
         }
         next(removeLeadCallInProgressInfo({ correlationID: reply.id }));
       } else {

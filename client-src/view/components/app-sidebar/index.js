@@ -6,8 +6,10 @@ import classNames from 'classnames';
 import { themr } from 'react-css-themr';
 // import {  } from 'redux/action-creators';
 // import {  } from 'redux/selectors';
+import { List } from 'rmwc/List';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
+import QueueStatusDisplayListItem from './components/queue-status-display-list-item';
 import baseTheme from './theme.css';
 
 
@@ -30,7 +32,9 @@ function Sidebar(props) {
 
   return (
     <div className={classNames(className, theme.sidebar)}>
-      {/* content */}
+      <List twoLine>
+        <QueueStatusDisplayListItem />
+      </List>
     </div>
   );
 }

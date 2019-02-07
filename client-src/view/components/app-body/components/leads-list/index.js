@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
-
 import {
   DataTable,
   DataTableContent,
@@ -15,7 +14,12 @@ import {
   DataTableCell
 } from 'rmwc/DataTable';
 // import {  } from 'redux/action-creators';
-import { getLeads, getLeadsListFieldNames, getLeadCallsInProgressInfo } from 'redux/selectors';
+import {
+  getLeads,
+  getLeadsListFieldNames,
+  getLeadCallsInProgressInfo,
+  getLeadsIndexCursor
+} from 'redux/selectors';
 import { Card, } from 'rmwc/Card';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
@@ -36,6 +40,7 @@ LeadsList.propTypes = {
   leads: PropTypes.array,
   leadsListFieldNames: PropTypes.array,
   leadCallsInProgressInfo: PropTypes.array,
+  leadsIndexCursor: PropTypes.number.isRequired
 };
 LeadsList.defaultProps = {
   leads: [],
@@ -49,11 +54,12 @@ function LeadsList(props) {
     leads,
     leadsListFieldNames,
     leadCallsInProgressInfo,
+    leadsIndexCursor,
   } = props;
   const indicesBeingCalled = Ramda.map(Ramda.prop('cursor'), leadCallsInProgressInfo);
   return (
     <Card className={classNames(className, theme.leadsList)}>
-      <DataTable stickyRows={1} className={theme.leadsTable}>
+      <DataTable stickyRows={1} stickyCols={1} className={theme.leadsTable}>
         <DataTableContent>
           <DataTableHead>
             <DataTableRow>
@@ -66,7 +72,15 @@ function LeadsList(props) {
           </DataTableHead>
           <DataTableBody>
             {leads.map((lead, i) => (
-              <DataTableRow key={i} activated={indicesBeingCalled.includes(i)}>
+              <DataTableRow
+                key={i}
+                activated={indicesBeingCalled.includes(i)}
+                className={
+                  classNames({
+                    [theme.calledLeadRow]: !indicesBeingCalled.includes(i) && i < leadsIndexCursor
+                  })
+                }
+              >
                 {leadsListFieldNames.map(fieldName => (
                   <DataTableCell key={fieldName} alignStart>
                     {lead[fieldName]}
@@ -96,6 +110,7 @@ const provideLeadsInfo = connect(
     leads: getLeads(state),
     leadsListFieldNames: getLeadsListFieldNames(state),
     leadCallsInProgressInfo: getLeadCallsInProgressInfo(state),
+    leadsIndexCursor: getLeadsIndexCursor(state),
   })
 );
 

@@ -29,11 +29,18 @@ export const getAnsweredCallInProgressCorrelatinID = (state) => (
   state.callParameters.answeredCallInProgressCorrelationID
 );
 export const isLeadCallingPaused = (state) => getLeadsIndexCursor(state) > 0 && !isACallInProgress(state);
+export const isLeadCallingCompleted = (state) => (
+  areLeadsLoaded(state)
+  && getLeadsIndexCursor(state) === getLeads(state).length
+  && !isACallInProgress(state)
+);
+
 
 
 
 
 export const isAnsweredCallDialogActive = isAnAnsweredCallInProgress;
+
 
 
 

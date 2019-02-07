@@ -5,7 +5,14 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
 import { toggleNavDrawer, activateCallInitiationDialog } from 'redux/action-creators';
-import { isNavDrawerModal, areLeadsLoaded, isACallInProgress, isLeadCallingPaused } from 'redux/selectors';
+import {
+  isNavDrawerModal,
+  areLeadsLoaded,
+  isACallInProgress,
+  isLeadCallingPaused,
+  isLeadCallingCompleted,
+  isAnAnsweredCallInProgress,
+} from 'redux/selectors';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import { Button } from 'rmwc/Button';
@@ -40,8 +47,14 @@ AppHeader.propTypes = {
   // provideLeadCallingPaused
   leadCallingPaused: PropTypes.bool.isRequired,
 
+  // provideLeadCallingCompleted
+  leadCallingCompleted: PropTypes.bool.isRequired,
+
   // provideOnCallLeads
   onCallLeads: PropTypes.func.isRequired,
+
+  // provideAnsweredCallInProgress
+  answeredCallInProgress: PropTypes.bool.isRequired,
 
   // provideTheme
   theme: PropTypes.object.isRequired
@@ -56,7 +69,9 @@ function AppHeader(props) {
     leadsLoaded,
     callingLeads,
     leadCallingPaused,
-    onCallLeads
+    leadCallingCompleted,
+    onCallLeads,
+    answeredCallInProgress,
   } = props;
 
   return (
@@ -76,7 +91,7 @@ function AppHeader(props) {
               Call
             </Button>
           )}
-          {callingLeads && (
+          {(callingLeads || answeredCallInProgress) && (
             <React.Fragment>
               <Button
                 raised
@@ -86,7 +101,7 @@ function AppHeader(props) {
               </Button>
             </React.Fragment>
           )}
-          {!callingLeads && leadCallingPaused && (
+          {!callingLeads && leadCallingPaused && !answeredCallInProgress && (
             <React.Fragment>
               <Button
                 raised
@@ -94,12 +109,15 @@ function AppHeader(props) {
               >
                 Clear Leads List
               </Button>
-              <Button
-                raised
-                theme="secondary-bg on-secondary"
-              >
-                Resume Calling Leads
-              </Button>
+              {!leadCallingCompleted && (
+                <Button
+                  raised
+                  theme="secondary-bg on-secondary"
+                  onClick={onCallLeads}
+                >
+                  Resume Calling Leads
+                </Button>
+              )}
             </React.Fragment>
           )}
         </TopAppBarSection>
@@ -145,6 +163,20 @@ const provideLeadCallingPaused = connect(state => ({ leadCallingPaused: isLeadCa
 
 
 
+const provideLeadCallingCompleted = connect(state => ({ leadCallingCompleted: isLeadCallingCompleted(state) }));
+
+
+
+
+
+const provideAnsweredCallInProgress = connect(
+  state => ({ answeredCallInProgress: isAnAnsweredCallInProgress(state) })
+);
+
+
+
+
+
 const provideOnCallLeads = connect(null, { onCallLeads: activateCallInitiationDialog });
 
 
@@ -158,6 +190,8 @@ const AppHeaderContainer = (
     provideLeadsLoaded,
     provideCallingLeads,
     provideLeadCallingPaused,
+    provideLeadCallingCompleted,
+    provideAnsweredCallInProgress,
     provideOnCallLeads,
   )(AppHeader)
 );

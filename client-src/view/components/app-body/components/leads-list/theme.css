@@ -8,5 +8,9 @@
     height: 100%;
     overflow: scroll;
     position: relative;
+
+    & .calledLeadRow {
+      color: var(--mdc-theme-text-disabled-on-light);
+    }
   }
 }
