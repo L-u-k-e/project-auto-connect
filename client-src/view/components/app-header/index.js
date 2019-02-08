@@ -15,7 +15,7 @@ import {
 } from 'redux/selectors';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
-import { Button } from 'rmwc/Button';
+import { Button, ButtonIcon } from 'rmwc/Button';
 import {
   TopAppBar,
   TopAppBarRow,
@@ -84,35 +84,26 @@ function AppHeader(props) {
         <TopAppBarSection alignEnd>
           {leadsLoaded && !callingLeads && !leadCallingPaused && (
             <Button
-              raised
-              theme="secondary-bg on-secondary"
               onClick={onCallLeads}
             >
+              <ButtonIcon icon="call" />
               Call
             </Button>
           )}
           {(callingLeads || answeredCallInProgress) && (
             <React.Fragment>
-              <Button
-                raised
-                theme="secondary-bg on-secondary"
-              >
+              <Button>
                 Pause Calling
               </Button>
             </React.Fragment>
           )}
           {!callingLeads && leadCallingPaused && !answeredCallInProgress && (
             <React.Fragment>
-              <Button
-                raised
-                theme="secondary-bg on-secondary"
-              >
+              <Button>
                 Clear Leads List
               </Button>
               {!leadCallingCompleted && (
                 <Button
-                  raised
-                  theme="secondary-bg on-secondary"
                   onClick={onCallLeads}
                 >
                   Resume Calling Leads

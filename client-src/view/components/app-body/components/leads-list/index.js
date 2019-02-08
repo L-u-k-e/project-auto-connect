@@ -76,9 +76,12 @@ function LeadsList(props) {
                 key={i}
                 activated={indicesBeingCalled.includes(i)}
                 className={
-                  classNames({
-                    [theme.calledLeadRow]: !indicesBeingCalled.includes(i) && i < leadsIndexCursor
-                  })
+                  classNames(
+                    theme.leadRow,
+                    {
+                      [theme.calledLeadRow]: !indicesBeingCalled.includes(i) && i < leadsIndexCursor
+                    }
+                  )
                 }
               >
                 {leadsListFieldNames.map(fieldName => (
