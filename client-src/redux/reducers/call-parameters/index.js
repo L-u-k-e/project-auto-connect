@@ -23,6 +23,7 @@ const subReducers = {
   [actionTypes.REMOVE_LEAD_CALL_IN_PROGRESS_INFO]: removeLeadCallInProgressInfo,
   [actionTypes.UPDATE_MAX_CONCURRENT_CALLS]: updateMaxConcurrentCalls,
   [actionTypes.UPDATE_LEADS_INDEX_CURSOR]: updateLeadsIndexCursor,
+  [actionTypes.CLEAR_LEADS]: handleClearLeads,
 };
 
 export default createReducer(initialState, subReducers);
@@ -99,6 +100,15 @@ function updateLeadsIndexCursor(state, action) {
   return nextState;
 }
 
+
+
+
+
+function handleClearLeads(state) {
+  const nextState = { ...state };
+  nextState.leadsIndexCursor = 0;
+  return nextState;
+}
 
 
 
