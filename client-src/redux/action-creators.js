@@ -25,6 +25,13 @@ export function leadsLoaded(payload) {
   };
 }
 
+export function clearLeads() {
+  return {
+    payload: null,
+    type: actionTypes.CLEAR_LEADS
+  };
+}
+
 
 
 

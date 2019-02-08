@@ -1,6 +1,7 @@
 .leadsList {
   position: relative;
-  margin: 24px;
+  margin: 16px;
+  max-width: calc(100% - 32px);
   & .leadsTable {
     overflow: auto;
     position: relative;

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
-import { toggleNavDrawer, activateCallInitiationDialog } from 'redux/action-creators';
+import { toggleNavDrawer, activateCallInitiationDialog, clearLeads } from 'redux/action-creators';
 import {
   isNavDrawerModal,
   areLeadsLoaded,
@@ -56,6 +56,9 @@ AppHeader.propTypes = {
   // provideAnsweredCallInProgress
   answeredCallInProgress: PropTypes.bool.isRequired,
 
+  // provideOnClearLeads
+  onClearLeads: PropTypes.func.isRequired,
+
   // provideTheme
   theme: PropTypes.object.isRequired
 };
@@ -72,6 +75,7 @@ function AppHeader(props) {
     leadCallingCompleted,
     onCallLeads,
     answeredCallInProgress,
+    onClearLeads,
   } = props;
 
   return (
@@ -83,12 +87,17 @@ function AppHeader(props) {
         </TopAppBarSection>
         <TopAppBarSection alignEnd>
           {leadsLoaded && !callingLeads && !leadCallingPaused && (
-            <Button
-              onClick={onCallLeads}
-            >
-              <ButtonIcon icon="call" />
-              Call
-            </Button>
+            <React.Fragment>
+              <Button
+                onClick={onCallLeads}
+              >
+                <ButtonIcon icon="call" />
+                Call
+              </Button>
+              <Button onClick={onClearLeads}>
+                Clear Leads List
+              </Button>
+            </React.Fragment>
           )}
           {(callingLeads || answeredCallInProgress) && (
             <React.Fragment>
@@ -99,7 +108,7 @@ function AppHeader(props) {
           )}
           {!callingLeads && leadCallingPaused && !answeredCallInProgress && (
             <React.Fragment>
-              <Button>
+              <Button onClick={onClearLeads}>
                 Clear Leads List
               </Button>
               {!leadCallingCompleted && (
@@ -174,6 +183,12 @@ const provideOnCallLeads = connect(null, { onCallLeads: activateCallInitiationDi
 
 
 
+const provideOnClearLeads = connect(null, { onClearLeads: clearLeads });
+
+
+
+
+
 const AppHeaderContainer = (
   Ramda.compose(
     provideTheme,
@@ -184,6 +199,7 @@ const AppHeaderContainer = (
     provideLeadCallingCompleted,
     provideAnsweredCallInProgress,
     provideOnCallLeads,
+    provideOnClearLeads
   )(AppHeader)
 );
 AppHeaderContainer.displayName = 'AppHeaderContainer';

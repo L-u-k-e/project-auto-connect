@@ -8,7 +8,8 @@ import * as actionTypes from 'redux/action-types';
 const initialState = null;
 
 const subReducers = {
-  [actionTypes.LEADS_LOADED]: leadsLoaded
+  [actionTypes.LEADS_LOADED]: handleLeadsLoaded,
+  [actionTypes.CLEAR_LEADS]: handleClearLeads,
 };
 
 export default createReducer(initialState, subReducers);
@@ -17,7 +18,14 @@ export default createReducer(initialState, subReducers);
 
 
 
-function leadsLoaded(state, action) {
+function handleLeadsLoaded(state, action) {
   const { fieldNames } = action.payload;
   return fieldNames;
+}
+
+
+
+
+function handleClearLeads() {
+  return initialState;
 }
