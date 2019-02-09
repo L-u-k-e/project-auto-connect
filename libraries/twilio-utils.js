@@ -45,14 +45,26 @@ async function call({ clientID, phoneNumber, statusCallbacks = {} }) { // eslint
 
 
 
-
+// Twilio doesn't have an assert queue endpoint so we'll just try to create it and swallow "already exists" errors
+// We actually have a list of error codes from twilio for this, but for some reason 22003 ("already exists") isn't
+// in it. The error twilio returns also has a "moreInfo" property which contains a url that links to a non-existant
+// docs page.
+// {
+//   status: 400,
+//   message: 'A queue with the name queue-576869 already exists',
+//   code: 22003,
+//   moreInfo: 'https://www.twilio.com/docs/errors/22003',
+//   detail: undefined
+// }
+const queueExistsErrorCode = 22003;
 async function assertCallQueue({ queueName }) {
   try {
     await twilioClient.queues.create({
       friendlyName: queueName,
     });
   } catch (error) {
-    console.log(error);
+    if (error.code === queueExistsErrorCode) return;
+    throw error;
   }
 }
 /*
