@@ -98,9 +98,7 @@ function handleReceivedAPIReplies(store, action, next) {
       if (error) {
         next(removeLeadCallInProgressInfo({ correlationID: reply.id }));
       } else if (result.complete) {
-        if (result.body.clientIsOnAnAnsweredCall) {
-          next(stopCallingLeads());
-        } else {
+        if (!result.body.clientIsOnAnAnsweredCall) {
           callNextLead({ store, next });
         }
         next(removeLeadCallInProgressInfo({ correlationID: reply.id }));
