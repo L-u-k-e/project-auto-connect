@@ -40,6 +40,8 @@ module.exports = {
   onQueueConsumerConnect,
   onQueueConsumerDisconnect,
   getClientAccessCodeByActiveTwilioCallSid,
+  isConsumerConnectedToAQueue,
+  getClientAccessCodeByConsumerTwilioCallSid
 };
 
 
@@ -221,5 +223,23 @@ function findClientByConsumerCallSid(consumerCallSid) {
 
 function getClientAccessCodeByActiveTwilioCallSid(callSid) {
   const client = findClientByActiveTwilioCallSid(callSid);
+  return client && client.accessCode;
+}
+
+
+
+
+
+function isConsumerConnectedToAQueue(consumerCallSid) {
+  const client = findClientByConsumerCallSid(consumerCallSid);
+  return client && client.queueStatus === queueStates.CONNECTED;
+}
+
+
+
+
+
+function getClientAccessCodeByConsumerTwilioCallSid(consumerCallSid) {
+  const client = findClientByConsumerCallSid(consumerCallSid);
   return client && client.accessCode;
 }

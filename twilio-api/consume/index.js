@@ -1,7 +1,12 @@
 const { twiml: { VoiceResponse } } = require('twilio');
 const twilioUtils = require('../../libraries/twilio-utils');
 const twilioWebhookRoutes = require('../../libraries/twilio-webhook-routes');
-const { isAccessCodeInUse, onQueueConsumerConnect } = require('../../libraries/app-client-registry-utils');
+const {
+  isAccessCodeInUse,
+  onQueueConsumerConnect,
+  isConsumerConnectedToAQueue,
+  getClientAccessCodeByConsumerTwilioCallSid
+} = require('../../libraries/app-client-registry-utils');
 
 
 
@@ -14,12 +19,15 @@ module.exports = consume;
 
 
 async function consume(req, res) {
-  const { Digits: accessCode, CallSid: consumerCallSid } = req.body;
+  const { Digits: reqAccessCode, CallSid: consumerCallSid } = req.body;
   console.log(req.body);
-  if (accessCode) {
-    if (isAccessCodeInUse(accessCode)) {
-      await forwardAgentToQueue(req, res);
-      onQueueConsumerConnect({ accessCode, consumerCallSid });
+  if (isConsumerConnectedToAQueue(consumerCallSid)) {
+    const accessCode = getClientAccessCodeByConsumerTwilioCallSid(consumerCallSid);
+    await forwardAgentToQueue({ accessCode, res, req });
+  } else if (reqAccessCode) {
+    if (isAccessCodeInUse(reqAccessCode)) {
+      await forwardAgentToQueue({ accessCode: reqAccessCode, res, req });
+      onQueueConsumerConnect({ accessCode: reqAccessCode, consumerCallSid });
     } else {
       relayInvalidAccessCode(req, res);
     }
@@ -49,19 +57,23 @@ function promptAgentForAccessCode(req, res) {
 
 
 
-async function forwardAgentToQueue(req, res) {
+async function forwardAgentToQueue({ accessCode, res }) {
   const voiceResponse = new VoiceResponse();
-  const queueAccessCode = req.body.Digits;
-  const queueName = `queue-${queueAccessCode}`;
+  const queueName = `queue-${accessCode}`;
   await twilioUtils.assertCallQueue({ queueName });
   voiceResponse.dial({
     timeout: 300,
     // POST'ed to when the queue consumer hangs up
-    action: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.stopConsuming}`
+    // action: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.stopConsuming}`
   }).queue({
     // POST'ed to when a call is about to be bridged
     url: `${twilioWebhookAPIURLBase}${twilioWebhookRoutes.callStatusEvent}`
   }, queueName);
+
+  // This runs then the agent or caller hangs up
+  // We redirect to /consume again, which will dial and connect to the queue again
+  voiceResponse.redirect();
+
   res.writeHead(200, { 'Content-Type': 'text/xml' });
   res.end(voiceResponse.toString());
 }
