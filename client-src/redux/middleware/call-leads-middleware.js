@@ -16,6 +16,7 @@ import {
   getUserIDToken,
   getClientID,
   getLeadCallsInProgressInfo,
+  getAnsweredCallInProgressCorrelatinID,
 } from '../selectors';
 import queueStates from '../../../libraries/queue-states';
 
@@ -89,16 +90,16 @@ function handleReceivedAPIReplies(store, action, next) {
   const state = store.getState();
   const leadCallsInProgressInfo = getLeadCallsInProgressInfo(state);
   const callInProgressCorrelationIDs = Ramda.map(Ramda.prop('correlationID'), leadCallsInProgressInfo);
+  const answeredCallCorrelationID = getAnsweredCallInProgressCorrelatinID(state);
   const replies = action.payload;
   replies.forEach(processReply);
-
   function processReply(reply) {
     if (Ramda.contains(reply.id, callInProgressCorrelationIDs)) {
       const { error, result } = reply;
       if (error) {
         next(removeLeadCallInProgressInfo({ correlationID: reply.id }));
       } else if (result.complete) {
-        if (!result.body.clientIsOnAnAnsweredCall) {
+        if (!result.body.clientIsOnAnAnsweredCall && reply.id !== answeredCallCorrelationID) {
           callNextLead({ store, next });
         }
         next(removeLeadCallInProgressInfo({ correlationID: reply.id }));
