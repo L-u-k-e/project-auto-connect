@@ -4,6 +4,7 @@ const twilioWebhookRoutes = require('../../libraries/twilio-webhook-routes');
 const {
   isAccessCodeInUse,
   onQueueConsumerConnect,
+  onQueueConsumerDisconnect,
   isConsumerConnectedToAQueue,
   getClientAccessCodeByConsumerTwilioCallSid
 } = require('../../libraries/app-client-registry-utils');
@@ -18,12 +19,23 @@ module.exports = consume;
 
 
 
+// This endpoint is hit under 3 scenarios
+// 1.) An agent dials in to consume for the first time:
+//     In this scenario we prompt them for an access code and then POST it to this endpoint
+// 2.) This endpoint is POSTed to with the access code digits:
+//     In this case we check to see if the access code is correct for any active clients and begin consumption if so
+// 3.) When an answered call ends (either party hangs up) we redirect back to this endpoint
+//     In this case we reinitate consumption if the hangup was not on the agents end
 async function consume(req, res) {
-  const { Digits: reqAccessCode, CallSid: consumerCallSid } = req.body;
+  const { Digits: reqAccessCode, CallSid: consumerCallSid, CallStatus: callStatus } = req.body;
   console.log(req.body);
   if (isConsumerConnectedToAQueue(consumerCallSid)) {
-    const accessCode = getClientAccessCodeByConsumerTwilioCallSid(consumerCallSid);
-    await forwardAgentToQueue({ accessCode, res, req });
+    if (callStatus === 'completed') { // the agent hung up
+      onQueueConsumerDisconnect({ consumerCallSid });
+    } else {
+      const accessCode = getClientAccessCodeByConsumerTwilioCallSid(consumerCallSid);
+      await forwardAgentToQueue({ accessCode, res, req });
+    }
   } else if (reqAccessCode) {
     if (isAccessCodeInUse(reqAccessCode)) {
       await forwardAgentToQueue({ accessCode: reqAccessCode, res, req });
