@@ -36,7 +36,7 @@ CallInitiationDialog.propTypes = {
   active: PropTypes.bool.isRequired,
 
   // provideAccessCode
-  accessCode: PropTypes.string.isRequired,
+  accessCode: PropTypes.string,
 
   // provideOnCall
   onCall: PropTypes.func.isRequired,
@@ -44,7 +44,9 @@ CallInitiationDialog.propTypes = {
   // provideOnCancel
   onCancel: PropTypes.func.isRequired,
 };
-CallInitiationDialog.defaultProps = {};
+CallInitiationDialog.defaultProps = {
+  accessCode: ''
+};
 function CallInitiationDialog(props) {
   const {
     theme,

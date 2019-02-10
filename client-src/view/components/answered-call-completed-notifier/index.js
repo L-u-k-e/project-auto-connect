@@ -99,33 +99,10 @@ const controlDialogState = wrapWithFunctionChildComponent(DialogStateController_
 
 
 
-OnCancelProvider.propTypes = {
-  // controlDialogState
-  onDeactivate: PropTypes.func.isRequired,
-
-  children: PropTypes.any.isRequired,
-};
-OnCancelProvider.defaultProps = {
-};
-function OnCancelProvider(props) {
-  const { children } = props;
-  return children({ onCancel });
-
-  function onCancel() {
-    props.onDeactivate();
-  }
-}
-const provideOnCancel = wrapWithFunctionChildComponent(OnCancelProvider);
-
-
-
-
-
 const AnsweredCallCompletedNotifierContainer = (
   Ramda.compose(
     provideTheme,
     controlDialogState,
-    provideOnCancel,
   )(AnsweredCallCompletedNotifier)
 );
 AnsweredCallCompletedNotifierContainer.displayName = 'AnsweredCallCompletedNotifierContainer';

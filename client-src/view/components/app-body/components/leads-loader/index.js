@@ -47,7 +47,7 @@ function LeadsLoader(props) {
         className={theme.dropzone}
       >
         <div className={theme.placeholderOuter}>
-          <Icon>cloud_upload</Icon>
+          <Icon icon="cloud_upload" />
           Drop files here
         </div>
       </Dropzone>

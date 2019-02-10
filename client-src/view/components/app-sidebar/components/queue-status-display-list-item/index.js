@@ -29,12 +29,14 @@ QueueStatusDisplayListItem.propTypes = {
   queueStatus: PropTypes.string.isRequired,
 
   // provideAccessCode
-  accessCode: PropTypes.string.isRequired,
+  accessCode: PropTypes.string,
 
   // provideTheme
   theme: PropTypes.object.isRequired
 };
-QueueStatusDisplayListItem.defaultProps = {};
+QueueStatusDisplayListItem.defaultProps = {
+  accessCode: ''
+};
 function QueueStatusDisplayListItem(props) {
   const {
     theme,

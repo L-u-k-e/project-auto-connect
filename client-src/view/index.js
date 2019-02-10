@@ -113,7 +113,7 @@ const provideNavDrawerTogglerControls = connect(
 class ConditionalSignInCompleter extends React.Component {
   static propTypes = {
     // connect (local wrapper)
-    accessCode: PropTypes.number,
+    accessCode: PropTypes.string,
     idToken: PropTypes.string.isRequired,
     basicProfile: PropTypes.object.isRequired,
     completeSignIn: PropTypes.func.isRequired,
