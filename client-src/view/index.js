@@ -60,7 +60,6 @@ function View(props) {
         }
       >
         <AppSidebar />
-        <a href="localhost"> link text </a>
       </Drawer>
       <AppBody
         className={classNames('mdc-top-app-bar--fixed-adjust', theme.body)}

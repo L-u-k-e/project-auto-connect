@@ -6,9 +6,10 @@ import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
 import { loadLeads } from 'redux/action-creators';
 // import {  } from 'redux/selectors';
-import { Card, } from 'rmwc/Card';
-import { Icon } from 'rmwc/Icon';
+// import { Card, } from 'rmwc/Card';
+// import { Icon } from 'rmwc/Icon';
 import Dropzone from 'react-dropzone';
+import { Typography } from 'rmwc/Typography';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import baseTheme from './theme.css';
@@ -36,7 +37,7 @@ function LeadsLoader(props) {
   } = props;
 
   return (
-    <Card className={classNames(className, theme.leadsLoader)}>
+    <div className={classNames(className, theme.leadsLoader)}>
       <Dropzone
         onDrop={onDrop}
         accept={[
@@ -46,12 +47,33 @@ function LeadsLoader(props) {
         multiple={false}
         className={theme.dropzone}
       >
-        <div className={theme.placeholderOuter}>
-          <Icon icon="cloud_upload" />
-          Drop files here
+        <div className={theme.instructions}>
+          <p className={theme.header}>
+            <Typography use="headline5" className={theme.headline}>
+              {'Add some leads to get started.'}
+            </Typography>
+            <Typography use="body1">
+              {'Drop a CSV here or use the "LOAD LEADS" button.'}
+            </Typography>
+          </p>
+          <p className={theme.rulesSection}>
+            <Typography use="overline" className={theme.rulesLabel}>
+            Rules
+            </Typography>
+            <Typography use="caption" className={theme.rulesList}>
+              <ul>
+                <li>
+                  {'The first line of the CSV should contain header labels for the columns.'}
+                </li>
+                <li>
+                  {'One column should contain phone numbers and should be labeled "phone" or "Phone".'}
+                </li>
+              </ul>
+            </Typography>
+          </p>
         </div>
       </Dropzone>
-    </Card>
+    </div>
   );
 }
 

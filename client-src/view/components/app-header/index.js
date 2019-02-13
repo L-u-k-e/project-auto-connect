@@ -86,6 +86,13 @@ function AppHeader(props) {
           <TopAppBarTitle> AutoConnect </TopAppBarTitle>
         </TopAppBarSection>
         <TopAppBarSection alignEnd>
+          {!leadsLoaded && (
+            <React.Fragment>
+              <Button>
+                Load Leads
+              </Button>
+            </React.Fragment>
+          )}
           {leadsLoaded && !callingLeads && !leadCallingPaused && (
             <React.Fragment>
               <Button
