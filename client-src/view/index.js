@@ -41,34 +41,38 @@ View.propTypes = {
 function View(props) {
   const { theme, navDrawerModal, navDrawerOpen, onToggleNavDrawer } = props;
   return (
-    <div className={theme.view}>
-      <AppHeader
-        className={theme.header}
-      />
-      <Drawer
-        open={navDrawerOpen}
-        modal={navDrawerModal}
-        onClose={onToggleNavDrawer}
-        className={
-          classNames(
-            {
-              'mdc-top-app-bar--fixed-adjust': !navDrawerModal,
-              [theme.modal]: navDrawerModal
-            },
-            theme.drawer
-          )
-        }
-      >
-        <AppSidebar />
-      </Drawer>
-      <AppBody
-        className={classNames('mdc-top-app-bar--fixed-adjust', theme.body)}
-      />
-      <CallInitiationDialog />
-      <AnsweredCallDialog />
-      <AnsweredCallCompletedNotifier />
-      <AppNotification />
-    </div>
+    <React.Fragment>
+      <div className={theme.view}>
+        <AppHeader
+          className={theme.header}
+        />
+        <Drawer
+          open={navDrawerOpen}
+          modal={navDrawerModal}
+          onClose={onToggleNavDrawer}
+          className={
+            classNames(
+              {
+                'mdc-top-app-bar--fixed-adjust': !navDrawerModal,
+                [theme.modal]: navDrawerModal
+              },
+              theme.drawer
+            )
+          }
+        >
+          <AppSidebar />
+        </Drawer>
+        <AppBody
+          className={classNames('mdc-top-app-bar--fixed-adjust', theme.body)}
+        />
+      </div>
+      <div className={theme.aboveView}>
+        <CallInitiationDialog />
+        <AnsweredCallDialog />
+        <AnsweredCallCompletedNotifier />
+        <AppNotification />
+      </div>
+    </React.Fragment>
   );
 }
 
