@@ -11,6 +11,7 @@ const twilioWebhookAPIURLBase = process.env.TWILIO_WEBHOOK_API_URL_BASE;
 module.exports = {
   initialize,
   call,
+  endCall,
   assertCallQueue,
 };
 
@@ -67,16 +68,13 @@ async function assertCallQueue({ queueName }) {
     throw error;
   }
 }
-/*
-function handleStatusEvent(statusEvent) {
-  const {
-    sid,
-    ...
-  } = statusEvent;
 
-  const callback = Ramda.view(Ramda.lensPath([sid, eventType]), pendingStatusEventCallbacks);
-  if (callback) {
-    callback(statusEvent);
-  }
+
+
+
+
+async function endCall(callSid) {
+  twilioClient.calls(callSid)
+  .update({ status: 'completed' })
+  .done();
 }
-*/

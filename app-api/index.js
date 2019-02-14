@@ -7,6 +7,7 @@ const { validate: validateAgainstSchema } = require('../libraries/json-schema-va
 const validateServiceMethodArgs = require('../libraries/validate-service-method-args');
 const { reply } = require('../libraries/socket-emitters');
 const signIn = require('./sign-in');
+const endCall = require('./end-call');
 const call = require('./call');
 
 
@@ -16,6 +17,7 @@ const call = require('./call');
 const methodImpls = {
   call,
   sign_in: signIn,
+  end_call: endCall,
 };
 module.exports = {
   initialize

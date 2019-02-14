@@ -25,8 +25,11 @@ export const getMaxConcurrentCalls = (state) => state.callParameters.maxConcurre
 export const getLeadsIndexCursor = (state) => state.callParameters.leadsIndexCursor;
 export const getLeadCallsInProgressInfo = (state) => state.callParameters.leadCallsInProgressInfo;
 export const isAnAnsweredCallInProgress = (state) => !!state.callParameters.answeredCallInProgressCorrelationID;
-export const getAnsweredCallInProgressCorrelatinID = (state) => (
+export const getAnsweredCallInProgressCorrelationID = (state) => (
   state.callParameters.answeredCallInProgressCorrelationID
+);
+export const getAnsweredCallInProgressCallID = (state) => (
+  state.callParameters.answeredCallInProgressCallID
 );
 export const isLeadCallingPaused = (state) => getLeadsIndexCursor(state) > 0 && !isACallInProgress(state);
 export const isLeadCallingCompleted = (state) => (
@@ -47,7 +50,7 @@ export const isAnsweredCallDialogActive = isAnAnsweredCallInProgress;
 
 export const getAnsweredCallInProgressLead = (state) => {
   if (!isAnAnsweredCallInProgress(state)) return undefined;
-  const answeredCallInProgressCorrelationID = getAnsweredCallInProgressCorrelatinID(state);
+  const answeredCallInProgressCorrelationID = getAnsweredCallInProgressCorrelationID(state);
   const leads = getLeads(state);
   const leadCallsInProgressInfo = getLeadCallsInProgressInfo(state);
   return Ramda.pipe(

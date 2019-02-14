@@ -11,9 +11,9 @@ import {
   DialogActions,
   DialogButton,
 } from 'rmwc/Dialog';
-// import {  } from 'redux/action-creators';
+import { hangupAnsweredCall } from 'redux/action-creators';
 import { getQueueStatus, isAnsweredCallDialogActive, getAnsweredCallInProgressLead } from 'redux/selectors';
-import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
+// import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 import PropertyDisplay from 'view/components/property-display';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import baseTheme from './theme.css';
@@ -35,6 +35,9 @@ AnsweredCallDialog.propTypes = {
   // provideLead
   lead: PropTypes.object,
 
+  // provideOnHangupAnsweredCall
+  onHangUpAnsweredCall: PropTypes.func.isRequired,
+
 };
 AnsweredCallDialog.defaultProps = {
   lead: {}
@@ -44,7 +47,8 @@ function AnsweredCallDialog(props) {
     theme,
     className,
     active,
-    lead
+    lead,
+    onHangUpAnsweredCall
   } = props;
 
   return (
@@ -59,8 +63,8 @@ function AnsweredCallDialog(props) {
         )}
       </DialogContent>
       <DialogActions>
-        <DialogButton>
-          cancel
+        <DialogButton onClick={onHangUpAnsweredCall}>
+          Hang up
         </DialogButton>
       </DialogActions>
     </Dialog>
@@ -100,23 +104,7 @@ const provideLead = connect(state => ({ lead: getAnsweredCallInProgressLead(stat
 
 
 
-OnCancelProvider.propTypes = {
-  // controlDialogState
-  onDeactivate: PropTypes.func.isRequired,
-
-  children: PropTypes.any.isRequired,
-};
-OnCancelProvider.defaultProps = {
-};
-function OnCancelProvider(props) {
-  const { children } = props;
-  return children({ onCancel });
-
-  function onCancel() {
-    props.onDeactivate();
-  }
-}
-const provideOnCancel = wrapWithFunctionChildComponent(OnCancelProvider);
+const provideOnHangupAnsweredCall = connect(null, { onHangUpAnsweredCall: hangupAnsweredCall });
 
 
 
@@ -128,7 +116,7 @@ const AnsweredCallDialogContainer = (
     provideQueueStatus,
     controlDialogState,
     provideLead,
-    provideOnCancel,
+    provideOnHangupAnsweredCall,
   )(AnsweredCallDialog)
 );
 AnsweredCallDialogContainer.displayName = 'AnsweredCallDialogContainer';

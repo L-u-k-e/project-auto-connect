@@ -12,6 +12,7 @@ const initialState = {
   leadCallsInProgressInfo: [],
   callingLeads: false,
   answeredCallInProgressCorrelationID: null,
+  answeredCallInProgressCallID: null,
 };
 
 const subReducers = {
@@ -73,6 +74,7 @@ function removeLeadCallInProgressInfo(state, action) {
 
   if (nextState.answeredCallInProgressCorrelationID === correlationID) {
     nextState.answeredCallInProgressCorrelationID = null;
+    nextState.answeredCallInProgressCallID = null;
   }
 
   return nextState;
@@ -114,9 +116,10 @@ function handleClearLeads(state) {
 
 
 function handleCallAnswered(state, action) {
-  const { correlationID } = action.payload;
+  const { correlationID, callID } = action.payload;
   const nextState = { ...state };
   nextState.answeredCallInProgressCorrelationID = correlationID;
+  nextState.answeredCallInProgressCallID = callID;
   nextState.callingLeads = false;
   return nextState;
 }

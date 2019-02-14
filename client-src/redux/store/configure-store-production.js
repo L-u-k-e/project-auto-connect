@@ -5,6 +5,7 @@ import rootReducer from 'redux/reducers';
 import apiServerMiddleware from '../middleware/api-server-middleware';
 import callLeadsMiddleware from '../middleware/call-leads-middleware';
 import leadsLoaderMiddleware from '../middleware/leads-loader-middleware';
+import hangupAnsweredCallMiddleware from '../middleware/hangup-answered-call-middleware';
 import persistSignInStateToLocalStorage from '../enhancers/persist-sign-in-state-to-local-storage';
 
 
@@ -16,6 +17,7 @@ const enhancer = compose(
   persistSignInStateToLocalStorage,
   applyMiddleware(
     callLeadsMiddleware,
+    hangupAnsweredCallMiddleware,
     leadsLoaderMiddleware,
     apiServerMiddleware,
     resizeListenterMiddleware,

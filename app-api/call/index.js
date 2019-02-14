@@ -68,13 +68,13 @@ async function fulfillRequest({ socket, request }) {
   setTimeout(onCompleted, onCompletedTimeout);
   */
 
-  function onPartyConnection() {
+  function onPartyConnection({ callSid }) {
     console.log('on party connection');
     reply({
       socket,
       request,
       complete: false,
-      body: { status: 'answered' },
+      body: { status: 'answered', callID: callSid },
     });
   }
 

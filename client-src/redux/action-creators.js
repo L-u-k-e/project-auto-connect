@@ -83,6 +83,17 @@ export function signInCompletionSuccessful(payload) {
 
 
 
+export function hangupAnsweredCall(payload) {
+  return {
+    payload,
+    type: actionTypes.HANGUP_ANSWERED_CALL,
+  };
+}
+
+
+
+
+
 export function callLeads() {
   return {
     type: actionTypes.CALL_LEADS,
@@ -94,10 +105,10 @@ export function callLeads() {
 
 
 
-export function callAnswered(correlationID) {
+export function callAnswered({ correlationID, callID }) {
   return {
     type: actionTypes.CALL_ANSWERED,
-    payload: { correlationID },
+    payload: { correlationID, callID },
   };
 }
 

@@ -45,7 +45,14 @@ export const REMOVE_LEAD_CALL_IN_PROGRESS_INFO = 'auto-connect/REMOVE_LEAD_CALL_
 
 
 
+
 export const UPDATE_QUEUE_STATUS = 'auto-connect/UPDATE_QUEUE_STATUS';
+
+
+
+
+
+export const HANGUP_ANSWERED_CALL = 'auto-connect/HANGUP_ANSWERED_CALL';
 
 
 
