@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
-import { toggleNavDrawer, activateCallInitiationDialog, clearLeads } from 'redux/action-creators';
+import {
+  toggleNavDrawer,
+  activateCallInitiationDialog,
+  clearLeads,
+  callLeads,
+} from 'redux/action-creators';
 import {
   isNavDrawerModal,
   areLeadsLoaded,
@@ -12,8 +17,9 @@ import {
   isLeadCallingPaused,
   isLeadCallingCompleted,
   isAnAnsweredCallInProgress,
+  getQueueStatus,
 } from 'redux/selectors';
-// import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
+import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import { Button, ButtonIcon } from 'rmwc/Button';
 import {
@@ -24,6 +30,7 @@ import {
   TopAppBarTitle,
   // TopAppBarActionItem
 } from 'rmwc/TopAppBar';
+import queueStates from '../../../../libraries/queue-states';
 import baseTheme from './theme.css';
 
 
@@ -184,7 +191,32 @@ const provideAnsweredCallInProgress = connect(
 
 
 
-const provideOnCallLeads = connect(null, { onCallLeads: activateCallInitiationDialog });
+OnCallLeadsProvider.propTypes = {
+  // connect (local wrapper)
+  queueStatus: PropTypes.string.isRequired,
+  activateCallInitiationDialog: PropTypes.func.isRequired,
+  callLeads: PropTypes.func.isRequired,
+
+  children: PropTypes.any.isRequired,
+};
+OnCallLeadsProvider.defaultProps = {
+};
+function OnCallLeadsProvider(props) {
+  const { children, queueStatus } = props;
+  return children({ onCallLeads });
+  function onCallLeads() {
+    if (queueStatus === queueStates.CONNECTED) {
+      props.callLeads();
+    } else {
+      props.activateCallInitiationDialog();
+    }
+  }
+}
+const OnCallLeadsProvider_Connected = connect(
+  state => ({ queueStatus: getQueueStatus(state) }),
+  { activateCallInitiationDialog, callLeads }
+)(OnCallLeadsProvider);
+const provideOnCallLeads = wrapWithFunctionChildComponent(OnCallLeadsProvider_Connected);
 
 
 
