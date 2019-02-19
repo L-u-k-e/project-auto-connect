@@ -6,6 +6,7 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "@rmwc/avatar": "^5.1.6",
     "@rmwc/button": "^5.1.6",
     "@rmwc/card": "^5.1.6",
     "@rmwc/data-table": "^5.1.6",

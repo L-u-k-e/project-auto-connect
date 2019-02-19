@@ -13,6 +13,7 @@ import {
   ListItemPrimaryText,
   ListItemSecondaryText
 } from '@rmwc/list';
+import { Avatar } from '@rmwc/avatar';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 // import queueStates from '../../../../libraries/queue-states';
@@ -44,9 +45,10 @@ function GoogleProfileListItem(props) {
     <ListItem className={classNames(className, theme.googleProfileListItem)} ripple={false}>
       <ListItemGraphic
         icon={
-          <img
+          <Avatar
             src={googleBasicProfile.getImageUrl()}
-            alt={googleBasicProfile.getName()}
+            size="xlarge"
+            name={googleBasicProfile.getName()}
           />
         }
       />
