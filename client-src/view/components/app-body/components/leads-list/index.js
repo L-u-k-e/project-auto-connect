@@ -12,7 +12,7 @@ import {
   DataTableHeadCell,
   DataTableRow,
   DataTableCell
-} from 'rmwc/DataTable';
+} from '@rmwc/data-table';
 // import {  } from 'redux/action-creators';
 import {
   getLeads,
@@ -20,7 +20,7 @@ import {
   getLeadCallsInProgressInfo,
   getLeadsIndexCursor
 } from 'redux/selectors';
-import { Card, } from 'rmwc/Card';
+import { Card, } from '@rmwc/card';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import baseTheme from './theme.css';

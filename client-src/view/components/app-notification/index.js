@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getAppNotificationState } from 'redux/selectors';
 import { resetAppNotificationState } from 'redux/action-creators';
-import { Snackbar } from 'rmwc/Snackbar';
+import { Snackbar } from '@rmwc/snackbar';
 
 
 
@@ -15,22 +15,18 @@ AppNotification.propTypes = {
   active: PropTypes.bool.isRequired,
   timeout: PropTypes.number.isRequired,
   text: PropTypes.string.isRequired,
-  multiline: PropTypes.bool.isRequired,
   onReset: PropTypes.func.isRequired,
 };
 AppNotification.defaultProps = {};
 function AppNotification(props) {
-  const { text, active, timeout, multiline, onReset } = props;
+  const { text, active, timeout, onReset } = props;
   return (
     <Snackbar
-      show={active}
-      onHide={onReset}
+      open={active}
+      onClose={onReset}
       message={text}
       timeout={timeout}
-      multiline={multiline}
-      actionText="Dismiss"
-      actionHandler={onReset}
-      alignStart
+      leading
     />
   );
 }

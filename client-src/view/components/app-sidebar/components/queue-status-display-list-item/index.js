@@ -11,7 +11,7 @@ import {
   ListItemText,
   ListItemPrimaryText,
   ListItemSecondaryText
-} from 'rmwc/List';
+} from '@rmwc/list';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 // import queueStates from '../../../../libraries/queue-states';

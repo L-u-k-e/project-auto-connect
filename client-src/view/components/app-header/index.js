@@ -21,7 +21,7 @@ import {
 } from 'redux/selectors';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
-import { Button, ButtonIcon } from 'rmwc/Button';
+import { Button, ButtonIcon } from '@rmwc/button';
 import {
   TopAppBar,
   TopAppBarRow,
@@ -29,7 +29,7 @@ import {
   TopAppBarNavigationIcon,
   TopAppBarTitle,
   // TopAppBarActionItem
-} from 'rmwc/TopAppBar';
+} from '@rmwc/top-app-bar';
 import queueStates from '../../../../libraries/queue-states';
 import baseTheme from './theme.css';
 

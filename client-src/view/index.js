@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { themr } from 'react-css-themr';
-import { Drawer } from 'rmwc/Drawer';
+import { Drawer } from '@rmwc/drawer';
 import {
   isUserSignedIn,
   isNavDrawerModal,

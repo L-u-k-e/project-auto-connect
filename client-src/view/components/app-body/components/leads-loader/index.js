@@ -9,7 +9,7 @@ import { loadLeads } from 'redux/action-creators';
 // import { Card, } from 'rmwc/Card';
 // import { Icon } from 'rmwc/Icon';
 import Dropzone from 'react-dropzone';
-import { Typography } from 'rmwc/Typography';
+import { Typography } from '@rmwc/typography';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import baseTheme from './theme.css';

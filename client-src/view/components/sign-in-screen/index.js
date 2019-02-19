@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
 import GoogleButton from 'react-google-button';
-import { Typography } from 'rmwc/Typography';
+import { Typography } from '@rmwc/typography';
 import { completeSignIn, startSignIn, stopSignIn } from 'redux/action-creators';
 import { isSignInInProgress } from 'redux/selectors';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';

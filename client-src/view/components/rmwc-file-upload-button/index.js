@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { themr } from 'react-css-themr';
 // import {  } from 'redux/action-creators';
 // import {  } from 'redux/selectors';
-import { Button } from 'rmwc/Button';
+import { Button } from '@rmwc/button';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import baseTheme from './theme.css';

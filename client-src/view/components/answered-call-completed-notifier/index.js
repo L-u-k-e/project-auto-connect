@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { themr } from 'react-css-themr';
-import { Snackbar } from 'rmwc/Snackbar';
+import { Snackbar } from '@rmwc/snackbar';
 // import {  } from 'redux/action-creators';
 import {
   isAnAnsweredCallInProgress,
@@ -40,13 +40,11 @@ function AnsweredCallCompletedNotifier(props) {
   return (
     <Snackbar
       className={classNames(className, theme.answeredCallCompletedNotifier)}
-      show={show}
-      onHide={onHide}
+      open={show}
+      onClose={onHide}
       message="Call Completed. Calling has been paused."
-      actionText="Dismiss"
-      actionHandler={onHide}
       timeout={2000}
-      alignStart
+      leading
     />
   );
 }

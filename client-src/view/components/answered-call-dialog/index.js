@@ -10,7 +10,7 @@ import {
   DialogContent,
   DialogActions,
   DialogButton,
-} from 'rmwc/Dialog';
+} from '@rmwc/dialog';
 import { hangupAnsweredCall } from 'redux/action-creators';
 import { getQueueStatus, isAnsweredCallDialogActive, getAnsweredCallInProgressLead } from 'redux/selectors';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';

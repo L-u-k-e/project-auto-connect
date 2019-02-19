@@ -10,7 +10,7 @@ import {
   DialogContent,
   DialogActions,
   DialogButton,
-} from 'rmwc/Dialog';
+} from '@rmwc/dialog';
 import { deactivateCallInitiationDialog, callLeads } from 'redux/action-creators';
 import { getQueueStatus, isCallInitiationDialogActive, getAccessCode } from 'redux/selectors';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
