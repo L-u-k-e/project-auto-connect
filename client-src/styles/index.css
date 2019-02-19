@@ -11,6 +11,7 @@
 @import '@material/typography/dist/mdc.typography.css';
 
 /* RMWC addons */
+@import '@rmwc/avatar/avatar.css';
 @import '@rmwc/data-table/data-table.css';
 @import '@rmwc/icon/icon.css';
 
