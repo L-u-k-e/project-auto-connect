@@ -9,7 +9,7 @@ import leadsLoaderMiddleware from '../middleware/leads-loader-middleware';
 import signInMiddleware from '../middleware/sign-in-middleware';
 import queueStatusMiddleware from '../middleware/queue-status-middleware';
 import hangupAnsweredCallMiddleware from '../middleware/hangup-answered-call-middleware';
-import persistSignInStateToLocalStorage from '../enhancers/persist-sign-in-state-to-local-storage';
+// import persistSignInStateToLocalStorage from '../enhancers/persist-sign-in-state-to-local-storage';
 
 
 
@@ -26,7 +26,7 @@ const logger = createLogger({ level: 'info', collapsed: true });
 
 const enhancer = composeEnhancers(
   responsiveStoreEnhancer,
-  persistSignInStateToLocalStorage,
+  // persistSignInStateToLocalStorage,
   applyMiddleware(
     signInMiddleware,
     callLeadsMiddleware,
