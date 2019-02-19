@@ -48,15 +48,15 @@ function LeadsLoader(props) {
         className={theme.dropzone}
       >
         <div className={theme.instructions}>
-          <p className={theme.header}>
+          <div className={theme.header}>
             <Typography use="headline5" className={theme.headline}>
               {'Add some leads to get started.'}
             </Typography>
             <Typography use="body1">
               {'Drop a CSV here or use the "LOAD LEADS" button.'}
             </Typography>
-          </p>
-          <p className={theme.rulesSection}>
+          </div>
+          <div className={theme.rulesSection}>
             <Typography use="overline" className={theme.rulesLabel}>
             Rules
             </Typography>
@@ -70,7 +70,7 @@ function LeadsLoader(props) {
                 </li>
               </ul>
             </Typography>
-          </p>
+          </div>
         </div>
       </Dropzone>
     </div>
