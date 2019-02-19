@@ -14,6 +14,7 @@ import {
 import { deactivateCallInitiationDialog, callLeads } from 'redux/action-creators';
 import { getQueueStatus, isCallInitiationDialogActive, getAccessCode } from 'redux/selectors';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
+import PropertyDisplay from 'view/components/property-display';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import queueStates from '../../../../libraries/queue-states';
 import baseTheme from './theme.css';
@@ -65,12 +66,9 @@ function CallInitiationDialog(props) {
     >
       <DialogTitle> Begin calling </DialogTitle>
       <DialogContent>
-        <div>
-          Queue Status: {queueStatus}
-        </div>
-        <div>
-          accessCode: {accessCode}
-        </div>
+        <PropertyDisplay className={theme.propDisplay} theme={theme} label="Queue status" value={queueStatus} />
+        <PropertyDisplay className={theme.propDisplay} theme={theme} label="Dial" value="(315) 627-6319" />
+        <PropertyDisplay className={theme.propDisplay} theme={theme} label="Access code" value={accessCode} />
       </DialogContent>
       <DialogActions>
         <DialogButton
