@@ -47,7 +47,7 @@ function GoogleProfileListItem(props) {
         icon={
           <Avatar
             src={googleBasicProfile.getImageUrl()}
-            size="xlarge"
+            size="xsmall"
             name={googleBasicProfile.getName()}
           />
         }

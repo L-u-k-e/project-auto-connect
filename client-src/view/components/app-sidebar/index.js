@@ -11,6 +11,7 @@ import { List } from '@rmwc/list';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 import GoogleProfileListItem from './components/google-profile-list-item';
 import QueueStatusDisplayListItem from './components/queue-status-display-list-item';
+import SettingsListItem from './components/settings-list-item';
 import baseTheme from './theme.css';
 
 
@@ -36,6 +37,7 @@ function Sidebar(props) {
       <List twoLine avatarList>
         <GoogleProfileListItem />
         <QueueStatusDisplayListItem />
+        <SettingsListItem />
       </List>
     </div>
   );

@@ -10,11 +10,12 @@ import {
   ListItem,
   ListItemText,
   ListItemPrimaryText,
-  ListItemSecondaryText
+  ListItemSecondaryText,
+  ListItemGraphic
 } from '@rmwc/list';
 // import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
-// import queueStates from '../../../../libraries/queue-states';
+import queueStates from '../../../../../../libraries/queue-states';
 import baseTheme from './theme.css';
 
 
@@ -47,10 +48,23 @@ function QueueStatusDisplayListItem(props) {
 
   return (
     <ListItem className={classNames(className, theme.queueStatusDisplayListItem)} ripple={false}>
-      <ListItemText>
-        <ListItemPrimaryText> Queue Status: {queueStatus} </ListItemPrimaryText>
-        <ListItemSecondaryText> Dial: 315-627-6319 # {accessCode} </ListItemSecondaryText>
-      </ListItemText>
+      {queueStatus === queueStates.CONNECTED ? (
+        <React.Fragment>
+          <ListItemGraphic icon="phonelink" />
+          <ListItemText>
+            <ListItemPrimaryText> Connected to queue </ListItemPrimaryText>
+            <ListItemSecondaryText> ready to call leads </ListItemSecondaryText>
+          </ListItemText>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <ListItemGraphic icon="phonelink_off" />
+          <ListItemText>
+            <ListItemPrimaryText> Not connected </ListItemPrimaryText>
+            <ListItemSecondaryText> 315-627-6319 # {accessCode} </ListItemSecondaryText>
+          </ListItemText>
+        </React.Fragment>
+      )}
     </ListItem>
   );
 }
