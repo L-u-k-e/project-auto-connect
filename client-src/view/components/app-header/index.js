@@ -21,7 +21,7 @@ import {
 } from 'redux/selectors';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
-import { Button, ButtonIcon } from '@rmwc/button';
+import { Button } from '@rmwc/button';
 import {
   TopAppBar,
   TopAppBarRow,
@@ -104,8 +104,8 @@ function AppHeader(props) {
             <React.Fragment>
               <Button
                 onClick={onCallLeads}
+                icon="call"
               >
-                <ButtonIcon icon="call" />
                 Call
               </Button>
               <Button onClick={onClearLeads}>

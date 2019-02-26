@@ -59,7 +59,7 @@ function LeadsList(props) {
   const indicesBeingCalled = Ramda.map(Ramda.prop('cursor'), leadCallsInProgressInfo);
   return (
     <Card className={classNames(className, theme.leadsList)}>
-      <DataTable stickyRows={1} stickyCols={1} className={theme.leadsTable}>
+      <DataTable stickyRows={1} className={theme.leadsTable}>
         <DataTableContent>
           <DataTableHead>
             <DataTableRow>
