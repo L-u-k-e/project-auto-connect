@@ -18,6 +18,7 @@ import {
   isLeadCallingCompleted,
   isAnAnsweredCallInProgress,
   getQueueStatus,
+  getBrowser,
 } from 'redux/selectors';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
@@ -67,6 +68,9 @@ AppHeader.propTypes = {
   // provideOnClearLeads
   onClearLeads: PropTypes.func.isRequired,
 
+  // provideBrowser
+  browser: PropTypes.object.isRequired,
+
   // provideTheme
   theme: PropTypes.object.isRequired
 };
@@ -84,6 +88,7 @@ function AppHeader(props) {
     onCallLeads,
     answeredCallInProgress,
     onClearLeads,
+    browser
   } = props;
 
   return (
@@ -97,7 +102,7 @@ function AppHeader(props) {
               onClick={onNavDrawerToggle}
             />
           )}
-          <TopAppBarTitle> AutoConnect </TopAppBarTitle>
+          {browser.greaterThan.xs && <TopAppBarTitle> AutoConnect </TopAppBarTitle>}
         </TopAppBarSection>
         <TopAppBarSection alignEnd>
           {!leadsLoaded && (
@@ -114,7 +119,7 @@ function AppHeader(props) {
                 Call
               </Button>
               <Button onClick={onClearLeads}>
-                Clear Leads List
+                {browser.greaterThan.xs ? 'Clear Leads List' : 'Clear Leads'}
               </Button>
             </React.Fragment>
           )}
@@ -128,7 +133,7 @@ function AppHeader(props) {
           {!callingLeads && leadCallingPaused && !answeredCallInProgress && (
             <React.Fragment>
               <Button onClick={onClearLeads}>
-                Clear Leads List
+                {browser.greaterThan.xs ? 'Clear Leads List' : 'Clear Leads'}
               </Button>
               {!leadCallingCompleted && (
                 <Button
@@ -196,6 +201,12 @@ const provideAnsweredCallInProgress = connect(
 
 
 
+const provideBrowser = connect(state => ({ browser: getBrowser(state) }));
+
+
+
+
+
 OnCallLeadsProvider.propTypes = {
   // connect (local wrapper)
   queueStatus: PropTypes.string.isRequired,
@@ -243,7 +254,8 @@ const AppHeaderContainer = (
     provideLeadCallingCompleted,
     provideAnsweredCallInProgress,
     provideOnCallLeads,
-    provideOnClearLeads
+    provideOnClearLeads,
+    provideBrowser
   )(AppHeader)
 );
 AppHeaderContainer.displayName = 'AppHeaderContainer';

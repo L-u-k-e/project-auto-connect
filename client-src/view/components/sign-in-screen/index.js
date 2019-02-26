@@ -7,7 +7,7 @@ import { themr } from 'react-css-themr';
 import GoogleButton from 'react-google-button';
 import { Typography } from '@rmwc/typography';
 import { completeSignIn, startSignIn, stopSignIn } from 'redux/action-creators';
-import { isSignInInProgress } from 'redux/selectors';
+import { isSignInInProgress, getBrowser } from 'redux/selectors';
 import wrapWithFunctionChildComponent from 'view/libraries/wrap-with-function-child-component';
 // import wrapWithComponent from 'view/libraries/wrap-with-component';
 // import { Button } from 'rmwc/Button';
@@ -28,6 +28,9 @@ SignInScreen.propTypes = {
   // provideSignInInProgress
   signInInProgress: PropTypes.bool.isRequired,
 
+  // provideBrowser
+  browser: PropTypes.object.isRequired,
+
   // provideTheme
   theme: PropTypes.object.isRequired
 };
@@ -38,10 +41,14 @@ function SignInScreen(props) {
     className,
     onStartSigningIn,
     signInInProgress,
+    browser,
   } = props;
   return (
     <div className={classNames(className, theme.signInScreen)}>
-      <Typography use="headline4" className={theme.text}>
+      <Typography
+        use={browser.greaterThan.xs ? 'headline4' : 'headline5'}
+        className={theme.text}
+      >
         Welcome To Auto Connect
       </Typography>
       <GoogleButton
@@ -59,6 +66,12 @@ function SignInScreen(props) {
 
 
 const provideTheme = themr('SignInScreen', baseTheme);
+
+
+
+
+
+const provideBrowser = connect(state => ({ browser: getBrowser(state) }));
 
 
 
@@ -115,6 +128,7 @@ const SignInScreenContainer = (
     provideTheme,
     provideOnStartSigningIn,
     provideSignInInProgress,
+    provideBrowser
   )(SignInScreen)
 );
 SignInScreenContainer.displayName = 'SignInScreenContainer';

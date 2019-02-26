@@ -49,7 +49,7 @@ function LeadsLoader(props) {
       >
         <div className={theme.instructions}>
           <div className={theme.header}>
-            <Typography use="headline5" className={theme.headline}>
+            <Typography use="headline6" className={theme.headline}>
               {'Add some leads to get started.'}
             </Typography>
             <Typography use="body1">
