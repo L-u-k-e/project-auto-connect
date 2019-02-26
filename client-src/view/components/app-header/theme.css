@@ -2,4 +2,7 @@
   & button:not(:last-child) {
     margin-right: 24px;
   }
+  & .navigationIcon  {
+    color: var(--mdc-theme-text-primary-on-background) !important;
+  }
 }

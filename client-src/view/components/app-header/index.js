@@ -92,7 +92,7 @@ function AppHeader(props) {
         <TopAppBarSection alignStart>
           { displayNavDrawerToggler && (
             <TopAppBarNavigationIcon
-              theme="textPrimaryOnBackground"
+              className={theme.navigationIcon}
               icon="menu"
               onClick={onNavDrawerToggle}
             />
