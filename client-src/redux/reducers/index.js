@@ -11,6 +11,7 @@ import leadsReducer from './leads';
 import leadsListFieldNamesReducer from './leads-list-field-names';
 import leadsLoadingStatusReducer from './leads-loading-status';
 import navDrawerReducer from './nav-drawer';
+import settingsAndHelpDialogReducer from './settings-and-help-dialog';
 import queueStatus from './queue-status';
 
 
@@ -31,6 +32,7 @@ export default combineReducers({
   leadsListFieldNames: leadsListFieldNamesReducer,
   leadsLoadingStatus: leadsLoadingStatusReducer,
   navDrawer: navDrawerReducer,
+  settingsAndHelpDialog: settingsAndHelpDialogReducer,
   signInStatus: signInStatusReducer,
   queueStatus: queueStatus
 });

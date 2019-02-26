@@ -3,7 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { themr } from 'react-css-themr';
-// import {  } from 'redux/action-creators';
+import { connect } from 'react-redux';
+import { activateSettingsAndHelpDialog } from 'redux/action-creators';
 import {
   ListItem,
   ListItemText,
@@ -24,17 +25,25 @@ SettingsListItem.propTypes = {
   className: PropTypes.string.isRequired,
 
   // provideTheme
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+
+  // provideOnClick
+  onClick: PropTypes.func.isRequired
 };
 SettingsListItem.defaultProps = {};
 function SettingsListItem(props) {
   const {
     theme,
     className,
+    onClick,
   } = props;
 
   return (
-    <ListItem className={classNames(className, theme.settingsListItem)} ripple>
+    <ListItem
+      ripple
+      className={classNames(className, theme.settingsListItem)}
+      onClick={onClick}
+    >
       <ListItemGraphic icon="settings" />
       <ListItemText>
         <ListItemPrimaryText> Settings  </ListItemPrimaryText>
@@ -54,9 +63,16 @@ const provideTheme = themr('SettingsListItem', baseTheme);
 
 
 
+const provideOnClick = connect(null, { onClick: activateSettingsAndHelpDialog });
+
+
+
+
+
 const SettingsListItemContainer = (
   Ramda.compose(
     provideTheme,
+    provideOnClick
   )(SettingsListItem)
 );
 SettingsListItemContainer.displayName = 'SettingsListItemContainer';

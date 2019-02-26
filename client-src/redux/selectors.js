@@ -92,6 +92,12 @@ export const isCallInitiationDialogActive = (state) => state.callInitiationDialo
 
 
 
+export const isSettingsAndHelpDialogActive = (state) => state.settingsAndHelpDialog.active;
+
+
+
+
+
 export const isNavDrawerModal = (state) => state.browser.lessThan.lgTablet;
 export const isNavDrawerOpen = (state) => !isNavDrawerModal(state) || state.navDrawer.openInModalMode;
 

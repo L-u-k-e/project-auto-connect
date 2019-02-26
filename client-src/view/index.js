@@ -22,6 +22,7 @@ import AppSidebar from './components/app-sidebar';
 import SignInScreen from './components/sign-in-screen';
 import CallInitiationDialog from './components/call-initiation-dialog';
 import AnsweredCallDialog from './components/answered-call-dialog';
+import SettingsAndHelpDialog from './components/settings-and-help-dialog';
 import AnsweredCallCompletedNotifier from './components/answered-call-completed-notifier';
 import baseTheme from './theme.css';
 
@@ -68,6 +69,7 @@ function View(props) {
       </div>
       <div className={theme.aboveView}>
         <CallInitiationDialog />
+        <SettingsAndHelpDialog />
         <AnsweredCallDialog />
         <AnsweredCallCompletedNotifier />
         <AppNotification />

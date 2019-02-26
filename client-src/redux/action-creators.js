@@ -278,3 +278,22 @@ export function deactivateCallInitiationDialog() {
     payload: null,
   };
 }
+
+
+
+
+
+// activate/ deactivate settings/help dialog
+export function activateSettingsAndHelpDialog() {
+  return {
+    type: actionTypes.ACTIVATE_SETTINGS_AND_HELP_DIALOG,
+    payload: null,
+  };
+}
+
+export function deactivateSettingsAndHelpDialog() {
+  return {
+    type: actionTypes.DEACTIVATE_SETTINGS_AND_HELP_DIALOG,
+    payload: null,
+  };
+}

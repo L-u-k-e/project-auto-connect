@@ -1,0 +1,14 @@
+.settingsAndHelpDialog {
+  & span {
+    display: block;
+  }
+
+  & .section:not(:last-child) {
+    margin-bottom: 24px;
+  }
+
+  & .iconCredits {
+    margin-top: 8px;
+  }
+}
+
