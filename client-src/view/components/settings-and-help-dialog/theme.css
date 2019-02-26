@@ -4,11 +4,11 @@
   }
 
   & .section:not(:last-child) {
-    margin-bottom: 24px;
+    margin-bottom: 36px;
   }
 
-  & .iconCredits {
-    margin-top: 8px;
+  & .sectionHeading {
+    margin-bottom: 8px;
   }
 }
 

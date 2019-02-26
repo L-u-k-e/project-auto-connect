@@ -8,7 +8,6 @@ import { deactivateSettingsAndHelpDialog } from 'redux/action-creators';
 import { isSettingsAndHelpDialogActive } from 'redux/selectors';
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogActions,
   DialogButton
@@ -48,10 +47,9 @@ function SettingsAndHelpDialog(props) {
       open={open}
       onClose={onClose}
     >
-      <DialogTitle>Settings, Help & Credits</DialogTitle>
       <DialogContent>
         <div className={theme.section}>
-          <Typography use="headline5">
+          <Typography use="headline5" className={theme.sectionHeading}>
             Settings
           </Typography>
           <Typography use="body">
@@ -59,7 +57,7 @@ function SettingsAndHelpDialog(props) {
           </Typography>
         </div>
         <div className={theme.section}>
-          <Typography use="headline5">
+          <Typography use="headline5" className={theme.sectionHeading}>
             Help
           </Typography>
           <Typography use="body">
@@ -67,7 +65,7 @@ function SettingsAndHelpDialog(props) {
           </Typography>
         </div>
         <div className={theme.section}>
-          <Typography use="headline5">
+          <Typography use="headline5" className={theme.sectionHeading}>
             Credits
           </Typography>
           <Typography use="body">
@@ -78,7 +76,7 @@ function SettingsAndHelpDialog(props) {
         </div>
       </DialogContent>
       <DialogActions>
-        <DialogButton action="close">Done</DialogButton>
+        <DialogButton action="close">Close</DialogButton>
       </DialogActions>
     </Dialog>
   );
