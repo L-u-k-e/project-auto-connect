@@ -90,7 +90,13 @@ function AppHeader(props) {
     <TopAppBar fixed className={classNames(className, theme.appHeader)}>
       <TopAppBarRow>
         <TopAppBarSection alignStart>
-          { displayNavDrawerToggler && <TopAppBarNavigationIcon icon="menu" onClick={onNavDrawerToggle} /> }
+          { displayNavDrawerToggler && (
+            <TopAppBarNavigationIcon
+              theme="textPrimaryOnBackground"
+              icon="menu"
+              onClick={onNavDrawerToggle}
+            />
+          )}
           <TopAppBarTitle> AutoConnect </TopAppBarTitle>
         </TopAppBarSection>
         <TopAppBarSection alignEnd>
