@@ -31,6 +31,7 @@ import {
   // TopAppBarActionItem
 } from '@rmwc/top-app-bar';
 import queueStates from '../../../../libraries/queue-states';
+import LoadLeadsButton from './components/load-leads-button';
 import baseTheme from './theme.css';
 
 
@@ -95,9 +96,7 @@ function AppHeader(props) {
         <TopAppBarSection alignEnd>
           {!leadsLoaded && (
             <React.Fragment>
-              <Button>
-                Load Leads
-              </Button>
+              <LoadLeadsButton />
             </React.Fragment>
           )}
           {leadsLoaded && !callingLeads && !leadCallingPaused && (
